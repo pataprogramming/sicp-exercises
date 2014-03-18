@@ -1,4 +1,5 @@
 * Section 1.2
+#+TODO: TODO(t) WRITEUP(w) || (d)
 ** Section 1.2.1 Linear Recursion and Iteration
 *** Exercise 1.9: Thinking about procedures and processes
 **** Problem
@@ -114,6 +115,7 @@ building up deferred operations. The second is a linear iterative process.
 
 #+RESULTS:
 : 1024
+
 
 #+BEGIN_SRC scheme :session 1-10
   (A 2 4)
@@ -858,7 +860,7 @@ straight what needs to be added and subtracted, and from where.
 
 #+END_SRC
 
-*** TODO Exercise 1.19: Logarithmic Fibonacci calculations
+*** WRITEUP Exercise 1.19: Logarithmic Fibonacci calculations
 **** Problem
 
      There is a clever algorithm for computing the Fibonacci numbers
@@ -902,6 +904,26 @@ straight what needs to be added and subtracted, and from where.
 #+END_example
 
 **** Answer
+
+#+BEGIN_src scheme :session 1-2-6 :results silent
+  (define (fib-t n)
+    (fib-iter 1 0 0 1 n))
+
+  (define (fib-t-iter a b p q count)
+    (cond ((= count 0) b)
+          ((even? count)
+           (fib-t-iter a
+                       b
+                       (+ (square q) (square p))
+                       (+ (* 2 p q) (square q))
+                       (/ count 2)))
+          (else (fib-t-iter (+ (* b q) (* a q) (* a p))
+                          (+ (* b p) (* a q))
+                          p
+                          q
+                          (- count 1)))))
+#+END_src
+
 
 ** Section 1.2.5 Greatest Common Divisors
 *** TODO Exercise 1.20: Revisiting applicative order and normal order
@@ -1313,13 +1335,13 @@ block that combines two sets of output:
 | 1411103 |  870297 |
 | 4399915 | 2771143 |
 
-*** TODO Exercise 1.24: Putting the Fermat method to work
+*** WRITEUP Exercise 1.24: Putting the Fermat method to work
 **** Problem
 
-      Modify the `timed-prime-test' procedure of *Note Exercise 1-22::
-      to use `fast-prime?' (the Fermat method), and test each of the 12
+      Modify the =timed-prime-test= procedure of Exercise 1.22
+      to use =fast-prime?= (the Fermat method), and test each of the 12
       primes you found in that exercise.  Since the Fermat test has
-      [theta](`log' n) growth, how would you expect the time to test
+      $\theta \log n$) growth, how would you expect the time to test
       primes near 1,000,000 to compare with the time needed to test
       primes near 1000?  Do your data bear this out?  Can you explain
       any discrepancy you find?
@@ -1328,8 +1350,8 @@ block that combines two sets of output:
 
 First, the code from Section 1.2.6. Since we're pushing the input size
 larger than 4294967087, we can't use Racket's built-in =random=, so an
-external library is used that does not cap the range
-(=williams/science/random-source=).
+external library from Planet (Racket's package repository) is used
+that does not cap the range (=williams/science/random-source=).
 
 #+BEGIN_SRC scheme :session 1-2-6 :results silent
      (require (planet williams/science/random-source))
@@ -1754,7 +1776,7 @@ so this sticks with printing out the relevant numbers.
 
 #+BEGIN_SRC scheme :session 1-2-6 :results silent
   (define (carmichael? n)
-    (and (not (prime? n)) (verify-fermat n)))
+     (and (not (prime? n)) (verify-fermat n)))
 
   (define (carmichael-scan-range a b)
     (if (carmichael? a) (printf "~a~n" a))
@@ -1789,7 +1811,7 @@ the text are all found using this method.
 75361
 #+end_example
 
-*** TODO Exercise 1.28: The Miller-Rabin test
+*** WRITEUP Exercise 1.28: The Miller-Rabin test
 **** Problem
 
       One variant of the Fermat test that cannot be fooled is called

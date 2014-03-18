@@ -62,7 +62,7 @@
 
      Translate the following expression into prefix form.
 
-     $$\frac{5 + 4 + ( 2 - (3 = (6 + \frac{4}{5})))}{3 (6 - 2)(2 - 7)$$
+     $$\frac{5 + 4 + ( 2 - (3 = (6 + \frac{4}{5})))}{3 (6 - 2)(2 - 7)}$$
 
 #+BEGIN_SRC scheme :results value
 (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
@@ -232,18 +232,19 @@ Only a single addition and three multiplications need to be performed!
 
 #+BEGIN_SRC scheme :results silent
   (define (new-if predicate then-clause else-clause)
-    (cond (predicate then-clause)
-          (else else-clause)))
+    (if predicate
+        then-clause
+        else-clause))
 #+END_SRC
 
      Eva demonstrates the program for Alyssa:
 
 #+BEGIN_EXAMPLE
-          (new-if (= 2 3) 0 5)
-          5
+  (new-if (= 2 3) 0 5)
+  5
 
-          (new-if (= 1 1) 0 5)
-          0
+  (new-if (= 1 1) 0 5)
+  0
 #+END_EXAMPLE
 
      Delighted, Alyssa uses =new-if= to rewrite the square-root program:
@@ -254,6 +255,27 @@ Only a single addition and three multiplications need to be performed!
             guess
             (sqrt-iter (improve guess x)
                        x)))
+
+  (sqrt-iter 1 4)
+
+  (if true
+          guess
+          (sqrt-iter (improve guess x)
+                     x))
+
+
+  (new-if true
+          guess
+          (sqrt-iter (improve guess x)
+                     x))
+  (new-if (good-enough? guess x)
+          guess
+          (new-if (good-enough? guess x)
+                  guess
+                  (sqrt-iter (improve guess x)
+                             x)))
+
+
 #+END_SRC
 
      What happens when Alyssa attempts to use this to compute square
@@ -284,37 +306,39 @@ recursion.
 
 **** Answer
 #+BEGIN_SRC scheme :session 1-1-7 :results silent
-(define (sqrt-iter guess x)
-  (if (good-enough? guess x)
-      guess
-      (sqrt-iter (improve guess x)
-                 x)))
+  (define (sqrt-iter guess x)
+    (if (good-enough? guess x)
+        guess
+        (sqrt-iter (improve guess x)
+                   x)))
 
-(define (improve guess x)
-  (average guess (/ x guess)))
+  (define (improve guess x)
+    (average guess (/ x guess)))
 
-(define (average x y)
-  (/ (+ x y) 2))
+  (define (average x y)
+    (/ (+ x y) 2))
 
-(define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (define (good-enough? guess x)
+    (< (abs (- (square guess) x)) 0.001))
 
-(define (sqrt1 x)
-  (sqrt-iter 1.0 x))
+  (define (sqrt1 x)
+    (sqrt-iter 1.0 x))
 
-(define (percent-changed new old)
-  (/ (- new old) old))
+  (define (percent-changed new old)
+    (/ (- new old) old))
 
-(define (small-change? new-guess old-guess)
-  (< (abs (percent-changed new-guess old-guess)) 0.001))
+  (define (small-change? new-guess old-guess)
+    (< (abs (percent-changed new-guess old-guess)) 0.001))
 
-(define (sqrt-iter-scaled current-guess last-guess x)
-  (if (small-change? current-guess last-guess)
-      current-guess
-      (sqrt-iter-scaled (improve current-guess x) current-guess x)))
+  (define (sqrt-scaled x)
+    (define (sqrt-iter-scaled current-guess last-guess x)
+      (if (smallest-divisor small-change? current-guess last-guess)
+          current-guess
+          (sqrt-iter-scaled (improve current-guess x)
+                            current-guess x)))
+    (sqrt-iter-scaled 1.0 100.0 x))
 
-(define (sqrt-scaled x)
-  (sqrt-iter-scaled 1.0 100.0 x))
+  (define sqrt sqrt-scaled)
 #+END_SRC
 
 Checking the results:
