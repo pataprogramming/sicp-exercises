@@ -172,7 +172,6 @@ building up deferred operations. The second is a linear iterative process.
      by the procedures =f=, =g=, and =h= for positive integer values of
      $n$.  For example, =(k n)= computes $5n^2$.
 
-
 $f(n) => 2*n$
 $g(n) => 2^n$
 
@@ -923,7 +922,6 @@ straight what needs to be added and subtracted, and from where.
                           q
                           (- count 1)))))
 #+END_src
-
 
 ** Section 1.2.5 Greatest Common Divisors
 *** TODO Exercise 1.20: Revisiting applicative order and normal order
