@@ -5,7 +5,7 @@
 **** Problem
    Each of the following two procedures defines a
    method for adding two positive integers in terms of the procedures
-   `inc', which increments its argument by 1, and `dec', which
+   =inc=, which increments its argument by 1, and =dec=, which
    decrements its argument by 1.
 
 #+BEGIN_SRC scheme :results silent
@@ -173,8 +173,8 @@ building up deferred operations. The second is a linear iterative process.
      $n$.  For example, =(k n)= computes $5n^2$.
 
 
-$f(n) => 2*n$
-$g(n) => 2^n$
+$$f(n) => 2*n$$
+$$g(n) => 2^n$$
 
 #+BEGIN_SRC
 (A 2 1) => 2                                             (2^(2^0))
@@ -186,14 +186,15 @@ $g(n) => 2^n$
 2^2 ^ 2^(1)
 2^3 ^ 2^2 ^ 2^1
 
-1 => $2$
-2 => $2 ^ 2$
-3 => $2 ^ 2 ^ 2$
-4 => $2 ^ 2 ^ 2 ^ 2$
+h(1) => 2
+h(2) => 2 ^ 2
+h(3) => 2 ^ 2 ^ 2
+h(4) => 2 ^ 2 ^ 2 ^ 2
 ...
 #+END_SRC
 
-No standard mathematical notation; this is a "power tower", called /tetration/.
+There's no standard mathematical notation; this is a "power tower", also
+called /tetration/.
 
 ** Section 1.2.2 Tree Recursion
 *** Exercise 1.11: Converting a recursive process to an iterative process
@@ -315,7 +316,7 @@ No standard mathematical notation; this is a "power tower", called /tetration/.
 #+BEGIN_SRC scheme :session 1-12 :results silent
   ;; Find the m-th number in the n-th row of Pascal's triangle
   (define (pascal n m)
-    (cond ((or (> m n) (< m 1) (< n 1)) -1) ; Error condition, need an exception here!
+    (cond ((or (> m n) (< m 1) (< n 1)) -1) ; Error condition
           ((or (= m 1) (= m n)) 1)  ; Outer numbers
           (else (+ (pascal (- n 1) (- m 1))
                    (pascal (- n 1) m)))))
@@ -694,7 +695,7 @@ same order of computational complexity.)
       Design a procedure that evolves an iterative exponentiation
       process that uses successive squaring and uses a logarithmic
       number of steps, as does =fast-expt=.  (Hint: Using the
-      observation that $(b^(n/2))^2 = (b^2)^(n/2)$, keep, along with
+      observation that $(b^{n/2})^2 = (b^2)^{n/2}$, keep, along with
       the exponent $n$ and the base $b$, an additional state variable
       $a$, and define the state transformation in such a way that the
       product $ab^n$ is unchanged from state to state.  At the
@@ -728,8 +729,8 @@ of calls to =fast-expt= keeps building up until it bottoms out
 with the first case, after which all of the pending computations
 can be rolled back up.
 
-This problem is to switch from this from a logarithm recursive process
-to a logarithmic iterative process
+This problem is to switch from this from a logarithmic recursive
+process to a logarithmic iterative process.
 
 #+BEGIN_SRC scheme :session 1-16 :results silent
     (define (fast-expt-2 b n)
@@ -932,14 +933,13 @@ straight what needs to be added and subtracted, and from where.
       the rules used by the interpreter.  As an example, consider the
       iterative =gcd= procedure given above.  Suppose we were to
       interpret this procedure using normal-order evaluation, as
-      discussed in section 1.1.5.  (The normal-order-evaluation
-      rule for =if= is described in Exercise 1.5.)  Using the
-      substitution method (for normal order), illustrate the process
-      generated in evaluating =(gcd 206 40)= and indicate the
-      =remainder= operations that are actually performed.  How many
-      =remainder= operations are actually performed in the normal-order
-      evaluation of =(gcd 206 40)=?  In the applicative-order
-      evaluation?
+      discussed in section 1.1.5.  (The normal-order-evaluation rule
+      for =if= is described in Exercise 1.5.)  Using the substitution
+      method (for normal order), illustrate the process generated in
+      evaluating =(gcd 206 40)= and indicate the =remainder=
+      operations that are actually performed.  How many =remainder=
+      operations are actually performed in the normal-order evaluation
+      of =(gcd 206 40)=?  In the applicative-order evaluation?
 **** Answer
 
 Recall that for applicative order, arguments are first evaluated, then
