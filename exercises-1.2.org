@@ -101,7 +101,7 @@ building up deferred operations. The second is a linear iterative process.
   The following procedure computes a mathematical function called
   Ackermann's function.
 
-#+BEGIN_SRC scheme :session 1-10 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (A x y)
     (cond ((= y 0) 0)
           ((= x 0) (* 2 y))
@@ -112,22 +112,21 @@ building up deferred operations. The second is a linear iterative process.
 
      What are the values of the following expressions?
 
-#+BEGIN_SRC scheme :session 1-10
+#+BEGIN_SRC scheme :session 1-2 :exports both
   (A 1 10)
 #+END_SRC
 
 #+RESULTS:
 : 1024
 
-
-#+BEGIN_SRC scheme :session 1-10
+#+BEGIN_SRC scheme :session 1-2 :exports both
   (A 2 4)
 #+END_SRC
 
 #+RESULTS:
 : 65536
 
-#+BEGIN_SRC scheme :session 1-10
+#+BEGIN_SRC scheme :session 1-2 :exports both
   (A 3 3)
 #+END_SRC
 
@@ -137,7 +136,7 @@ building up deferred operations. The second is a linear iterative process.
   Consider the following procedures, where =A= is the procedure
   defined above:
 
-#+BEGIN_SRC scheme :session 1-10 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (f n) (A 0 n))
 
   (define (g n) (A 1 n))
@@ -147,7 +146,7 @@ building up deferred operations. The second is a linear iterative process.
   (define (k n) (* 5 n n))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-10 :results output
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (investigate name func num)
 
     (define (investigate-iter i)
@@ -158,26 +157,39 @@ building up deferred operations. The second is a linear iterative process.
     (display name)
     (investigate-iter 0))
 
+#+END_SRC
 
-  (investigate "f" f 17)
-  (investigate "g" g 17)
-  (investigate "h" h 5)
+#+BEGIN_SRC scheme :session 1-2 :exports both
   (investigate "k" k 5)
 #+END_SRC
 
-#+RESULTS:
-: f 0:0 1:2 2:4 3:6 4:8 5:10 6:12 7:14 8:16 9:18 10:20 11:22 12:24 13:26 14:28 15:30 16:32
-: g 0:0 1:2 2:4 3:8 4:16 5:32 6:64 7:128 8:256 9:512 10:1024 11:2048 12:4096 13:8192 14:16384 15:32768 16:65536
-: h 0:0 1:2 2:4 3:16 4:65536
-: k 0:0 1:5 2:20 3:45 4:80
-
-     Give concise mathematical definitions for the functions computed
-     by the procedures =f=, =g=, and =h= for positive integer values of
-     $n$.  For example, =(k n)= computes $5n^2$.
+  Give concise mathematical definitions for the functions computed
+  by the procedures =f=, =g=, and =h= for positive integer values of
+  $n$.  For example, =(k n)= computes $5n^2$.
 
 
+
+
+#+BEGIN_SRC scheme :session 1-2 :exports both
+  (investigate "f" f 17)
+#+END_SRC
+
+The output of =f= is straightforward to analyze:
 $$f(n) => 2*n$$
+
+#+BEGIN_SRC scheme :session 1-2 :exports both
+  (investigate "g" g 17)
+#+END_SRC
+
+Similarly, =g= is easy to identify for anyone who's been programming
+for any length of time:
 $$g(n) => 2^n$$
+
+#+BEGIN_SRC scheme :session 1-2 :exports both
+  (investigate "h" h 5)
+#+END_SRC
+
+=h=, on the other hand, is a serious pain!
 
 #+BEGIN_SRC
 (A 2 1) => 2                                             (2^(2^0))
@@ -196,12 +208,11 @@ h(4) => 2 ^ 2 ^ 2 ^ 2
 ...
 #+END_SRC
 
-There's no standard mathematical notation; this is a "power tower", also
-called /tetration/.
+There's no standard mathematical notation for this pattern; which is
+commonly called a "power tower". A more formal term is /tetration/.
 
 * Section 1.2.2 Tree Recursion
 ** Exercise 1.11: Converting a recursive process to an iterative process
-
 *** Problem
 
   A function f is defined by the rule that $f(n) = n$ if $n<3$ and
@@ -209,10 +220,9 @@ called /tetration/.
   procedure that computes $f$ by means of a recursive process.  Write a
   procedure that computes $f$ by means of an iterative process.
 
-
 *** Answer
 
-#+BEGIN_SRC scheme :session 1-11 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (f-rec n)
     (if (< n 3)
         n
@@ -233,9 +243,8 @@ called /tetration/.
         (f-inner 3 2 1 0)))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-11 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (compare f1 f2 k)
-
     (define (compare-iter i good?)
       (define t0 (current-milliseconds))
       (define r1 (f1 i))
@@ -255,11 +264,11 @@ called /tetration/.
     (compare-iter 1 true))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-11 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both :cache yes
   (compare f-rec f-iter 33)
 #+END_SRC
 
-#+RESULTS:
+#+RESULTS[551327be2c1395eab9a6a77647336556664aa2f3]:
 #+begin_example
 1: 1 (0 ms) 1 (0 ms) => #t
 2: 2 (0 ms) 2 (0 ms) => #t
@@ -276,24 +285,24 @@ called /tetration/.
 13: 25315 (0 ms) 25315 (0 ms) => #t
 14: 60104 (0 ms) 60104 (0 ms) => #t
 15: 142717 (0 ms) 142717 (0 ms) => #t
-16: 338870 (0 ms) 338870 (0 ms) => #t
+16: 338870 (1 ms) 338870 (0 ms) => #t
 17: 804616 (0 ms) 804616 (0 ms) => #t
 18: 1910507 (1 ms) 1910507 (0 ms) => #t
 19: 4536349 (1 ms) 4536349 (0 ms) => #t
-20: 10771211 (3 ms) 10771211 (0 ms) => #t
-21: 25575430 (16 ms) 25575430 (0 ms) => #t
+20: 10771211 (2 ms) 10771211 (0 ms) => #t
+21: 25575430 (4 ms) 25575430 (0 ms) => #t
 22: 60726899 (8 ms) 60726899 (0 ms) => #t
-23: 144191392 (38 ms) 144191392 (0 ms) => #t
-24: 342371480 (71 ms) 342371480 (0 ms) => #t
-25: 812934961 (107 ms) 812934961 (0 ms) => #t
-26: 1930252097 (254 ms) 1930252097 (0 ms) => #t
-27: 4583236459 (827 ms) 4583236459 (0 ms) => #t
-28: 10882545536 (677 ms) 10882545536 (0 ms) => #t
-29: 25839774745 (1033 ms) 25839774745 (0 ms) => #t
-30: 61354575194 (1102 ms) 61354575194 (0 ms) => #t
-31: 145681761292 (1775 ms) 145681761292 (0 ms) => #t
-32: 345910235915 (3267 ms) 345910235915 (0 ms) => #t
-33: 821337484081 (6001 ms) 821337484081 (0 ms) => #t
+23: 144191392 (13 ms) 144191392 (0 ms) => #t
+24: 342371480 (26 ms) 342371480 (0 ms) => #t
+25: 812934961 (46 ms) 812934961 (0 ms) => #t
+26: 1930252097 (84 ms) 1930252097 (0 ms) => #t
+27: 4583236459 (154 ms) 4583236459 (0 ms) => #t
+28: 10882545536 (288 ms) 10882545536 (0 ms) => #t
+29: 25839774745 (522 ms) 25839774745 (0 ms) => #t
+30: 61354575194 (963 ms) 61354575194 (0 ms) => #t
+31: 145681761292 (1821 ms) 145681761292 (0 ms) => #t
+32: 345910235915 (3296 ms) 345910235915 (0 ms) => #t
+33: 821337484081 (6081 ms) 821337484081 (0 ms) => #t
 #+end_example
 
 ** Exercise 1.12: Computing Pascal's triangle
@@ -316,7 +325,7 @@ called /tetration/.
 
 *** Answer
 
-#+BEGIN_SRC scheme :session 1-12 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   ;; Find the m-th number in the n-th row of Pascal's triangle
   (define (pascal n m)
     (cond ((or (> m n) (< m 1) (< n 1)) -1) ; Error condition
@@ -325,7 +334,7 @@ called /tetration/.
                    (pascal (- n 1) m)))))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-12 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
   ;; Display first k rows of Pascal's triangle
   (define (display-pascal k)
     (define (display-pascal-inner i j)
@@ -359,7 +368,7 @@ called /tetration/.
 1 15 105 455 1365 3003 5005 6435 6435 5005 3003 1365 455 105 15 1
 1 16 120 560 1820 4368 8008 11440 12870 11440 8008 4368 1820 560 120 16 1
 1 17 136 680 2380 6188 12376 19448 24310 24310 19448 12376 6188 2380 680 136 17 1
-cpu time: 31 real time: 31 gc time: 0
+cpu time: 23 real time: 22 gc time: 0
 #+end_example
 
 ** WRITEUP Exercise 1.13: A Fibonacci proof
@@ -392,7 +401,7 @@ available in a procedure (that is, its name and the parameters with
 which it was called), we wouldn't have a tree, as multiple calls to
 the same procedure with the same parameters would be collapsed.
 
-#+BEGIN_SRC scheme :session 1-14 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (random-id)
     (random 5000000))
 
@@ -410,8 +419,9 @@ the same procedure with the same parameters would be collapsed.
     (printf "    ~a -> ~a;~n" parent child))
 #+END_SRC
 
+Now, the code itself with the above instrumentation included.
 
-#+BEGIN_SRC scheme :session 1-14 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (count-change amount)
     (define name (make-name "count_change"))
     (dot-node name (format "(count-change ~a)" amount))
@@ -444,179 +454,178 @@ the same procedure with the same parameters would be collapsed.
 #+END_SRC
 
 
-
 #+name: dot-count-change-11
-#+BEGIN_SRC scheme :session 1-14 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output
 (count-change 11)
 #+END_SRC
 
 #+RESULTS: dot-count-change-11
 #+begin_example
-    count_change_4322691 [shape=box,label="(count-change 11)"];
-    cc_501377 [shape=box,label="(cc 11 5)"];
-    count_change_4322691 -> cc_501377;
-    cc_195367 [shape=box,label="(cc 11 4)"];
-    cc_501377 -> cc_195367;
-    cc_2873056 [shape=box,label="(cc 11 3)"];
-    cc_195367 -> cc_2873056;
-    cc_2136355 [shape=box,label="(cc 11 2)"];
-    cc_2873056 -> cc_2136355;
-    cc_4230591 [shape=box,label="(cc 11 1)"];
-    cc_2136355 -> cc_4230591;
-    cc_694654 [shape=box,label="(cc 11 0)"];
-    cc_4230591 -> cc_694654;
-    fd_2299945 [shape=box,label="(fd 1)"];
-    cc_4230591 -> fd_2299945;
-    cc_3000828 [shape=box,label="(cc 10 1)"];
-    cc_4230591 -> cc_3000828;
-    cc_4502505 [shape=box,label="(cc 10 0)"];
-    cc_3000828 -> cc_4502505;
-    fd_3923574 [shape=box,label="(fd 1)"];
-    cc_3000828 -> fd_3923574;
-    cc_2378252 [shape=box,label="(cc 9 1)"];
-    cc_3000828 -> cc_2378252;
-    cc_194392 [shape=box,label="(cc 9 0)"];
-    cc_2378252 -> cc_194392;
-    fd_1411673 [shape=box,label="(fd 1)"];
-    cc_2378252 -> fd_1411673;
-    cc_3219501 [shape=box,label="(cc 8 1)"];
-    cc_2378252 -> cc_3219501;
-    cc_351283 [shape=box,label="(cc 8 0)"];
-    cc_3219501 -> cc_351283;
-    fd_4625672 [shape=box,label="(fd 1)"];
-    cc_3219501 -> fd_4625672;
-    cc_1605995 [shape=box,label="(cc 7 1)"];
-    cc_3219501 -> cc_1605995;
-    cc_1029211 [shape=box,label="(cc 7 0)"];
-    cc_1605995 -> cc_1029211;
-    fd_4528979 [shape=box,label="(fd 1)"];
-    cc_1605995 -> fd_4528979;
-    cc_2300290 [shape=box,label="(cc 6 1)"];
-    cc_1605995 -> cc_2300290;
-    cc_4878389 [shape=box,label="(cc 6 0)"];
-    cc_2300290 -> cc_4878389;
-    fd_1581854 [shape=box,label="(fd 1)"];
-    cc_2300290 -> fd_1581854;
-    cc_2235105 [shape=box,label="(cc 5 1)"];
-    cc_2300290 -> cc_2235105;
-    cc_3688644 [shape=box,label="(cc 5 0)"];
-    cc_2235105 -> cc_3688644;
-    fd_4494713 [shape=box,label="(fd 1)"];
-    cc_2235105 -> fd_4494713;
-    cc_215350 [shape=box,label="(cc 4 1)"];
-    cc_2235105 -> cc_215350;
-    cc_4082776 [shape=box,label="(cc 4 0)"];
-    cc_215350 -> cc_4082776;
-    fd_1496058 [shape=box,label="(fd 1)"];
-    cc_215350 -> fd_1496058;
-    cc_3021520 [shape=box,label="(cc 3 1)"];
-    cc_215350 -> cc_3021520;
-    cc_3086561 [shape=box,label="(cc 3 0)"];
-    cc_3021520 -> cc_3086561;
-    fd_3282848 [shape=box,label="(fd 1)"];
-    cc_3021520 -> fd_3282848;
-    cc_4412199 [shape=box,label="(cc 2 1)"];
-    cc_3021520 -> cc_4412199;
-    cc_2291016 [shape=box,label="(cc 2 0)"];
-    cc_4412199 -> cc_2291016;
-    fd_1881240 [shape=box,label="(fd 1)"];
-    cc_4412199 -> fd_1881240;
-    cc_987370 [shape=box,label="(cc 1 1)"];
-    cc_4412199 -> cc_987370;
-    cc_4003954 [shape=box,label="(cc 1 0)"];
-    cc_987370 -> cc_4003954;
-    fd_2845437 [shape=box,label="(fd 1)"];
-    cc_987370 -> fd_2845437;
-    cc_1381142 [shape=box,label="(cc 0 1)"];
-    cc_987370 -> cc_1381142;
-    fd_1093337 [shape=box,label="(fd 2)"];
-    cc_2136355 -> fd_1093337;
-    cc_2084733 [shape=box,label="(cc 6 2)"];
-    cc_2136355 -> cc_2084733;
-    cc_4928198 [shape=box,label="(cc 6 1)"];
-    cc_2084733 -> cc_4928198;
-    cc_1338492 [shape=box,label="(cc 6 0)"];
-    cc_4928198 -> cc_1338492;
-    fd_644567 [shape=box,label="(fd 1)"];
-    cc_4928198 -> fd_644567;
-    cc_3670450 [shape=box,label="(cc 5 1)"];
-    cc_4928198 -> cc_3670450;
-    cc_824198 [shape=box,label="(cc 5 0)"];
-    cc_3670450 -> cc_824198;
-    fd_855693 [shape=box,label="(fd 1)"];
-    cc_3670450 -> fd_855693;
-    cc_4346524 [shape=box,label="(cc 4 1)"];
-    cc_3670450 -> cc_4346524;
-    cc_4050187 [shape=box,label="(cc 4 0)"];
-    cc_4346524 -> cc_4050187;
-    fd_3552348 [shape=box,label="(fd 1)"];
-    cc_4346524 -> fd_3552348;
-    cc_3328738 [shape=box,label="(cc 3 1)"];
-    cc_4346524 -> cc_3328738;
-    cc_4044813 [shape=box,label="(cc 3 0)"];
-    cc_3328738 -> cc_4044813;
-    fd_1511246 [shape=box,label="(fd 1)"];
-    cc_3328738 -> fd_1511246;
-    cc_2065071 [shape=box,label="(cc 2 1)"];
-    cc_3328738 -> cc_2065071;
-    cc_1995657 [shape=box,label="(cc 2 0)"];
-    cc_2065071 -> cc_1995657;
-    fd_3810337 [shape=box,label="(fd 1)"];
-    cc_2065071 -> fd_3810337;
-    cc_1107167 [shape=box,label="(cc 1 1)"];
-    cc_2065071 -> cc_1107167;
-    cc_1726902 [shape=box,label="(cc 1 0)"];
-    cc_1107167 -> cc_1726902;
-    fd_4406956 [shape=box,label="(fd 1)"];
-    cc_1107167 -> fd_4406956;
-    cc_3533789 [shape=box,label="(cc 0 1)"];
-    cc_1107167 -> cc_3533789;
-    fd_1330332 [shape=box,label="(fd 2)"];
-    cc_2084733 -> fd_1330332;
-    cc_3916670 [shape=box,label="(cc 1 2)"];
-    cc_2084733 -> cc_3916670;
-    cc_2727602 [shape=box,label="(cc 1 1)"];
-    cc_3916670 -> cc_2727602;
-    cc_3105709 [shape=box,label="(cc 1 0)"];
-    cc_2727602 -> cc_3105709;
-    fd_2866261 [shape=box,label="(fd 1)"];
-    cc_2727602 -> fd_2866261;
-    cc_69280 [shape=box,label="(cc 0 1)"];
-    cc_2727602 -> cc_69280;
-    fd_4317512 [shape=box,label="(fd 2)"];
-    cc_3916670 -> fd_4317512;
-    cc_2415567 [shape=box,label="(cc -4 2)"];
-    cc_3916670 -> cc_2415567;
-    fd_2120327 [shape=box,label="(fd 3)"];
-    cc_2873056 -> fd_2120327;
-    cc_3647973 [shape=box,label="(cc 1 3)"];
-    cc_2873056 -> cc_3647973;
-    cc_814819 [shape=box,label="(cc 1 2)"];
-    cc_3647973 -> cc_814819;
-    cc_3971198 [shape=box,label="(cc 1 1)"];
-    cc_814819 -> cc_3971198;
-    cc_4022491 [shape=box,label="(cc 1 0)"];
-    cc_3971198 -> cc_4022491;
-    fd_1803801 [shape=box,label="(fd 1)"];
-    cc_3971198 -> fd_1803801;
-    cc_1013674 [shape=box,label="(cc 0 1)"];
-    cc_3971198 -> cc_1013674;
-    fd_1538202 [shape=box,label="(fd 2)"];
-    cc_814819 -> fd_1538202;
-    cc_3157793 [shape=box,label="(cc -4 2)"];
-    cc_814819 -> cc_3157793;
-    fd_1370569 [shape=box,label="(fd 3)"];
-    cc_3647973 -> fd_1370569;
-    cc_2275131 [shape=box,label="(cc -9 3)"];
-    cc_3647973 -> cc_2275131;
-    fd_1715067 [shape=box,label="(fd 4)"];
-    cc_195367 -> fd_1715067;
-    cc_498028 [shape=box,label="(cc -14 4)"];
-    cc_195367 -> cc_498028;
-    fd_2947420 [shape=box,label="(fd 5)"];
-    cc_501377 -> fd_2947420;
-    cc_611467 [shape=box,label="(cc -39 5)"];
-    cc_501377 -> cc_611467;
+    count_change_4755700 [shape=box,label="(count-change 11)"];
+    cc_785504 [shape=box,label="(cc 11 5)"];
+    count_change_4755700 -> cc_785504;
+    cc_2468071 [shape=box,label="(cc 11 4)"];
+    cc_785504 -> cc_2468071;
+    cc_4386765 [shape=box,label="(cc 11 3)"];
+    cc_2468071 -> cc_4386765;
+    cc_1205690 [shape=box,label="(cc 11 2)"];
+    cc_4386765 -> cc_1205690;
+    cc_1733870 [shape=box,label="(cc 11 1)"];
+    cc_1205690 -> cc_1733870;
+    cc_3658270 [shape=box,label="(cc 11 0)"];
+    cc_1733870 -> cc_3658270;
+    fd_1925568 [shape=box,label="(fd 1)"];
+    cc_1733870 -> fd_1925568;
+    cc_2302873 [shape=box,label="(cc 10 1)"];
+    cc_1733870 -> cc_2302873;
+    cc_471680 [shape=box,label="(cc 10 0)"];
+    cc_2302873 -> cc_471680;
+    fd_4061891 [shape=box,label="(fd 1)"];
+    cc_2302873 -> fd_4061891;
+    cc_840580 [shape=box,label="(cc 9 1)"];
+    cc_2302873 -> cc_840580;
+    cc_4234975 [shape=box,label="(cc 9 0)"];
+    cc_840580 -> cc_4234975;
+    fd_3138931 [shape=box,label="(fd 1)"];
+    cc_840580 -> fd_3138931;
+    cc_1651522 [shape=box,label="(cc 8 1)"];
+    cc_840580 -> cc_1651522;
+    cc_4421800 [shape=box,label="(cc 8 0)"];
+    cc_1651522 -> cc_4421800;
+    fd_482192 [shape=box,label="(fd 1)"];
+    cc_1651522 -> fd_482192;
+    cc_1470224 [shape=box,label="(cc 7 1)"];
+    cc_1651522 -> cc_1470224;
+    cc_1218567 [shape=box,label="(cc 7 0)"];
+    cc_1470224 -> cc_1218567;
+    fd_4960970 [shape=box,label="(fd 1)"];
+    cc_1470224 -> fd_4960970;
+    cc_4938725 [shape=box,label="(cc 6 1)"];
+    cc_1470224 -> cc_4938725;
+    cc_263310 [shape=box,label="(cc 6 0)"];
+    cc_4938725 -> cc_263310;
+    fd_2066305 [shape=box,label="(fd 1)"];
+    cc_4938725 -> fd_2066305;
+    cc_205860 [shape=box,label="(cc 5 1)"];
+    cc_4938725 -> cc_205860;
+    cc_67 [shape=box,label="(cc 5 0)"];
+    cc_205860 -> cc_67;
+    fd_2711919 [shape=box,label="(fd 1)"];
+    cc_205860 -> fd_2711919;
+    cc_3366024 [shape=box,label="(cc 4 1)"];
+    cc_205860 -> cc_3366024;
+    cc_4611106 [shape=box,label="(cc 4 0)"];
+    cc_3366024 -> cc_4611106;
+    fd_1068742 [shape=box,label="(fd 1)"];
+    cc_3366024 -> fd_1068742;
+    cc_3360415 [shape=box,label="(cc 3 1)"];
+    cc_3366024 -> cc_3360415;
+    cc_4933024 [shape=box,label="(cc 3 0)"];
+    cc_3360415 -> cc_4933024;
+    fd_3781713 [shape=box,label="(fd 1)"];
+    cc_3360415 -> fd_3781713;
+    cc_3252706 [shape=box,label="(cc 2 1)"];
+    cc_3360415 -> cc_3252706;
+    cc_1432804 [shape=box,label="(cc 2 0)"];
+    cc_3252706 -> cc_1432804;
+    fd_4127079 [shape=box,label="(fd 1)"];
+    cc_3252706 -> fd_4127079;
+    cc_710799 [shape=box,label="(cc 1 1)"];
+    cc_3252706 -> cc_710799;
+    cc_4188825 [shape=box,label="(cc 1 0)"];
+    cc_710799 -> cc_4188825;
+    fd_1936576 [shape=box,label="(fd 1)"];
+    cc_710799 -> fd_1936576;
+    cc_2437956 [shape=box,label="(cc 0 1)"];
+    cc_710799 -> cc_2437956;
+    fd_2521816 [shape=box,label="(fd 2)"];
+    cc_1205690 -> fd_2521816;
+    cc_2137854 [shape=box,label="(cc 6 2)"];
+    cc_1205690 -> cc_2137854;
+    cc_4451947 [shape=box,label="(cc 6 1)"];
+    cc_2137854 -> cc_4451947;
+    cc_4604022 [shape=box,label="(cc 6 0)"];
+    cc_4451947 -> cc_4604022;
+    fd_1578638 [shape=box,label="(fd 1)"];
+    cc_4451947 -> fd_1578638;
+    cc_782251 [shape=box,label="(cc 5 1)"];
+    cc_4451947 -> cc_782251;
+    cc_2219144 [shape=box,label="(cc 5 0)"];
+    cc_782251 -> cc_2219144;
+    fd_2097232 [shape=box,label="(fd 1)"];
+    cc_782251 -> fd_2097232;
+    cc_1984064 [shape=box,label="(cc 4 1)"];
+    cc_782251 -> cc_1984064;
+    cc_4782700 [shape=box,label="(cc 4 0)"];
+    cc_1984064 -> cc_4782700;
+    fd_3902193 [shape=box,label="(fd 1)"];
+    cc_1984064 -> fd_3902193;
+    cc_2219085 [shape=box,label="(cc 3 1)"];
+    cc_1984064 -> cc_2219085;
+    cc_950601 [shape=box,label="(cc 3 0)"];
+    cc_2219085 -> cc_950601;
+    fd_1822282 [shape=box,label="(fd 1)"];
+    cc_2219085 -> fd_1822282;
+    cc_26966 [shape=box,label="(cc 2 1)"];
+    cc_2219085 -> cc_26966;
+    cc_4346060 [shape=box,label="(cc 2 0)"];
+    cc_26966 -> cc_4346060;
+    fd_3733823 [shape=box,label="(fd 1)"];
+    cc_26966 -> fd_3733823;
+    cc_2866802 [shape=box,label="(cc 1 1)"];
+    cc_26966 -> cc_2866802;
+    cc_1727739 [shape=box,label="(cc 1 0)"];
+    cc_2866802 -> cc_1727739;
+    fd_2701914 [shape=box,label="(fd 1)"];
+    cc_2866802 -> fd_2701914;
+    cc_2506492 [shape=box,label="(cc 0 1)"];
+    cc_2866802 -> cc_2506492;
+    fd_2440850 [shape=box,label="(fd 2)"];
+    cc_2137854 -> fd_2440850;
+    cc_4571656 [shape=box,label="(cc 1 2)"];
+    cc_2137854 -> cc_4571656;
+    cc_4996578 [shape=box,label="(cc 1 1)"];
+    cc_4571656 -> cc_4996578;
+    cc_2113415 [shape=box,label="(cc 1 0)"];
+    cc_4996578 -> cc_2113415;
+    fd_1463224 [shape=box,label="(fd 1)"];
+    cc_4996578 -> fd_1463224;
+    cc_3532547 [shape=box,label="(cc 0 1)"];
+    cc_4996578 -> cc_3532547;
+    fd_4741290 [shape=box,label="(fd 2)"];
+    cc_4571656 -> fd_4741290;
+    cc_3219653 [shape=box,label="(cc -4 2)"];
+    cc_4571656 -> cc_3219653;
+    fd_1785473 [shape=box,label="(fd 3)"];
+    cc_4386765 -> fd_1785473;
+    cc_1526773 [shape=box,label="(cc 1 3)"];
+    cc_4386765 -> cc_1526773;
+    cc_3957791 [shape=box,label="(cc 1 2)"];
+    cc_1526773 -> cc_3957791;
+    cc_2885574 [shape=box,label="(cc 1 1)"];
+    cc_3957791 -> cc_2885574;
+    cc_3610017 [shape=box,label="(cc 1 0)"];
+    cc_2885574 -> cc_3610017;
+    fd_2557685 [shape=box,label="(fd 1)"];
+    cc_2885574 -> fd_2557685;
+    cc_4954168 [shape=box,label="(cc 0 1)"];
+    cc_2885574 -> cc_4954168;
+    fd_3732282 [shape=box,label="(fd 2)"];
+    cc_3957791 -> fd_3732282;
+    cc_2832197 [shape=box,label="(cc -4 2)"];
+    cc_3957791 -> cc_2832197;
+    fd_3275047 [shape=box,label="(fd 3)"];
+    cc_1526773 -> fd_3275047;
+    cc_1013408 [shape=box,label="(cc -9 3)"];
+    cc_1526773 -> cc_1013408;
+    fd_3306252 [shape=box,label="(fd 4)"];
+    cc_2468071 -> fd_3306252;
+    cc_1923929 [shape=box,label="(cc -14 4)"];
+    cc_2468071 -> cc_1923929;
+    fd_4099923 [shape=box,label="(fd 5)"];
+    cc_785504 -> fd_4099923;
+    cc_1665012 [shape=box,label="(cc -39 5)"];
+    cc_785504 -> cc_1665012;
 #+end_example
 
 #+BEGIN_SRC dot :file count-change-11.png :var input=dot-count-change-11 :exports results
@@ -628,7 +637,7 @@ digraph {
 #+RESULTS:
 [[file:count-change-11.png]]
 
-** Exercise 1.15: Approxmiating sine
+** Exercise 1.15: Approximating sine
 
      The sine of an angle (specified in radians) can
      be computed by making use of the approximation $\sin x\approx x$ if
@@ -642,7 +651,7 @@ digraph {
      magnitude is not greater than 0.1 radians.) These ideas are
      incorporated in the following procedures:
 
-#+BEGIN_SRC scheme :session 1-15 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (cube x) (* x x x))
 
   (define (p x)
@@ -656,10 +665,12 @@ digraph {
          (p (sine (/ angle 3.0)))))
 #+END_SRC
 
-       a. How many times is the procedure =p= applied when =(sine
-          12.15)= is evaluated?
+*** a.
 
-#+BEGIN_SRC scheme :session 1-15 :results output
+How many times is the procedure =p= applied when =(sine 12.15)= is
+          evaluated?
+
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
   (sine 12.15)
 #+END_SRC
 
@@ -672,18 +683,18 @@ digraph {
 
 5 calls to =p=.
 
-
-       b. What is the order of growth in space and number of steps (as
-          a function of a) used by the process generated by the =sine=
-          procedure when =(sine a)= is evaluated?
+*** b.
+What is the order of growth in space and number of steps (as a
+    function of =a=) used by the process generated by the =sine=
+    procedure when =(sine a)= is evaluated?
 
 Logarithms answer, more or less, the question "how many times can I
-divide one number by another". The second number is the /base/. So,
-consider log base 2 of 8: 8/2=4, 4/2=2, 2/2=1; thus, $log_2 8 = 3$.
+divide one number by another?" The second number is the /base/. So,
+consider log base 2 of 8: 8/2=4, 4/2=2, 2/2=1; thus, $\log_2 8 = 3$.
 
 The actual definition is that the log of a number is the exponent to
 which the base must be raised to equal that number. Thus, since $2^3 =
-8$, then $log_2 8 = 3$.
+8$, then $\log_2 8 = 3$.
 
 As can be seen by the single call to =p= in the body of =sine=, each
 recursive call reduces =angle= by a factor of 3; thus, =p= is going to
@@ -713,7 +724,7 @@ same order of computational complexity.)
 Here's the code from the section for the original =fast-expt=
 algorithm.
 
-#+BEGIN_SRC scheme :session 1-16 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (square n)
     (* n n))
 
@@ -735,7 +746,7 @@ can be rolled back up.
 This problem is to switch from this from a logarithmic recursive
 process to a logarithmic iterative process.
 
-#+BEGIN_SRC scheme :session 1-16 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
     (define (fast-expt-2 b n)
       (define (fast-expt-iter b n a)
         (cond ((= n 0) a)
@@ -744,32 +755,11 @@ process to a logarithmic iterative process.
       (fast-expt-iter b n 1))
 #+END_SRC
 
-To evaulate this, we'll reuse the comparison function used for Problem
-1.11:
+To evaulate this, we'll reuse the =compare= function used for Problem
+1.11. To enable this, we wrap the calls to the text's =fast-expt= and
+the new =fast-expt-2= to take a single argument.
 
-#+BEGIN_SRC scheme :session 1-16 :results silent
-  (define (compare f1 f2 k)
-
-    (define (compare-iter i good?)
-      (define t0 (current-milliseconds))
-      (define r1 (f1 i))
-      (define t1 (current-milliseconds))
-      (define r2 (f2 i))
-      (define t2 (current-milliseconds))
-
-      (printf "~a: ~a (~a ms) ~a (~a ms) => ~a~n"
-              i
-              r1 (- t1 t0)
-              r2 (- t2 t1)
-              (= r1 r2))
-      (if (< i k)
-          (compare-iter (+ i 1) (and good? (= r1 r2)))
-          (and good? (= r1 r2))))
-
-    (compare-iter 1 true))
-#+END_SRC
-
-#+BEGIN_SRC scheme :session 1-16 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
   (define (expt-by-two n) (fast-expt 2 n))
   (define (expt-by-two-2 n) (fast-expt-2 2 n))
   (compare expt-by-two expt-by-two-2 20)
@@ -779,7 +769,7 @@ To evaulate this, we'll reuse the comparison function used for Problem
 #+begin_example
 1: 2 (0 ms) 2 (0 ms) => #t
 2: 4 (0 ms) 4 (0 ms) => #t
-3: 8 (0 ms) 8 (1 ms) => #t
+3: 8 (0 ms) 8 (0 ms) => #t
 4: 16 (0 ms) 16 (0 ms) => #t
 5: 32 (0 ms) 32 (0 ms) => #t
 6: 64 (0 ms) 64 (0 ms) => #t
@@ -799,6 +789,8 @@ To evaulate this, we'll reuse the comparison function used for Problem
 20: 1048576 (0 ms) 1048576 (0 ms) => #t
 #+end_example
 
+As can be seen, both are extremely fast and return identical results.
+
 ** Exercise 1.17: Recursive integer multiplication with =square= and =halve=
 *** Problem
 
@@ -809,12 +801,12 @@ To evaulate this, we'll reuse the comparison function used for Problem
      which it is assumed that our language can only add, not multiply)
      is analogous to the =expt= procedure:
 
-#+BEGIN_SRC scheme :session 1-17 :results silent
-  (define (* a b)
+#+BEGIN_EXAMPLE
+  (define (mult a b)
     (if (= b 0)
         0
         (+ a (* a (- b 1)))))
-#+END_SRC
+#+END_EXAMPLE
 
      This algorithm takes a number of steps that is linear in $b$.
      Now suppose we include, together with addition, operations
@@ -828,7 +820,7 @@ This is a straightforward translation of the =fast-expt= code from the
 text to the multiplication problem...the problem (and solution) have
 exactly the same shape.
 
-#+BEGIN_SRC scheme :session 1-17 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (double n) (* n 2))
 
   (define (halve n) (/ n 2))
@@ -854,14 +846,13 @@ exactly the same shape.
 This solution is also straightforward. The only trick part is keeping
 straight what needs to be added and subtracted, and from where.
 
-#+BEGIN_SRC scheme :session 1-17 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (fast-mult-2 a b)
     (define (fast-mult-iter a b c)
       (cond ((= b 0) c)
             ((even? b) (fast-mult-iter (double a) (halve b) c))
             (else (fast-mult-iter a (- b 1) (+ c a)))))
     (fast-mult-iter a b 0))
-
 #+END_SRC
 
 ** WRITEUP Exercise 1.19: Logarithmic Fibonacci calculations
@@ -909,7 +900,7 @@ straight what needs to be added and subtracted, and from where.
 
 *** Answer
 
-#+BEGIN_src scheme :session 1-2-6 :results silent
+#+BEGIN_src scheme :session 1-2 :results silent
   (define (fib-t n)
     (fib-iter 1 0 0 1 n))
 
@@ -927,7 +918,6 @@ straight what needs to be added and subtracted, and from where.
                           q
                           (- count 1)))))
 #+END_src
-
 
 * Section 1.2.5 Greatest Common Divisors
 ** TODO Exercise 1.20: Revisiting applicative order and normal order
@@ -959,7 +949,7 @@ expanded before the arguments are evaluated.
 
 First, the relevant code from section 1.2.6:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (require (planet neil/sicp:1:17))
 
   (define (square n) (* n n))
@@ -977,24 +967,23 @@ First, the relevant code from section 1.2.6:
 
   (define (prime? n)
     (= n (smallest-divisor n)))
-
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-2-6 :results value
+#+BEGIN_SRC scheme :session 1-2 :results value :exports both
 (smallest-divisor 199)
 #+END_SRC
 
 #+RESULTS:
 : 199
 
-#+BEGIN_SRC scheme :session 1-2-6 :results value
+#+BEGIN_SRC scheme :session 1-2 :results value :exports both
 (smallest-divisor 1999)
 #+END_SRC
 
 #+RESULTS:
 : 1999
 
-#+BEGIN_SRC scheme :session 1-2-6 :results value
+#+BEGIN_SRC scheme :session 1-2 :results value :exports both
 (smallest-divisor 19999)
 #+END_SRC
 
@@ -1011,7 +1000,7 @@ First, the relevant code from section 1.2.6:
      prime, the procedure prints three asterisks followed by the
      amount of time used in performing the test.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
 
   ;; This code has been tweaked slightly to return true/false so
   ;; the return value can be used in tests. Also, only displays
@@ -1053,7 +1042,7 @@ First, the relevant code from section 1.2.6:
 
 First, a procedure to scan a range of consecutive odd numbers for primality:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (odd? n) (= (remainder n 2) 1))
 
   ;; Find primes in range from a to b
@@ -1084,37 +1073,37 @@ First, a procedure to scan a range of consecutive odd numbers for primality:
 Using this, finding the first three primes larger than 1,000 is easy:
 1,009, 1,013, and 1,019.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (find-k-primes 3 1000)
 #+END_SRC
 
 #+RESULTS:
 : 1009 *** 3
-: 1013 *** 1
+: 1013 *** 3
 : 1019 *** 2
 
 And for 10,000, 100,000, and 1,000,000::
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
   (prime-scan 3 3 (expt 10 4))
 #+END_SRC
 
 #+RESULTS:
 : 10007 *** 8
-: 10009 *** 9
+: 10009 *** 8
 : 10037 *** 8
-: 100003 *** 24
+: 100003 *** 25
 : 100019 *** 25
 : 100043 *** 25
 : 1000003 *** 78
-: 1000033 *** 77
-: 1000037 *** 77
+: 1000033 *** 78
+: 1000037 *** 78
 
-As can be seen, on my machine, calculating primality using this method
-for numbers around 10^4 takes about 8-9 microseconds, 10^5 takes about
-24-25 microseconds, and 10^6 takes around 77-78 microseconds.
+On my machine, calculating primality using this method for numbers
+around 10^4 takes about 8-9 microseconds, 10^5 takes about 25
+microseconds, and 10^6 takes around 78 microseconds.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (display (* 8 (sqrt 10)))
 (newline)
 (display (* 25 (sqrt 10)))
@@ -1129,25 +1118,25 @@ The tweaked version of =prime-scan= makes it easy to test this at a
 broad range of magnitudes:
 
 #+name: primetime
-#+BEGIN_SRC scheme :session 1-2-6 :results output :cache yes
+#+BEGIN_SRC scheme :session 1-2 :results output :cache yes
   (prime-scan 1 13 (expt 10 4))
 #+END_SRC
 
-#+RESULTS[431c9f331de9d80359387b33a0b338b99a96dfdb]: primetime
+#+RESULTS[e079b6fcab671b941a1b21533aa44c2aa66a9a6b]: primetime
 #+begin_example
-10007 *** 5
-100003 *** 14
-1000003 *** 44
-10000019 *** 138
-100000007 *** 440
-1000000007 *** 1396
-10000000019 *** 4488
-100000000003 *** 16210
-1000000000039 *** 45320
-10000000000037 *** 141999
-100000000000031 *** 452743
-1000000000000037 *** 1411103
-10000000000000061 *** 4399915
+10007 *** 9
+100003 *** 25
+1000003 *** 79
+10000019 *** 278
+100000007 *** 804
+1000000007 *** 2717
+10000000019 *** 8151
+100000000003 *** 15956
+1000000000039 *** 50409
+10000000000037 *** 159217
+100000000000031 *** 507144
+1000000000000037 *** 1588455
+10000000000000061 *** 4938960
 #+end_example
 
 For a quick-and-dirty evaluation of this output, we'll munge it fast
@@ -1161,7 +1150,10 @@ in the shell.
 #+END_SRC
 
 
-#+BEGIN_SRC sh :stdin firsttime
+And a quick script to churn through and verify the results against
+the predicted time:
+
+#+BEGIN_SRC sh :stdin firsttime :exports both :cache yes
   echo Measured Predicted
   for t in $(cut -f3 -d' '); do
       if [ -n "${last}" ]; then
@@ -1175,21 +1167,21 @@ in the shell.
   done
 #+END_SRC
 
-#+RESULTS:
+#+RESULTS[496fddcb57a42c8612c8629c99611cd1235b70c4]:
 | Measured | Predicted |
-|        5 |           |
-|       14 |        15 |
-|       44 |        42 |
-|      138 |       132 |
-|      440 |       414 |
-|     1396 |      1320 |
-|     4488 |      4188 |
-|    16210 |     13464 |
-|    45320 |     48630 |
-|   141999 |    135960 |
-|   452743 |    425997 |
-|  1411103 |   1358229 |
-|  4399915 |   4233309 |
+|        9 |           |
+|       25 |        27 |
+|       79 |        75 |
+|      278 |       237 |
+|      804 |       834 |
+|     2717 |      2412 |
+|     8151 |      8151 |
+|    15956 |     24453 |
+|    50409 |     47868 |
+|   159217 |    151227 |
+|   507144 |    477651 |
+|  1588455 |   1521432 |
+|  4938960 |   4765365 |
 
 These results continue to stay close to the predicted values which
 supports the analysis that run time is proportional to the number of
@@ -1221,7 +1213,7 @@ This is a little messy since we haven't had higher-order functions
 introduced, yet, so here are all of the relevant functions rewritten
 to use the new =better-smallest-divisor= procedure.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
 
   (define (next test-divisor)
     (if (= test-divisor 2)
@@ -1267,20 +1259,20 @@ to use the new =better-smallest-divisor= procedure.
 
 Here are the 12 primes that are specified in the exercise:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
   (better-prime-scan 3 3 (expt 10 4))
 #+END_SRC
 
 #+RESULTS:
-: 10007 *** 5
-: 10009 *** 5
-: 10037 *** 5
-: 100003 *** 15
-: 100019 *** 15
-: 100043 *** 15
-: 1000003 *** 48
-: 1000033 *** 48
-: 1000037 *** 48
+: 10007 *** 3
+: 10009 *** 3
+: 10037 *** 3
+: 100003 *** 8
+: 100019 *** 9
+: 100043 *** 9
+: 1000003 *** 27
+: 1000033 *** 28
+: 1000037 *** 27
 
 These results are very close to those for the original version...but,
 since these magnitudes are quite small relative to numbers that would
@@ -1289,25 +1281,25 @@ published), it's difficult to differentiate. More useful is comparing
 at larger magnitudes:
 
 #+name: betterprimetime
-#+BEGIN_SRC scheme :session 1-2-6 :results output :cache yes
+#+BEGIN_SRC scheme :session 1-2 :results output :cache yes :exports both
   (better-prime-scan 1 13 (expt 10 4))
 #+END_SRC
 
-#+RESULTS[bbb9d2753e0eb0535746eab5cafc848204bc9806]: betterprimetime
+#+RESULTS[7a8ce1fbe12b497d8a5bd3eb0ede1df115c264c3]: betterprimetime
 #+begin_example
 10007 *** 5
 100003 *** 15
-1000003 *** 47
-10000019 *** 148
-100000007 *** 460
-1000000007 *** 1465
-10000000019 *** 5174
-100000000003 *** 17281
-1000000000039 *** 52689
-10000000000037 *** 177798
-100000000000031 *** 481867
-1000000000000037 *** 870297
-10000000000000061 *** 2771143
+1000003 *** 49
+10000019 *** 151
+100000007 *** 479
+1000000007 *** 1519
+10000000019 *** 4891
+100000000003 *** 14766
+1000000000039 *** 27112
+10000000000037 *** 85590
+100000000000031 *** 271503
+1000000000000037 *** 855910
+10000000000000061 *** 2741465
 #+end_example
 
 #+name: secondtime
@@ -1319,24 +1311,25 @@ at larger magnitudes:
 (mapcar* 'append first second)
 #+END_SRC
 
-First column is the original figures, second is the =better-*=
-version...it's a bit fussy to get the headers added into an org-babel
-block that combines two sets of output:
-
 #+RESULTS:
-|       5 |       5 |
-|      14 |      15 |
-|      44 |      47 |
-|     138 |     148 |
-|     440 |     460 |
-|    1396 |    1465 |
-|    4488 |    5174 |
-|   16210 |   17281 |
-|   45320 |   52689 |
-|  141999 |  177798 |
-|  452743 |  481867 |
-| 1411103 |  870297 |
-| 4399915 | 2771143 |
+|       9 |       5 |
+|      25 |      15 |
+|      79 |      49 |
+|     278 |     151 |
+|     804 |     479 |
+|    2717 |    1519 |
+|    8151 |    4891 |
+|   15956 |   14766 |
+|   50409 |   27112 |
+|  159217 |   85590 |
+|  507144 |  271503 |
+| 1588455 |  855910 |
+| 4938960 | 2741465 |
+
+The first column is the original figures, and the second is the
+=better-*= version (it's a bit fussy to get the headers added into an
+org-babel block that combines two sets of output). These results at
+larger scales make the improved running time obvious.
 
 ** WRITEUP Exercise 1.24: Putting the Fermat method to work
 *** Problem
@@ -1356,7 +1349,7 @@ larger than 4294967087, we can't use Racket's built-in =random=, so an
 external library from Planet (Racket's package repository) is used
 that does not cap the range (=williams/science/random-source=).
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
      (require (planet williams/science/random-source))
 
      (define (expmod base exp m)
@@ -1381,7 +1374,7 @@ that does not cap the range (=williams/science/random-source=).
 
 Now, we need to modify the relevant procedures to use =fast-prime?=.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (fast-timed-prime-test n times)
     (fast-start-prime-test n times (runtime)))
 
@@ -1405,72 +1398,72 @@ Now, we need to modify the relevant procedures to use =fast-prime?=.
 
 Using only 10 tests is super-fast:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (fast-prime-scan 1 13 (expt 10 4) 10)
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
-10007 *** 22
-100003 *** 17
-1000003 *** 19
-10000019 *** 24
-100000007 *** 31
-1000000007 *** 30
-10000000019 *** 210
-100000000003 *** 263
-1000000000039 *** 280
-10000000000037 *** 299
-100000000000031 *** 337
-1000000000000037 *** 403
-10000000000000061 *** 379
+10007 *** 27
+100003 *** 30
+1000003 *** 34
+10000019 *** 42
+100000007 *** 46
+1000000007 *** 51
+10000000019 *** 350
+100000000003 *** 454
+1000000000039 *** 267
+10000000000037 *** 314
+100000000000031 *** 327
+1000000000000037 *** 351
+10000000000000061 *** 369
 #+end_example
 
 Compare this to 100:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (fast-prime-scan 1 13 (expt 10 4) 100)
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
 10007 *** 259
-100003 *** 314
-1000003 *** 343
-10000019 *** 412
-100000007 *** 473
-1000000007 *** 519
-10000000019 *** 2349
-100000000003 *** 4511
-1000000000039 *** 4170
-10000000000037 *** 4661
-100000000000031 *** 3373
-1000000000000037 *** 3575
-10000000000000061 *** 3796
+100003 *** 288
+1000003 *** 351
+10000019 *** 413
+100000007 *** 461
+1000000007 *** 542
+10000000019 *** 3481
+100000000003 *** 3667
+1000000000039 *** 2715
+10000000000037 *** 2817
+100000000000031 *** 3270
+1000000000000037 *** 3415
+10000000000000061 *** 3668
 #+end_example
 
 And to 1,000:
 
 #+name: fastprimetime
-#+BEGIN_SRC scheme :session 1-2-6 :results output :cache yes
+#+BEGIN_SRC scheme :session 1-2 :results output :cache yes :exports both
 (fast-prime-scan 1 13 (expt 10 4) 1000)
 #+END_SRC
 
-#+RESULTS[764c781284d10c6e4bcbe271f6e199dee9070e2d]: fastprimetime
+#+RESULTS[7f18a6a19203b10221362f153f03a2759bad57c3]: fastprimetime
 #+begin_example
-10007 *** 2615
-100003 *** 3001
-1000003 *** 3472
-10000019 *** 4130
-100000007 *** 4730
-1000000007 *** 5168
-10000000019 *** 21214
-100000000003 *** 25969
-1000000000039 *** 28036
-10000000000037 *** 35246
-100000000000031 *** 33794
-1000000000000037 *** 38438
-10000000000000061 *** 38337
+10007 *** 1481
+100003 *** 1677
+1000003 *** 2075
+10000019 *** 2392
+100000007 *** 2725
+1000000007 *** 2933
+10000000019 *** 21415
+100000000003 *** 26661
+1000000000039 *** 32039
+10000000000037 *** 29515
+100000000000031 *** 33883
+1000000000000037 *** 37390
+10000000000000061 *** 37852
 #+end_example
 
 Increasing the number of =times= that the =fast-prime?= test is
@@ -1486,7 +1479,7 @@ and =better-prime?= procedures.  Making this more concrete:
 #+END_SRC
 
 
-#+BEGIN_SRC sh :stdin thirdtime
+#+BEGIN_SRC sh :stdin thirdtime :exports both :cache yes
   echo Measured Predicted
   for t in $(cut -f3 -d' '); do
       if [ -n "${last}" ]; then
@@ -1499,21 +1492,21 @@ and =better-prime?= procedures.  Making this more concrete:
   done
 #+END_SRC
 
-#+RESULTS:
+#+RESULTS[bbf5f3c89e9cc60ae512f1c450546fd42f5f43b7]:
 | Measured | Predicted |
-|     2615 |           |
-|     3001 |      2616 |
-|     3472 |      3002 |
-|     4130 |      3473 |
-|     4730 |      4131 |
-|     5168 |      4731 |
-|    21214 |      5169 |
-|    25969 |     21215 |
-|    28036 |     25970 |
-|    35246 |     28037 |
-|    33794 |     35247 |
-|    38438 |     33795 |
-|    38337 |     38439 |
+|     1481 |           |
+|     1677 |      1482 |
+|     2075 |      1678 |
+|     2392 |      2076 |
+|     2725 |      2393 |
+|     2933 |      2726 |
+|    21415 |      2934 |
+|    26661 |     21416 |
+|    32039 |     26662 |
+|    29515 |     32040 |
+|    33883 |     29516 |
+|    37390 |     33884 |
+|    37852 |     37391 |
 
 ** Exercise 1.25: A not-so-fast use of =fast-expt=
 *** Problem
@@ -1521,7 +1514,7 @@ and =better-prime?= procedures.  Making this more concrete:
      writing =expmod=.  After all, she says, since we already know how
      to compute exponentials, we could have simply written
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (bad-expmod base exp m)
     (remainder (fast-expt base exp) m))
 #+END_SRC
@@ -1533,7 +1526,7 @@ and =better-prime?= procedures.  Making this more concrete:
 
 First, recall the relevant supporting code:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (square n)
     (* n n))
 
@@ -1572,7 +1565,7 @@ is both useful and easier to manipulate.
 
 To test this, we'll set up a batch of procedures to use =bad-expmod=.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (bad-fermat-test n)
     (define (try-it a)
       (= (bad-expmod a n n) a))
@@ -1607,28 +1600,28 @@ To test this, we'll set up a batch of procedures to use =bad-expmod=.
 Here are some values for =fast-prime?= using the original =expmod=,
 using a small number of tests (just 10):
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (fast-prime-scan 1 4 100 10)
 #+END_SRC
 
 #+RESULTS:
-: 101 *** 45
-: 1009 *** 16
-: 10007 *** 22
-: 100003 *** 26
+: 101 *** 49
+: 1009 *** 20
+: 10007 *** 26
+: 100003 *** 29
 
 Barely any time at all, on the order of 10 microseconds.  The new
 =bad-expmod= approach, however, does indeed live up to the name:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (bad-prime-scan 1 4 100 10)
 #+END_SRC
 
 #+RESULTS:
-: 101 *** 279
-: 1009 *** 623
-: 10007 *** 16142
-: 100003 *** 791797
+: 101 *** 51
+: 1009 *** 380
+: 10007 *** 19026
+: 100003 *** 741012
 
 For even an input as small as 10^5, the runtime is already nearing a
 second!  This exercise is a great demonstration of potentially
@@ -1644,7 +1637,7 @@ importance of picking the right algorithm for the job.
       rewritten the =expmod= procedure to use an explicit
       multiplication, rather than calling =square=:
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (slow-expmod base exp m)
     (cond ((= exp 0) 1)
           ((even? exp)
@@ -1694,20 +1687,20 @@ level two, and so on.
 
 So, given $\Theta(\log_2 2^n)$, the log and the exponential cancel
 each other out (by the definition of logarithm, and the overall
-complexity is $\Theta(n).
+complexity is $\Theta(n)$.
 
 ** Exercise 1.27: Fooling Fermat with Carmichael numbers
 *** Problem
 
-     Demonstrate that the Carmichael numbers listed in *Note Footnote
-     1-47:: really do fool the Fermat test.  That is, write a
+     Demonstrate that the Carmichael numbers listed in Footnote
+     1.47  really do fool the Fermat test.  That is, write a
      procedure that takes an integer n and tests whether $a^n$ is
      congruent to $a \mod n$ for every $a<n$, and try your procedure
      on the given Carmichael numbers.
 
 *** Answer
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   (define (verify-fermat n)
     (define (verify-fermat-iter a n)
       (cond ((>= a n)
@@ -1739,7 +1732,7 @@ complexity is $\Theta(n).
 This procedure does indeed show that the first six Carmichael numbers
 slip through the Fermat test.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
     (descriptive-verify-fermat 561)
     (descriptive-verify-fermat 1105)
     (descriptive-verify-fermat 1729)
@@ -1756,7 +1749,7 @@ slip through the Fermat test.
 : 2821: not prime and incorrectly passes the Fermat test
 : 6601: not prime and incorrectly passes the Fermat test
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
     (fermat-scan-range 1101 1109)
 #+END_SRC
 
@@ -1776,8 +1769,7 @@ numbers and find them ourselves.  This could be much more fun with
 lists, =map=, and =filter=, but we haven't had them introduced, yet,
 so this sticks with printing out the relevant numbers.
 
-
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent :exports both
   (define (carmichael? n)
      (and (not (prime? n)) (verify-fermat n)))
 
@@ -1790,7 +1782,7 @@ Here's an example of using this to find all the Carmichael numbers
 under 10,000. As can be seen, the first six numbers mentioned in
 the text are all found using this method.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results output
+#+BEGIN_SRC scheme :session 1-2 :results output
   (carmichael-scan-range 1 100000)
 #+END_SRC
 
@@ -1820,25 +1812,26 @@ the text are all found using this method.
      One variant of the Fermat test that cannot be fooled is called
      the "Miller-Rabin test" (Miller 1976; Rabin 1980).  This starts
      from an alternate form of Fermat's Little Theorem, which states
-     that if $n$ is a prime number and $a$ is any positive integer less
-     than $n$, then $a$ raised to the $(n - 1)$st power is congruent to 1
-     modulo $n$.  To test the primality of a number $n$ by the
-     Miller-Rabin test, we pick a random number $a<n$ and raise $a$ to the
-     $(n - 1)$st power modulo $n$ using the =expmod= procedure.  However,
-     whenever we perform the squaring step in =expmod=, we check to
-     see if we have discovered a "nontrivial square root of 1 modulo
-     $n$," that is, a number not equal to 1 or $n - 1$ whose square is
-     equal to 1 modulo $n$.  It is possible to prove that if such a
-     nontrivial square root of 1 exists, then $n$ is not prime.  It is
-     also possible to prove that if $n$ is an odd number that is not
-     prime, then, for at least half the numbers $a<n$, computing $a^(n-1)$
-     in this way will reveal a nontrivial square root of 1 modulo $n$.
-     (This is why the Miller-Rabin test cannot be fooled.)  Modify the
-     =expmod= procedure to signal if it discovers a nontrivial square
-     root of 1, and use this to implement the Miller-Rabin test with a
-     procedure analogous to =fermat-test=.  Check your procedure by
-     testing various known primes and non-primes.  Hint: One
-     convenient way to make =expmod= signal is to have it return 0.
+     that if $n$ is a prime number and $a$ is any positive integer
+     less than $n$, then $a$ raised to the \((n - 1)\)st power is
+     congruent to 1 modulo $n$.  To test the primality of a number $n$
+     by the Miller-Rabin test, we pick a random number $a<n$ and raise
+     $a$ to the \((n - 1)\)st power modulo $n$ using the =expmod=
+     procedure.  However, whenever we perform the squaring step in
+     =expmod=, we check to see if we have discovered a "nontrivial
+     square root of 1 modulo $n$," that is, a number not equal to 1 or
+     $n - 1$ whose square is equal to 1 modulo $n$.  It is possible to
+     prove that if such a nontrivial square root of 1 exists, then $n$
+     is not prime.  It is also possible to prove that if $n$ is an odd
+     number that is not prime, then, for at least half the numbers
+     $a<n$, computing $a^(n-1)$ in this way will reveal a nontrivial
+     square root of 1 modulo $n$.  (This is why the Miller-Rabin test
+     cannot be fooled.)  Modify the =expmod= procedure to signal if it
+     discovers a nontrivial square root of 1, and use this to
+     implement the Miller-Rabin test with a procedure analogous to
+     =fermat-test=.  Check your procedure by testing various known
+     primes and non-primes.  Hint: One convenient way to make =expmod=
+     signal is to have it return 0.
 
 *** Answer
 
@@ -1846,7 +1839,7 @@ This has some ugly bits...judicious use of =let= (which isn't
 introduced until the next section) would again simplify some of these
 expressions.
 
-#+BEGIN_SRC scheme :session 1-2-6 :results silent
+#+BEGIN_SRC scheme :session 1-2 :results silent
   ;; Test whether i is a nontrivial square root of 1 modulo m
   (define (nontrivial-sqrt-mod? i m)
     (and (not (= i 1))
