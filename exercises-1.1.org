@@ -84,7 +84,7 @@
 
 *** Answer
 
-#+BEGIN_SRC scheme :results silent
+#+BEGIN_SRC scheme :session 1-1 :results silent
 
   (define (square a) (* a a))
 
@@ -120,7 +120,7 @@
      whose operators are compound expressions.  Use this observation
      to describe the behavior of the following procedure:
 
-#+BEGIN_SRC scheme
+#+BEGIN_SRC scheme :session 1-1 :results silent
   (define (a-plus-abs-b a b)
     ((if (> b 0) + -) a b))
 #+END_SRC
@@ -141,19 +141,19 @@ same amount as it would have increased were =b= to be positive.
      evaluation or normal-order evaluation.  He defines the following
      two procedures:
 
-#+BEGIN_SRC scheme :output silent
-          (define (p) (p))
+#+BEGIN_EXAMPLE
+  (define (p) (p))
 
-          (define (test x y)
-            (if (= x 0)
-                0
-                y))
-#+END_SRC
+  (define (test x y)
+    (if (= x 0)
+        0
+        y))
+#+END_EXAMPLE
 
      Then he evaluates the expression
 
 #+BEGIN_EXAMPLE
-          (test 0 (p))
+  (test 0 (p))
 #+END_EXAMPLE
 
      What behavior will Ben observe with an interpreter that uses
@@ -234,12 +234,12 @@ Only a single addition and three multiplications need to be performed!
      Eva Lu Ator claims this can indeed be done, and she defines a new
      version of =if=:
 
-#+BEGIN_SRC scheme :results silent
+#+BEGIN_EXAMPLE
   (define (new-if predicate then-clause else-clause)
     (if predicate
         then-clause
         else-clause))
-#+END_SRC
+#+END_EXAMPLE
 
      Eva demonstrates the program for Alyssa:
 
@@ -253,7 +253,7 @@ Only a single addition and three multiplications need to be performed!
 
      Delighted, Alyssa uses =new-if= to rewrite the square-root program:
 
-#+BEGIN_SRC scheme :results silent
+#+BEGIN_EXAMPLE
   (define (sqrt-iter guess x)
     (new-if (good-enough? guess x)
             guess
@@ -280,7 +280,7 @@ Only a single addition and three multiplications need to be performed!
                              x)))
 
 
-#+END_SRC
+#+END_EXAMPLE
 
      What happens when Alyssa attempts to use this to compute square
      roots?  Explain.
@@ -309,7 +309,7 @@ recursion.
     of end test.  Does this work better for small and large numbers?
 
 *** Answer
-#+BEGIN_SRC scheme :session 1-1-7 :results silent
+#+BEGIN_SRC scheme :session 1-1 :results silent
   (define (sqrt-iter guess x)
     (if (good-enough? guess x)
         guess
@@ -398,7 +398,7 @@ as the improvement steps are so tiny.
 Extending to cube roots is straightforward. Building on the code in the last
 exercise:
 
-#+BEGIN_SRC scheme :session 1-1-7
+#+BEGIN_SRC scheme :session 1-1
 (define (cube x)
   (* x x x))
 
