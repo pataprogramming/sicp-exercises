@@ -1,1 +1,265 @@
+* 1.1
+
+In order of priority, I'd recommend:
+
+  1. Read section 1.1
+
+  2. Type in the examples as you go along; this is a great way to
+     familiarize yourself with the details of the Scheme language
+     that will underlay everything that is to follow.
+
+  3. Try to tackle the problems. As far as the problems go:
+
+    a. 1.1, 1.2, and 1.4 are intended to get you thinking in a
+       Scheme-like way. If you haven't used a Scheme- or Lisp-like
+       programming language before, try to figure these out mentally
+       before entering them into your REPL.
+
+    b. 1.5 and 1.6 highlight further details of Scheme's evaluation
+       strategy. Refer back to the text for details on applicative
+       order vs. normal order. These terms won't play a huge role
+       as the book progresses, but once you've got the ideas sorted
+       out, there's not much left that will confuse you as far as
+       Scheme's syntax goes.
+
+    c. 1.3, 1.7, and 1.r8 have you write code; these are the most
+       important.  Definitely give them a go.
+
+  4. If you have time, you can also watch online lectures associated with
+     this section. You have at least three options::
+
+     a. SICP lectures at HP in 1985. Lecture 1A by Gerald Sussman:
+        http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interp
+retation-of-computer-programs-spring-2005/video-lectures/1a-overview-and-introduction-to-lisp/
+
+     b. The Holly Yanco/John Pezaris videos from Ars Digita University
+        ca. 2000.  Annoyingly, these require a Real Media-capable player.
+        http://www.aduni.org:81/videos/10-02-00Lect.rm
+
+     c. Brian Harvey's Lectures for Berkeley CS 61A, Spring 2011
+        http://webcast.berkeley.edu/playlist#c,s,Spring_2011,3E89002AA9B9879E
+
+* 1.2
+
+Where section 1.1 was mostly about getting familiar with the basic syntax
+of Scheme, 1.2 begins to work toward one of Abelson and Sussman's primary
+goals: to start building the student's ability to form a link between the
+structure of a program (in their language, a 'procedure') and the pattern
+of computation activity that results (the 'process').
+
+If you haven't studied formal computer science before (or, at a minimum,
+if you don't already have a basic familiarity with Big-O notation), some of
+this section could be a bit of rough going.
+
+The Big-Theta notatation used in the text, i.e., 𝚹(f(n)), is similar to big-O
+notation, but implies that the bound is both an upper and a lower bound.
+For Big-O, on the other hand, just implies that an algorithm grows /no
+faster than/ the parenthetical expression following the "O", as $n$
+becomes very large.
+
+The following is just an informal discussion intended to point you in the
+right direction...going into the full formal description isn't necessary to
+grok the essence of what's going on in the text. If you've got more
+questions, bring 'em to the discussion group.
+
+Consider the following functions:
+
+ (define (a n)
+ n)
+
+ (define (b n)
+ (if (= n 0)
+ 0
+ (+ n (b (dec n)))))
+
+ (define (c n)
+ (if (= c 0)
+ 0
+ (+ (b n) (c (dec n)))))
+
+
+Function =a= is a classic example of an $O(1)$ procedure: no matter
+what the size of its input =n=, it will always take a constant amount
+of time to run. In terms of big-O notation, $b=O(1)$.
+
+Function =b= is a linear recursion...for any $n$, there will be $n$
+further recursive calls to =b=, for a total of $n+1$ calls (including
+the original).  The advantage of big-O-style notation, is that you
+sweep the lower-order terms under the rug, effectively, and focus of
+the terms that will end up "dominating" the runtime as $n$ increases.
+
+In terms of big-O notation, $b=O(n)$. But (and here is the reason for
+the big-Theta), is is equally valid to say that $b=O(n^2)$...or even
+$b=O(n^500)$!  Effectively, =b= grows "no faster than" the expression
+following the big-O.
+
+But, we couldn't say that $b=O(\log n)$ or $b=O(1)$, because =b= grows
+strictly "faster than" both of these.
+
+In terms of big-Theta notation, though, $O(n)$ is a "tight" bound for
+=b=...that is, =b= grows "neither faster nor slower" than $n$.
+
+Looking at function =c=, we can see that there is a call to =b= (a
+$\Theta(n)$ function) for every value of $n$ as $n$ is decremented to
+0, which happens $n$ times. The full recurrence relation is a bit much
+to go into, but, in general, the number of operations that =c= has to
+perform is, roughly, on the order the square of the value of =n=...so,
+it is both $O(n^2)$ (it grows no faster than $n^2$) and $\Theta(n^2)$
+(it grows at least as fast as $n^2$, but no faster, ignoring
+lower-order terms).
+
+=c= is also $O(n^3)$, $O(n^2\log n)$, $O(n^3)$, and $O(n^10000)$, as
+all of the expressions following the O grow slower than $n^2$. But,
+=c= is only $\Theta(n^2)$. (This isn't strictly true by the definition
+of Theta, but it's a helpful way to think about it without getting
+bogged down in the formalities.).
+
+This is hard going if you haven't seen the notation before (and I'm not
+sure this description will be helpful), but try not to get too hung up on
+it. If this is your first exposure, just try to follow the general gist of
+the arguments in the text, and generally understand how many more
+operations have to be performed as the input to a procedure becomes larger.
+
+Exercise 1.10, in particular, I found to be a bit problematic...I was
+looking for a tidy, algebraic description for 'h'...there's not really a
+standard notation for the resulting order of growth, so don't spend too
+much time trying to figure it out if you're running short on time.
+
+Exercise 1.9, on the other hand, is straightforward and important. There
+are going to be a bunch more exercises along this line where you need to
+understand the difference between recursive and iterative processes, so
+it's worth making sure that you understand this. Exercise 1.11 is one of
+the first of the exercises where you'll need to rewrite a procedure to
+produce on sort of process or the other.
+
+Exercise 1.12 is straight-foward and worth working on, but don't get bogged
+down with 1.13, which is an inductive mathematical proof!
+
+Exercise 1.14 demonstrates why this book isn't really a good introduction
+to big-O and big-Theta notation! Drawing the tree is useful, but the text
+doesn't give you a lot of resources to work with for analyzing the order of
+growth.
+
+Exercises 1.15-1.18 are useful, and one of the best places to focus your
+energy. 1.19 is a bit rougher, and relies on a bit more mathematical
+insight. Don't lose heart, as the *subject* of these exercises is not a
+much the point is as their goal of getting you to start writing procedures.
+Just move on...if I were teaching this course, I wouldn't assign 1.19
+unless I knew that the student had already studied this sort of proof in
+another mathematics course.
+
+Exercise 1.20 is one of the few that jumps back to applicative order vs.
+normal order. Don't spend too much time with it.
+
+Exercise 1.21 is easy, just getting you to use the procedure defined in the
+text. 1.22, on the other hand, is extremely important: all this discussion
+of big-O and big-Theta is the theoretical counterpart to the practical
+issue of how long it takes your program to run! 1.22 gets you experimenting
+with actually measuring runtime. If you've read Robert Sedgewick's
+_Algorithms_ book, he's a really big proponent of this: actually *measure*
+how long it takes your programs to run. Theoretical analysis is important,
+but developing the skills to run experiments on your own code is an
+important step forward in your ability as a computer science. If you have
+time, doing this sort of analysis on any of the other exercises can be
+informative you are at all curious.
+
+The last batch of exercises (1.23-1.28) all build on each other, and
+sitting down for a few hours to explore them is the other best place to
+spend your time. Some of them (like the one on Carmichael numbers) have a
+bit of a Project Euler flavor, but they approach similar problems from
+different angles. Changing your code around to make the variants work can
+be a pain...and that is one of the main points! By going through these
+different variants, you'll be preparing for the progressive abstractions
+that will be built in the next section, section 1.3.
+
+** A bit more on big-O-style notation
+
+There are five different terms that are generally included under this
+system:
+
+#+BEGIN_EXAMPLE
+Little-o     o(n)
+Big-O        O(n)
+Theta        𝚹(n)
+Big-Omega    𝛀(n)
+Little-omega 𝛚(n)
+#+END_EXAMPLE
+
+The different classes can be considered as follows:
+
+#+BEGIN_EXAMPLE
+f(n) = Little-o(g(n))     ~~ f(n) grows much more slowly than g(n)
+f(n) = Big-O(g(n))        ~~ f(n) grows no faster than g(n)
+f(n) = Theta(g(n))        ~~ f(n) grows "on the same order as" g(n)
+f(n) = Big-Omega(g(n))    ~~ f(n) grows at least as fast as g(n)
+f(n) = Little-omega(g(n)) ~~ f(n) grows much faster than g(n)
+#+END_EXAMPLE
+
+So in the examples of functions =a=, =b=, and =c=...
+
+=a= (which is Theta of 1, or constant):
+
+#+BEGIN_EXAMPLE
+a = Big-Omega(1)
+a = Big-O(1)
+a = Theta(1)
+#+END_EXAMPLE
+
+
+That is, if a function is $\Theta(g(x))$, it implies *both* $\Omega(g(x))$
+and $\Omicron(g(x))$.
+
+It is also Big-O and little-o of any functions that grow much faster...
+So:
+
+#+BEGIN_EXAMPLE
+a = Big-O(n)
+a = Little-o(n)
+a = Big-O(n^20)
+a = Little-o(n^20)
+#+END_EXAMPLE
+
+But, =a= is *not* Little-o(1).
+
+For =b=:
+
+#+BEGIN_EXAMPLE
+b = Big-O(n)
+b = Theta(n)
+b = Big-Omega(n)
+#+END_EXAMPLE
+
+and
+
+#+BEGIN_EXAMPLE
+b = Little-omega(1)     {it grows much faster than constant time)
+b = Big-Omega(1)        {it grows at least as fast as constant time)
+b = Little-omega(log n) {it grows much faster than logarthimic time}
+b = Big-Omega(log n)    {it grows at least as fast as logarithmic time}
+b = Big-O(n^2)          {it grows no faster than quadratic time}
+b = Little-o(n^2)       {it grows slower than quadratic time}
+b = Big-O(n^20)         {it grows no faster than n^20 time}
+b = Little-o(n^20)      {it grows much slower than n^20 time}
+#+END_EXAMPLE
+
+and so on.
+
+For =c=:
+
+#+BEGIN_EXAMPLE
+c = Big-O(n^2)
+c = Theta(n^2)
+c = Big-Omega(n^2)
+#+END_EXAMPLE
+
+and thus, is is both big and little Omega of all the functions that grow
+much more slowly, and big an little O of all the functions that grow much
+more quickly.
+
+The important thing to take away is that Theta is talking about a
+strict bound for the performance of an algorithm, which is why the
+authors of SICP prefer it.  But, this isn't always possible, so big-O
+is thinking about "worst cases" in an important sense, and thus is the
+form that is often used in discussions of algorithmic analysis.
+
 * 1.3
