@@ -891,6 +891,10 @@ judicious use of =remainder=, =/=, and =*=.
                       k)))
 #+END_SRC
 
+We recall that $e\approx 2.7182818$. Running the approximation through
+an increasing number of terms, we see that it takes about nine
+terms to achieve an accuracy of four decimal places.
+
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
   (exercise euler-e 1 1 20)
 #+END_SRC
@@ -919,7 +923,7 @@ judicious use of =remainder=, =/=, and =*=.
 20: 2.7182818284590398 (0 ms)
 #+end_example
 
-** WRITEUP Exercise 1.39: Lambert's continued fraction for tangents
+** Exercise 1.39: Lambert's continued fraction for tangents
 *** Problem
 
    A continued fraction representation of the tangent function was
@@ -932,9 +936,14 @@ judicious use of =remainder=, =/=, and =*=.
    where $x$ is in radians.  Define a procedure =(tan-cf x k)= that
    computes an approximation to the tangent function based on
    Lambert's formula.  =k= specifies the number of terms to compute,
-   as in *Note Exercise 1.37.
+   as in Exercise 1.37.
 
 *** Answer
+
+Having gone through the previous exercises, this one poses few
+challenges.  The only tricky bits here are making sure that all of the
+$N_i$ are negative for $i>1$ and finding a tidy expression for the
+$D_i$.
 
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (tan-cf x k)
@@ -947,8 +956,58 @@ judicious use of =remainder=, =/=, and =*=.
                k))
 #+END_SRC
 
-The only tricky bits here are making sure that all of the $N_i$ is
-negative for $i>1$ and finding a tidy expression for the $D_i$.
+With this achieved, we can see that the approximation works just as it
+should.  Checking against $\tan 1\approx 1.5574077:
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (exercise (lambda (k) (tan-cf 1 k)) 1 1 15)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1: 1.0 (0 ms)
+2: 0.5 (0 ms)
+3: 1.3333333333333333 (0 ms)
+4: 1.5454545454545454 (0 ms)
+5: 1.5571428571428574 (0 ms)
+6: 1.5574043261231283 (0 ms)
+7: 1.5574076959027885 (0 ms)
+8: 1.5574077244820586 (0 ms)
+9: 1.5574077246541251 (0 ms)
+10: 1.5574077246548994 (0 ms)
+11: 1.557407724654902 (0 ms)
+12: 1.557407724654902 (0 ms)
+13: 1.557407724654902 (0 ms)
+14: 1.557407724654902 (0 ms)
+15: 1.557407724654902 (0 ms)
+#+end_example
+
+And against $\tan 3\approx -0.14254654:
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (exercise (lambda (k) (tan-cf 3 k)) 1 1 15)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1: 3.0 (0 ms)
+2: 0.75 (0 ms)
+3: -6.0 (0 ms)
+4: -0.7894736842105263 (0 ms)
+5: -0.2946428571428571 (0 ms)
+6: -0.16600790513833985 (0 ms)
+7: -0.14471968709256838 (0 ms)
+8: -0.14267962042476284 (0 ms)
+9: -0.14255240897388746 (0 ms)
+10: -0.1425467394618813 (0 ms)
+11: -0.1425465482543813 (0 ms)
+12: -0.14254654318489302 (0 ms)
+13: -0.14254654307623113 (0 ms)
+14: -0.14254654307430684 (0 ms)
+15: -0.14254654307427825 (0 ms)
+#+end_example
+
+Easy peasy.
 
 * Section 1.3.4
 ** WRITEUP Exercise 1.40: Approximating cubics with Newton's method
