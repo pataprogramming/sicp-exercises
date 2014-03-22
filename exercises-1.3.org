@@ -1214,7 +1214,7 @@ boilerplate needed to make them call each other.  This will become
 more important as the books moves beyond simple numeric manipulations
 into operations on complex data structures.
 
-** WRITEUP Exercise 1.43: Repeated function application
+** Exercise 1.43: Repeated function application
 *** Problem
 
     If $f$ is a numerical function and $n$ is a positive integer, then
@@ -1284,9 +1284,7 @@ what at first looks like it might result in the same behavior:
 #+RESULTS:
 : 13
 
-
-
-** WRITEUP Exercise 1.44: Repeated smoothing
+** Exercise 1.44: Repeated smoothing
 *** Problem
 
    The idea of "smoothing" a function is an important concept in
@@ -1303,6 +1301,9 @@ what at first looks like it might result in the same behavior:
 
 *** Answer
 
+Once again, all that's needed for the design of this procedure is a
+careful reading of the exercise.
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (smooth f)
     (lambda (x)
@@ -1311,6 +1312,96 @@ what at first looks like it might result in the same behavior:
   (define (repeated-smooth f n)
     ((repeated smooth n) f))
 #+END_SRC
+
+To test out this function, we need a messy function. For this, an
+extremely short-period trigonometic function will do nicely. (We could
+use deterministic random noise, but that's much more of a pain to
+implement.)
+
+#+BEGIN_SRC scheme :session 1-3 :results silent
+  (define (wobble x) (* 10 (sin (* 4000000 x))))
+  (define (noisy-square x) (+ (square x) (wobble x)))
+#+END_SRC
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (exercise square 1.0 1.0 10)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1.0: 1.0 (0 ms)
+2.0: 4.0 (0 ms)
+3.0: 9.0 (0 ms)
+4.0: 16.0 (0 ms)
+5.0: 25.0 (0 ms)
+6.0: 36.0 (0 ms)
+7.0: 49.0 (0 ms)
+8.0: 64.0 (0 ms)
+9.0: 81.0 (0 ms)
+10.0: 100.0 (0 ms)
+#+end_example
+
+Adding in the noise makes the function fluctuate wildly.
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (exercise noisy-square 1.0 1.0 10)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1.0: -8.901405464041472 (0 ms)
+2.0: 1.2260722922389635 (0 ms)
+3.0: 18.124275898362253 (0 ms)
+4.0: 21.330138724433453 (0 ms)
+5.0: 17.368988825278407 (0 ms)
+6.0: 28.531995756103797 (0 ms)
+7.0: 54.538812853073914 (0 ms)
+8.0: 73.01973005666515 (0 ms)
+9.0: 77.98810912901972 (0 ms)
+10.0: 90.13647382064232 (0 ms)
+#+end_example
+
+A single smoothing doesn't have much of an effect.
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (exercise (smooth noisy-square) 1.0 1.0 10)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1.0: -1.170768490150289 (0 ms)
+2.0: 7.1173970760167204 (0 ms)
+3.0: 12.04408830114544 (0 ms)
+4.0: 13.735367720702044 (0 ms)
+5.0: 21.321394972443517 (0 ms)
+6.0: 37.23396689626534 (0 ms)
+7.0: 53.0242037654625 (0 ms)
+8.0: 63.89331330110201 (0 ms)
+9.0: 76.94576984070798 (0 ms)
+10.0: 98.97071928376823 (0 ms)
+#+end_example
+
+Multiple smoothings, on the other hand (in this case, 6), begin to
+recreate the shape of the original function: the resulting values are
+within 0.1 of the original =square= procedure.
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (exercise (repeated-smooth noisy-square 6) 1.0 1.0 10)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1.0: 0.9589530488442973 (0 ms)
+2.0: 4.0152118485939905 (0 ms)
+3.0: 9.045102245275618 (0 ms)
+4.0: 15.997114201795398 (0 ms)
+5.0: 24.953676520451445 (0 ms)
+6.0: 35.989392103222414 (0 ms)
+7.0: 49.0427324823916 (0 ms)
+8.0: 64.02185727993435 (1 ms)
+9.0: 80.96256542416378 (0 ms)
+10.0: 99.96672650555777 (0 ms)
+#+end_example
 
 ** TODO Exercise 1.45: \(n\)th roots with average damping
 *** Problem
