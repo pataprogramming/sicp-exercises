@@ -1174,7 +1174,7 @@ that procedure once it is returned.
 
 The result is an explosive 16 ($2^2^2$) calls to =inc=.
 
-** WRITEUP Exercise 1.42: Composing functions
+** Exercise 1.42: Composing functions
 *** Problem
 
     Let $f$ and $g$ be two one-argument functions.  The /composition/
@@ -1188,19 +1188,38 @@ The result is an explosive 16 ($2^2^2$) calls to =inc=.
 #+END_EXAMPLE
 
 *** Answer
-     - Note taken on [2014-03-17 Mon 15:23]
+
+Here's another place where the authors have you create a standard tool
+of functional programming: function composition.  The specification of
+the procedure couldn't be simpler:
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (compose f g)
     (lambda (x) (f (g x))))
 #+END_SRC
 
+The example from the text works exactly as expected:
 
-#+BEGIN_SRC scheme :session 1-3 :results value
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
   ((compose square inc) 6)
 #+END_SRC
 
 #+RESULTS:
 : 49
+
+The exercise doesn't do much to point out why this might be useful, as
+the example is extremely basic. In general, it can be used to build up
+chains of composite operations without mucking around with the
+boilerplate needed to make them call each other. For example, the
+=sum-of-squares= procedure from an earlier section could be rewritten
+simply as:
+
+#+BEGIN_SRC scheme :session 1-3
+  (define sum-of-squares (compose + square))
+#+END_SRC
+
+This will become more important as the books moves beyond simple
+numeric manipulations into operations on complex data structures.
 
 ** WRITEUP Exercise 1.43: Repeated function application
 *** Problem
