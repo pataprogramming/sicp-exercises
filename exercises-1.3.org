@@ -599,9 +599,6 @@ First, the definitions from the text:
   (define (average x y)
     (/ (+ x y) 2))
 
-  (define (close-enough? x y)
-    (< (abs (- x y)) 0.001))
-
   (define tolerance 0.00001)
 
   (define (fixed-point-orig f first-guess)
@@ -1010,7 +1007,7 @@ And against $\tan 3\approx -0.14254654$:
 Easy peasy.
 
 * Section 1.3.4
-** WRITEUP Exercise 1.40: Approximating cubics with Newton's method
+** Exercise 1.40: Approximating cubics with Newton's method
 *** Problem
 
     Define a procedure =cubic= that can be used together with the
@@ -1024,9 +1021,10 @@ Easy peasy.
 
 *** Answer
 
-#+BEGIN_SRC scheme :session 1-3 :results silent
+First, a look at the code from the text:
 
-  (define fixed-point fixed-point-orig)
+#+BEGIN_SRC scheme :session 1-3 :results silent
+  (define fixed-point fixed-point-verbose)
 
   (define (average-damp f)
     (lambda (x) (average x (f x))))
@@ -1048,10 +1046,69 @@ Easy peasy.
 
   (define (newtons-method g guess)
     (fixed-point (newton-transform g) guess))
-
-  (define (cubic a b c)
-    (lambda (x) (+ (* a (cube x)) (* b (square x)) (* c x) x)))
 #+END_SRC
+
+Creating the =cubic= procedure is straightforward: we just need to
+return a new lambda with bindings to the appropriate coefficients:
+
+#+BEGIN_SRC scheme :session 1-3 :results silent
+  (define (cubic a b c)
+    (lambda (x) (+ (cube x) (* a (square x)) (* b x) c)))
+#+END_SRC
+
+To test this out, we can select a cubic with easy-to-identify roots:
+
+\[ (x - 1)(x - 5)(x - 9) = x^3 - 15x^2 + 59x - 45 \]
+
+The zeros, clearly, are when $x=1$, $x=5$, and $x=9$.  Putting this
+under the lens:
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (define cubic-1-5-9 (cubic -15 59 -45))
+  (newtons-method cubic-1-5-9 0)
+#+END_SRC
+
+#+RESULTS:
+: 0.7627138035042597
+: 0.9814506189483658
+: 0.9998724196890224
+: 0.9999999943750526
+: 1.000000000000021
+
+With a starting guess of 0, it homes in on the zero at x=1.  With a
+different starting point:
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (define cubic-1-5-9 (cubic -15 59 -45))
+  (newtons-method cubic-1-5-9 20)
+#+END_SRC
+
+#+RESULTS:
+: 15.242795357171445
+: 12.19425210065894
+: 10.347170447494172
+: 9.38219704852933
+: 9.044810267042461
+: 9.000733970524449
+: 9.000000204681681
+: 9.000000000000787
+
+It slides down to 9.  An appropriate starting guess will also let it
+find the root at $x=5$:
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (define cubic-1-5-9 (cubic -15 59 -45))
+  (newtons-method cubic-1-5-9 6)
+#+END_SRC
+
+#+RESULTS:
+: 4.846151183366139
+: 5.000457174131245
+: 4.999999999987518
+: 4.999999999999999
+
+But, of course, this procedure doesn't guarantee that it will find
+/all/ the zeros: it will just find one; which one is found depends on
+the choice of the initial guess.
 
 ** WRITEUP Exercise 1.41: Doubling =double=
 *** Problem
