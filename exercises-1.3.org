@@ -349,10 +349,10 @@ straightforward way:
 : recursive: 3.1431607055322663
 : iterative: 3.1431607055322663
 
-** WRITEUP Exercise 1.32: Abstracting =accumulate=
+** Exercise 1.32: Abstracting =accumulate=
 *** Problem
 
-       a. Show that =sum= and =product= (*Note Exercise 1.31) are
+       a. Show that =sum= and =product= (Exercise 1.31) are
           both special cases of a still more general notion called
           =accumulate= that combines a collection of terms, using some
           general accumulation function:
@@ -376,6 +376,16 @@ straightforward way:
           a recursive process.
 *** Answer
 
+Now we're cooking with gas! This exercise is a key one on the path
+toward thinking in terms of appropriate abstractions. The exercise
+description and the process of solving the last two exercises should
+be enough to put you on the track to solving this one: instead of
+specific procedure names, the exact =combiner= and =null-value= are
+supplied in the procedure call.
+
+Creating procedures for the recursive and iterative forms requires the
+same substitutions:
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (accumulate-recur combiner null-value term a next b)
     (if (> a b)
@@ -384,21 +394,40 @@ straightforward way:
                   (accumulate-recur combiner null-value term (next a) next b))))
 
   (define (accumulate-iter combiner null-value term a next b)
-    (define (loop a result)
+    (define (iter a result)
       (if (> a b)
           result
-          (loop (next a) (combiner result (term a)))))
-    (loop a null-value))
+          (iter (next a) (combiner result (term a)))))
+    (iter a null-value))
+#+END_SRC
 
-  (define accumulate accumulate-iter)
+Testing these out, we can see that both variants work identically to
+the versions from the previous exercises.
 
-  (define (sum-acc term a next b)
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (define (sum-acc-recur term a next b)
     (accumulate-recur + 0 term a next b))
 
-  (define (product-acc term a next b)
+  (define (sum-acc-iter term a next b)
+    (accumulate-iter + 0 term a next b))
+
+  (define (product-acc-recur term a next b)
+    (accumulate-recur * 1 term a next b))
+
+  (define (product-acc-iter term a next b)
     (accumulate-iter * 1 term a next b))
 
+  (printf "sum-acc-recur: ~a~n" (sum-acc-iter identity 1 inc 10))
+  (printf "sum-acc-iter:  ~a~n" (sum-acc-recur identity 1 inc 10))
+  (printf "product-acc-recur: ~a~n" (product-acc-recur identity 1 inc 10))
+  (printf "product-acc-iter:  ~a~n" (product-acc-iter identity 1 inc 10))
 #+END_SRC
+
+#+RESULTS:
+: sum-acc-recur: 55
+: sum-acc-iter:  55
+: product-acc-recur: 3628800
+: product-acc-iter:  3628800
 
 ** WRITEUP Exercise 1.33: Further generalization with =filtered-accumulate=
 *** Problem
