@@ -1110,7 +1110,7 @@ But, of course, this procedure doesn't guarantee that it will find
 /all/ the zeros: it will just find one; which one is found depends on
 the choice of the initial guess.
 
-** WRITEUP Exercise 1.41: Doubling =double=
+** Exercise 1.41: Doubling =double=
 *** Problem
 
     Define a procedure =double= that takes a procedure of one argument
@@ -1125,10 +1125,45 @@ the choice of the initial guess.
 
 *** Answer
 
+This exercise again attempts to get you thinking in terms of
+procedures that return other procedures. It shouldn't take too much
+effort to come up with the desire specification.
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (double f)
     (lambda (x) (f (f x))))
 #+END_SRC
+
+ =double= isn't a very good name for this procedure; =twice= would be
+a better description of its actual semantics. Consider what would
+happen if we were to call:
+
+#+BEGIN_SRC scheme :session 1-3 :results value
+  (define (divide-by-two x) (/ x 2.0))
+  ((double divide-by-two) 16.0)
+#+END_SRC
+
+#+RESULTS:
+: 4.0
+
+Confusing! Changing the name would better capture the actual
+semantics:
+
+#+BEGIN_SRC scheme :session 1-3 :results value
+  (define twice double)
+  ((twice divide-by-two) 16.0)
+#+END_SRC
+
+#+RESULTS:
+: 4.0
+
+The reader of the code would have an actual fighting chase of figuring
+out what was actually going on.
+
+Now, looking at the expression that the exercises asks us to evaluate,
+it shouldn't be too hard to trace out what's going on, as long as you
+look carefully at what is returning a procedure and what is done with
+that procedure once it is returned.
 
 #+BEGIN_SRC scheme :session 1-3 :results value
   (((double (double double)) inc) 5)
@@ -1136,6 +1171,8 @@ the choice of the initial guess.
 
 #+RESULTS:
 : 21
+
+The result is an explosive 16 ($2^2^2$) calls to =inc=.
 
 ** WRITEUP Exercise 1.42: Composing functions
 *** Problem
