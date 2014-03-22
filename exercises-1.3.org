@@ -1210,32 +1210,25 @@ The example from the text works exactly as expected:
 The exercise doesn't do much to point out why this might be useful, as
 the example is extremely basic. In general, it can be used to build up
 chains of composite operations without mucking around with the
-boilerplate needed to make them call each other. For example, the
-=sum-of-squares= procedure from an earlier section could be rewritten
-simply as:
-
-#+BEGIN_SRC scheme :session 1-3
-  (define sum-of-squares (compose + square))
-#+END_SRC
-
-This will become more important as the books moves beyond simple
-numeric manipulations into operations on complex data structures.
+boilerplate needed to make them call each other.  This will become
+more important as the books moves beyond simple numeric manipulations
+into operations on complex data structures.
 
 ** WRITEUP Exercise 1.43: Repeated function application
 *** Problem
 
     If $f$ is a numerical function and $n$ is a positive integer, then
-    we can form the $n$th repeated application of $f$, which is
+    we can form the \(n\)th repeated application of $f$, which is
     defined to be the function whose value at $x$ is
     $f(f(\ldots(f(x))\ldots))$.  For example, if $f$ is the function
     $x\mapsto x + 1$, then the $n$th repeated application of $f$ is
     the function $x \mapsto x + n$.  If $f$ is the operation of
     squaring a number, then the nth repeated application of f is the
-    function that raises its argument to the $2^n$th power.  Write a
+    function that raises its argument to the \(2^n\)th power.  Write a
     procedure that takes as inputs a procedure that computes $f$ and a
     positive integer $n$ and returns the procedure that computes the
-    $n$th repeated application of $f$.  Your procedure should be able
-    to be used as follows:
+    \(n\)th repeated application of $f$.  Your procedure should be
+    able to be used as follows:
 
 #+BEGIN_EXAMPLE
          ((repeated square 2) 5)
@@ -1247,29 +1240,51 @@ numeric manipulations into operations on complex data structures.
 
 *** Answer
 
+This exercise again attempts to draw out the flexibility provided by
+higher-order functions. A recursive specification of =repeated= is
+easy to produce, particularly with the hint given that =compose= may
+ease the creation
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
-  (define (repeated-recur f n)
+  (define (repeated f n)
     (if (> n 1)
-        (compose f (repeated-recur f (dec n)))
+        (compose f (repeated f (dec n)))
         f))
-
-  (define (repeated-it f n)
-    (lambda (x)
-      (define (repeated-loop f i x)
-        (if (> i 0)
-            (repeated-loop f (dec i) (f x))
-            x))
-      (repeated-loop f n x)))
-
-  (define repeated repeated-recur)
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-3 :results value
+As it should, the example from the exercise results in $(5^2)^2 = 25^2
+= 625$:
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
   ((repeated square 2) 5)
 #+END_SRC
 
 #+RESULTS:
 : 625
+
+It's easy to apply this to other procedures:
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
+  ((repeated halve 4) 240)
+#+END_SRC
+
+#+RESULTS:
+: 15.0
+
+This works with higher-order procedures, as well (though using nested
+invocations where the result is called immediately can result in code
+that is excessively difficult to untangle. Compare this to the results
+from exercise 1.41, as it can be tricky to tease out the reason for
+what at first looks like it might result in the same behavior:
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
+  (((repeated twice 3) inc) 5)
+#+END_SRC
+
+#+RESULTS:
+: 13
+
+
 
 ** WRITEUP Exercise 1.44: Repeated smoothing
 *** Problem
