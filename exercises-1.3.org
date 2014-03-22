@@ -957,7 +957,7 @@ $D_i$.
 #+END_SRC
 
 With this achieved, we can see that the approximation works just as it
-should.  Checking against $\tan 1\approx 1.5574077:
+should.  Checking against $\tan 1\approx 1.5574077$:
 
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
   (exercise (lambda (k) (tan-cf 1 k)) 1 1 15)
@@ -982,7 +982,7 @@ should.  Checking against $\tan 1\approx 1.5574077:
 15: 1.557407724654902 (0 ms)
 #+end_example
 
-And against $\tan 3\approx -0.14254654:
+And against $\tan 3\approx -0.14254654$:
 
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
   (exercise (lambda (k) (tan-cf 3 k)) 1 1 15)
