@@ -4,7 +4,7 @@
 #+TODO: TODO(t) WRITEUP(w) || (d)
 
 * Section 1.3.1
-** WRITEUP Exercise 1.29: Implementing Simpson's Rule
+** Exercise 1.29: Implementing Simpson's Rule
 *** Problem
     Simpson's Rule is a more accurate method of numerical integration
     than the method illustrated above.  Using Simpson's Rule, the
@@ -195,7 +195,7 @@ of the time.
 502: -0.5440211113653068 (1 ms)
 #+end_example
 
-** WRITEUP Exercise 1.30: Iterative =sum=
+** Exercise 1.30: Iterative =sum=
 *** Problem
 
      The =sum= procedure above generates a linear recursion.  The
@@ -213,14 +213,51 @@ of the time.
 #+END_EXAMPLE
 *** Answer
 
+This exercise echoes the many similar conversions between procedures
+that generate iterative and recursive processes in the previous
+section.  As a fill-in-the-blank problem, this is pretty straightforward.
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (sum-iter term a next b)
-    (define (loop a result)
+    (define (iter a result)
       (if (> a b)
           result
-          (loop (next a) (+ result (term a)))))
-    (loop a 0))
+          (iter (next a) (+ result (term a)))))
+    (iter a 0))
 #+END_SRC
+
+Evaluating it, we can see that it works just as it should:
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
+  (sum-iter identity 1 inc 10)
+#+END_SRC
+
+#+RESULTS:
+: 55
+
+For the example with =cube= from the text, which should result in 3025:
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
+  (sum-iter cube 1 inc 10)
+#+END_SRC
+
+#+RESULTS:
+: 3025
+
+And the approximation to $\pi$:
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
+  (* 8 (sum-iter (lambda (x) (/ 1.0 (* x (+ x 2))) )
+                 1
+                 (lambda (x) (+ x 4))
+                 1000))
+#+END_SRC
+
+#+RESULTS:
+: 3.139592655589782
+
+
+
 
 ** WRITEUP Exercise 1.31: A =product= procedure
 *** Problem
@@ -241,6 +278,8 @@ of the time.
          recursive process.
 
 *** Answer
+
+
 
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (product-recur term a next b)
