@@ -429,11 +429,11 @@ the versions from the previous exercises.
 : product-acc-recur: 3628800
 : product-acc-iter:  3628800
 
-** WRITEUP Exercise 1.33: Further generalization with =filtered-accumulate=
+** Exercise 1.33: Further generalization with =filtered-accumulate=
 *** Problem
 
     You can obtain an even more general version of =accumulate=
-    (*Note Exercise 1.32) by introducing the notion of a "filter" on
+    (Exercise 1.32) by introducing the notion of a "filter" on
     the terms to be combined.  That is, combine only those terms
     derived from values in the range that satisfy a specified
     condition.  The resulting =filtered-accumulate= abstraction takes
@@ -451,17 +451,33 @@ the versions from the previous exercises.
          n$ such that $\text{GCD}(i,n) = 1$).
 
 *** Answer
+
+Now we're cooking with gas! These are the early steps in the "build
+your own lightsaber" aspect of the book. Variants of many of the
+functions used in these exercises can be found in every Lisp. The form
+of the =filtered-accumulate= function may not be exactly the usual
+form (there are a lot of arguments that need to be supplied, imposing
+a more specific shape on the functions used), but the underlying
+principle is one that will be encountered again and again.
+
+The key point to notice here is in how the higher-order functions are
+used as tools of generalization. Just adding in a =filter= predicate
+allows easier expression of a whole range of procedures.
+
 #+BEGIN_SRC scheme :session 1-3 :results silent
   (define (filtered-accumulate combiner null-value filter term a next b)
-    (define (loop a result)
+    (define (iter a result)
       (cond ((> a b) result)
-            ((filter a) (loop (next a) (combiner result (term a))))
-            (else (loop (next a) result))))
-    (loop a null-value))
+            ((filter a) (iter (next a) (combiner result (term a))))
+            (else (iter (next a) result))))
+    (iter a null-value))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-3 :results silent
+Transplanting the prime-detection code from the last section, it's
+very straightforward to build the target =sum-of-squares-of-primes=
+procedure:
 
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
   (define (square n) (* n n))
 
   (define (smallest-divisor n)
@@ -482,9 +498,18 @@ the versions from the previous exercises.
 
   (define (sum-of-squares-of-primes a b)
     (filtered-accumulate + 0 prime? square a inc b))
+
+  (printf "sum of squares of primes between 2 and 6: ~a~n"
+    (sum-of-squares-of-primes 2 6))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 1-3 :results silent
+#+RESULTS:
+: sum of squares of primes between 2 and 6: 38
+
+With the =gcd= procedure in place, the =product-of-relative-primes=
+procedure is similarly succinct:
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
   (define (gcd a b)
     (if (= b 0)
         a
@@ -495,7 +520,16 @@ the versions from the previous exercises.
       (= (gcd i n) 1))
     (filtered-accumulate * 1 relatively-prime? identity 1 inc n))
 
+  (printf "product of relative primes of 6: ~a~n"
+    (product-of-relative-primes 6))
+  (printf "product of relative primes of 7: ~a~n"
+    (product-of-relative-primes 7))
+
 #+END_SRC
+
+#+RESULTS:
+: product of relative primes of 6: 5
+: product of relative primes of 7: 720
 
 * Section 1.3.2
 ** Exercise 1.34: Perverse self-application
