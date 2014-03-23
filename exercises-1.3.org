@@ -257,8 +257,6 @@ And the approximation to $\pi$:
 : 3.139592655589782
 
 
-
-
 ** Exercise 1.31: A =product= procedure
 *** Problem
 
@@ -1413,19 +1411,19 @@ within 0.1 of the original =square= procedure.
    $y\mapsto x/y^2$.  Unfortunately, the process does not work for
    fourth roots---a single average damp is not enough to make a
    fixed-point search for $y\mapsto x/y^3$ converge.  On the other
-   hand, if we average damp twice (i.e., use the average damp of the
+   hand, if we average damp twice (/i.e./, use the average damp of the
    average damp of $y\mapsto x/y^3$) the fixed-point search does
    converge.  Do some experiments to determine how many average damps
    are required to compute $n$th roots as a fixed-point search based
-   upon repeated average damping of $y\mapsto x/y^(n-1)$.  Use this
-   to implement a simple procedure for computing \(n\)th roots using
+   upon repeated average damping of $y\mapsto x/y^(n-1)$.  Use this to
+   implement a simple procedure for computing \(n\)th roots using
    =fixed-point=, =average-damp=, and the =repeated= procedure of
    Exercise 1-43.  Assume that any arithmetic operations you need are
    available as primitives.
 
 *** Answer
 
-** TODO Exercise 1.46: Generalizing iterative improvement
+** Exercise 1.46: Generalizing iterative improvement
 *** Problem
 
    Several of the numerical methods described in this chapter are
@@ -1444,3 +1442,84 @@ within 0.1 of the original =square= procedure.
    of =iterative-improve=.
 
 *** Answer
+
+This one can be a bit tricky to get right, and the details of the
+exercise specification are important: particularly, note that
+=iterative-improve= is supposed to return a procedure.  Otherwise, the
+structure is simple: we just need to generalize the structure of the
+procedures that we've already created. This is one exercise I
+definitely recommend fighting your way through, yourself!
+
+#+BEGIN_SRC scheme :session 1-3 :results silent
+  (define (iterative-improve good-enough? improve)
+    (lambda (initial-guess)
+      (define (iter guess last-guess)
+        (if (good-enough? guess last-guess)
+            guess
+            (iter (improve guess) guess)))
+      (iter (improve initial-guess) initial-guess)))
+#+END_SRC
+
+The version of =sqrt= below is adapted from the improved version from
+exercise 1.7, as both this version and the =fixed-point= procedure use
+subsequent guesses as arguments to the =good-enough?= predicate.
+
+Note that the when =sqrt-ii='s =improve= is created, it captures
+(closes over) the value of =x=, and this is used by the procedure when
+it is later executed by =iterative-improve=.
+
+#+BEGIN_SRC scheme :session 1-3 :results silent
+  (define (sqrt-ii x)
+    (define tolerance 0.001)
+    (define (percent-changed new old)
+      (/ (- new old) old))
+    (define (small-change? new-guess old-guess)
+      (< (abs (percent-changed new-guess old-guess)) tolerance))
+    (define (good-enough? guess)
+      (< (abs (- (square guess) x)) 0.001))
+    (define (average a b)
+      (/ (+ a b) 2))
+    (define (improve guess)
+      (average guess (/ x guess)))
+    ((iterative-improve small-change? improve) 1.0))
+#+END_SRC
+
+Testing, we can see that this specialization of the general iterative
+improvement abstraction works just as it should:
+
+#+BEGIN_SRC scheme :session 1-3 :results output :exports both
+  (printf "sqrt-ii(4) = ~a~n" (sqrt-ii 4))
+  (printf "sqrt-ii(9) = ~a~n" (sqrt-ii 9))
+  (printf "sqrt-ii(16) = ~a~n" (sqrt-ii 16))
+  (printf "sqrt-ii(100) = ~a~n" (sqrt-ii 100))
+#+END_SRC
+
+#+RESULTS:
+: sqrt-ii(4) = 2.0000000929222947
+: sqrt-ii(9) = 3.000000001396984
+: sqrt-ii(16) = 4.000000636692939
+: sqrt-ii(100) = 10.000000000139897
+
+#+BEGIN_SRC scheme :session 1-3 :results silent
+  (define (fixed-point-ii f first-guess)
+    (define tolerance 0.00001)
+    (define (close-enough? v1 v2)
+      (< (abs (- v1 v2)) tolerance))
+    (define (improve guess)
+      (f guess))
+    ((iterative-improve close-enough? improve) first-guess))
+#+END_SRC
+
+We can test this out on the average-damped approach to finding a
+solution to $x^x = 1000$, as developed in exercise 1.36. The value
+calculated as a result of that exercise was 4.555536364911781.
+
+#+BEGIN_SRC scheme :session 1-3 :results value :exports both
+  (fixed-point-ii (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
+#+END_SRC
+
+#+RESULTS:
+: 4.555536364911781
+
+Happily, this version based off of the generalized =iterative-improve=
+produces the same result.
