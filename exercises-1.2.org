@@ -379,7 +379,7 @@ commonly called a "power tower". A more formal term is /tetration/.
 cpu time: 13 real time: 13 gc time: 0
 #+end_example
 
-** WRITEUP Exercise 1.13: A Fibonacci proof
+** Exercise 1.13: A Fibonacci proof
 *** Problem
 
    Prove that $\text{Fib}(n)$ is the closest integer to
@@ -387,7 +387,135 @@ cpu time: 13 real time: 13 gc time: 0
    $\psi = (1 - \sqrt{5})/2$.  Use induction and the definition of
    the Fibonacci numbers (see section 1.2.2) to prove that
    $\text{Fib}(n) = (\phi^n - \psi^n)/\sqrt{5}$.
+
 *** Answer
+
+This one is pretty hairy, and requires a modicum of mathematical
+sophication to work through.  For a proof like this (particularly when
+given a broad hint like this), the best approach is frequently to leap
+in and see where things take you.
+
+In addition to the definition of $\psi$ in the exercise, we also have
+a pointer to section 1.2.2, which gives us the definition of the
+Fibonacci sequence:
+
+\[ \text{Fib}(n) = \begin{cases}
+0 &\mbox{if } n=0 \\
+1 &\mbox{if } n=1 \\
+\text{Fib}(n-1) + \text{Fib}(n-2) &\mbox{otherwise}
+\end{cases}\]
+
+Significantly, it also gives us a couple of facts about $\phi$ that
+will prove to be useful, as well:
+
+\begin{align*}
+\phi   &= 1 + \sqrt{5}/2 \approx 1.6180 \\
+\phi^2 &= \phi + 1
+\end{align*}
+
+Since this is a proof by induction, the first thing to do is to
+demonstrate the base cases.  In this case, we have two, $n=0$ and $n=1$.
+
+Starting with $n=0$, we need to show $\text{Fib}(0)=0$.
+
+\[
+\text{Fib}(0) = \frac{\phi^0 - \psi^0}{\sqrt{5}}
+= \frac{1-1}{\sqrt{5}}
+= \frac{0}{\sqrt{5}}
+= 0
+\]
+
+Easy! Now we show $\text{Fib}(1)=1$.
+
+\begin{align*}
+\text{Fib}(1) &= \frac{phi^1 - \psi^1}{\sqrt{5}} \\
+&= \frac{\frac{1+\sqrt{5}}{2} - \frac{1-\sqrt{5}}{2}}{\sqrt{5}} \\
+&= \frac{\frac{1 + \sqrt{5} - 1 + \sqrt{5}}{2}}{\sqrt{5}} \\
+&= \frac{\frac{2\sqrt{5}}{2}}{\sqrt{5}} = \frac{\sqrt{5}}{\sqrt{5}}=1
+\end{align*}
+
+These are straightforward enough. Next, we need to assume that the
+hypothesis holds for $n-1$ and $n$, and use this to show that this
+implies it also must hold for $n+1$. That is, if we assume
+
+\[\text{Fib}(n-1) = \frac{\phi^{n-1} - \psi^{n-1}}{\sqrt{5}}\]
+
+and
+
+\[\text{Fib}(n) = \frac{\phi^{n} - \psi^{n}}{\sqrt{5}}\]
+
+we show that it implies that
+
+\[\text{Fib}(n+1) = \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt{5}}\]
+
+Once again, the best thing to do is just leap in, start substituting,
+and see what results.
+
+\begin{align*}
+\text{Fib}(n+1) &= \text{Fib}(n-1) + \text{Fib}(n) \\
+&= \frac{\phi^{n-1} - \psi^{n-1}}{\sqrt{5}} + \frac{\phi^{n} - \psi^{n}}{\sqrt{5}} \\
+&= \frac{\phi^{n-1} - \psi^{n-1} + \phi^n - \psi^n}{\sqrt{5}} \\
+&= \frac{(\phi^n + \phi^{n-1}) - (\psi^n + \psi^{n-1})}{\sqrt{5}
+\end{align*}
+
+It's at this point where the useful tidbit about $\phi$ from the text
+comes in handy, that $\phi^2 = \phi + 1$.  (As a note, if would have
+been helpful if the exercise had mentioned that it is also the case
+that $\psi^2 = \psi + 1$!) With these identities in hand, we can
+factor out $\phi^{n-1}$ and $\psi^{n-1}$ from the terms in the
+numerator and substitute accordingly.
+
+\begin{align*}
+&= \frac{\phi^{n-1}(\phi + 1) - \psi^{n-1}(\psi +1)}{\sqrt{5}} \\
+&= \frac{\phi^{n-1}{\phi^2} - \psi^{n-1}\psi^2}{\sqrt{5} \\
+&= \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt{5}} \\
+\end{align*}
+
+This concludes the inductive portion of the proof, but it doesn't get
+us all the way to what we were supposed to demonstrate: that,
+therefore, $\text{Fib}(n)$ is the closest integer to $\frac{\phi^n}{\sqrt{5}}$.
+
+What would it mean for this to be the case? As the $\text{Fib}(n)$ will
+always be an integer, the distance between it and the other term must
+be less than $\frac{1}{2}$; if it were not the case than
+$\phi^n$ would be closer to a different integer. As an edge case, the
+difference can't be exactly $\frac{1}{2}$, as that would mean
+$\phi^{n}$ was equally close to a second integer.  We can specify
+algebraically using the absolute value:
+
+\[
+\left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right| < \frac{1}{2}
+\]
+
+Trying out some substitutions, we can get this down to something manageable.
+
+\[
+\left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right|
+= \left|\frac{\phi^n - \psi^n}{\sqrt{5}} -
+\frac{\phi^n}{\sqrt{5}}\right| = \left|-\frac{\psi^n}{\sqrt{5}}\right|
+= \left|\frac{\psi^n}{\sqrt{5}}\right|
+\]
+
+This lets us examine what we are trying to prove in the light of this
+new equivalence:
+
+\begin{align*}
+\left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right| < \frac{1}{2} \\
+\left|\frac{\psi^n}{\sqrt{5}}\right| < \frac{1}{2} \\
+\left|\psi^n\right\| < \frac{\sqrt{5}{2}}
+\end{align*}
+
+We can see that \[\frac{\sqrt{5}}{2} \approx 1.11803\] and by
+definition, \[\psi = \frac{1 - \sqrt{5}}{2} \approx -0.61803\]
+
+Raising a real number $n\neq 0$ in the range $-1 < n < 1$ to a
+positive integer power can never result in a value that is outside
+that range.  Thus, it can never exceed $\frac{\sqrt{5}}{2}$, since the
+latter is greater than one. This is sufficient to demonstrate that
+$\text{Fib}(n)$ is the closest integer to $\phi^n$.
+
+$\square$
+
 
 * Section 1.2.3 Orders of Growth
 ** TODO Exercise 1.14: Counting change
@@ -865,7 +993,7 @@ straight what needs to be added and subtracted, and from where.
     (fast-mult-iter a b 0))
 #+END_SRC
 
-** WRITEUP Exercise 1.19: Logarithmic Fibonacci calculations
+** Exercise 1.19: Logarithmic Fibonacci calculations
 *** Problem
 
      There is a clever algorithm for computing the Fibonacci numbers
@@ -928,8 +1056,8 @@ T_{pq}\left(T_{pq}(a,b)\right) = (&(bp+aq)q + (bq+aq+ap)q + bq+aq+ap)p,\\
 \end{align*}
 
 To make line lengths a bit shorter, we can examine the each part of
-the tuple seperate; we'll call them $a'$ and $b'$. To start, we'll
-by simplifing $a'$:
+the tuple separately; we'll call them $a'$ and $b'$. To start, we'll
+by simplifying $a'$:
 
 \begin{align*}
 a' &= (bp+aq)q + (bq+aq+ap)q + bq+aq+ap)p \\
@@ -993,7 +1121,6 @@ provided by the exercise.
                           q
                           (- count 1)))))
 #+END_src
-
 
 
 * Section 1.2.5 Greatest Common Divisors
