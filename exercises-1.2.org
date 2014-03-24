@@ -910,6 +910,71 @@ straight what needs to be added and subtracted, and from where.
 
 *** Answer
 
+Deriving the new transformation is slightly painful, and requires a
+lot of algebraic manipulation.  The general procedure is to start with
+the initial transformation, apply it twice to the same inputs, and
+keep simplifying and reorganizing until you reach a form which is has
+the same structure as the transformation, which will give the new $p'$
+and $q'$.
+
+The form of a single transformation is
+
+\[T_{pq}(a,b) = (bq + aq + ap, bp + aq)\]
+
+Applying this twice gives
+\begin{align*}
+T_{pq}\left(T_{pq}(a,b)\right) = (&(bp+aq)q + (bq+aq+ap)q + bq+aq+ap)p,\\
+                            &(bp + aq)p + (bq + aq + ap)q)
+\end{align*}
+
+To make line lengths a bit shorter, we can examine the each part of
+the tuple seperate; we'll call them $a'$ and $b'$. To start, we'll
+by simplifing $a'$:
+
+\begin{align*}
+a' &= (bp+aq)q + (bq+aq+ap)q + bq+aq+ap)p \\
+   &= bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2 \\
+   &= 2aq^2 + 2apq + 2bpq + bq^2 + bq^2 + ap^2
+\end{align*}
+
+From here, we want to move things around into a form that is "shaped
+like" $bq + aq + ap$. To do this, we can note that no terms have both
+\(a\)s and \(b\)s, so we can pull those terms out:
+
+\[ = b(2pq + q^2) + a(2q^2 + 2pq + p^2) \]
+
+This gives us our $q'$, since $q'$ is what should be multiplied by $b$
+in the new expression:
+
+\[ q' = 2pq + q^2 \]
+
+This lets us split up the other expression into its $p'$ and $q'$
+components:
+
+\begin{align*}
+a' &= b(2pq + q^2) + a(q^2 + q^2 + 2pq + p^2) \\
+   &= b(2pq + q^2) + a(2pq + q^2) + a(q^2 + p^2)
+\end{align*}
+
+Sure enough, this gives us a value for $p'$, as well:
+
+\[ p' = q^2 + p^2 \]
+
+We can double-check this by making sure we get the same results for
+$b'$:
+
+\begin{align*}
+b' &= (bp + aq)p + (bq + aq ap)q \\
+   &= bp^2 + apq + bq^2 + aq^2 + apq \\
+   &= aq^2 + 2apq + bq^2 + bp^2 \\
+   &= a(q^2 + 2pq) + b(q^2 + p^2)
+\end{align*}
+
+This matches up exactly. Thus, the double-application of T_{pq} is
+identical to T_{p'q'}, where $p' = q^2 + p^2$ and $q' = 2pq + q^2$.
+With that done, we just need to plug these formulae into the template
+provided by the exercise.
+
 #+BEGIN_src scheme :session 1-2 :results silent
   (define (fib-t n)
     (fib-iter 1 0 0 1 n))
@@ -928,6 +993,8 @@ straight what needs to be added and subtracted, and from where.
                           q
                           (- count 1)))))
 #+END_src
+
+
 
 * Section 1.2.5 Greatest Common Divisors
 ** TODO Exercise 1.20: Revisiting applicative order and normal order
