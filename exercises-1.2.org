@@ -1339,7 +1339,7 @@ The first column is the original figures, and the second is the
 org-babel block that combines two sets of output). These results at
 larger scales make the improved running time obvious.
 
-** WRITEUP Exercise 1.24: Putting the Fermat method to work
+** Exercise 1.24: Putting the Fermat method to work
 *** Problem
 
      Modify the =timed-prime-test= procedure of Exercise 1.22
@@ -1407,114 +1407,65 @@ Now, we need to modify the relevant procedures to use =fast-prime?=.
 Using only 10 tests is super-fast:
 
 #+BEGIN_SRC scheme :session 1-2 :results output :exports both
-(fast-prime-scan 1 13 (expt 10 4) 10)
+(fast-prime-scan 1 28 (expt 10 3) 10)
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
-10007 *** 27
-100003 *** 30
-1000003 *** 34
-10000019 *** 42
-100000007 *** 46
-1000000007 *** 51
-10000000019 *** 350
-100000000003 *** 454
-1000000000039 *** 267
-10000000000037 *** 314
-100000000000031 *** 327
-1000000000000037 *** 351
-10000000000000061 *** 369
+1009 *** 12
+10007 *** 15
+100003 *** 17
+1000003 *** 20
+10000019 *** 24
+100000007 *** 27
+1000000007 *** 29
+10000000019 *** 225
+100000000003 *** 288
+1000000000039 *** 305
+10000000000037 *** 325
+100000000000031 *** 375
+1000000000000037 *** 394
+10000000000000061 *** 422
+100000000000000003 *** 428
+1000000000000000003 *** 464
+10000000000000000051 *** 458
+100000000000000000039 *** 12820
+1000000000000000000117 *** 12527
+10000000000000000000009 *** 11268
+100000000000000000000117 *** 12880
+1000000000000000000000007 *** 13920
+10000000000000000000000013 *** 12513
+100000000000000000000000067 *** 13931
+1000000000000000000000000103 *** 15109
+10000000000000000000000000331 *** 15170
+100000000000000000000000000319 *** 17108
+1000000000000000000000000000057 *** 17587
 #+end_example
 
-Compare this to 100:
+For a while, the increases in running time to appear to be
+logarithmic: each power of ten increase in the input results in an
+increase to the running time of around 3-6 milliseconds.
 
-#+BEGIN_SRC scheme :session 1-2 :results output :exports both
-(fast-prime-scan 1 13 (expt 10 4) 100)
-#+END_SRC
+There is some oddities, though: the jump in execution time between
+10^9 and 10^10, which jumps up by almost an order of magnitude, and
+the jump between 10^19 and 10^20, which multiplies the running time by
+around 25! A bit of thought reveals that a significant number occurs
+in the first range: 4294967087, which was the maximum integer that
+could be returned by Racket's =random=. Thus, we can guess that there
+may be a transparent promotion to a different internal representation
+that happens around that point, resulting in much higher constant
+costs to each operation. Presumably, a similar (and much for
+expensive) overflow happens at the higher threshold.
 
-#+RESULTS:
-#+begin_example
-10007 *** 259
-100003 *** 288
-1000003 *** 351
-10000019 *** 413
-100000007 *** 461
-1000000007 *** 542
-10000000019 *** 3481
-100000000003 *** 3667
-1000000000039 *** 2715
-10000000000037 *** 2817
-100000000000031 *** 3270
-1000000000000037 *** 3415
-10000000000000061 *** 3668
-#+end_example
+In the middle range, runtimes increase by around 20-60 milliseconds
+per power of ten increase to the inputs, which seems to confirm the
+prediction of logarithmic running time.  In the upper range (10^20 and
+higher), the numbers are a bit messier but the general trend of slow
+increase continues.
 
-And to 1,000:
-
-#+name: fastprimetime
-#+BEGIN_SRC scheme :session 1-2 :results output :cache yes :exports both
-(fast-prime-scan 1 13 (expt 10 4) 1000)
-#+END_SRC
-
-#+RESULTS[7f18a6a19203b10221362f153f03a2759bad57c3]: fastprimetime
-#+begin_example
-10007 *** 1481
-100003 *** 1677
-1000003 *** 2075
-10000019 *** 2392
-100000007 *** 2725
-1000000007 *** 2933
-10000000019 *** 21415
-100000000003 *** 26661
-1000000000039 *** 32039
-10000000000037 *** 29515
-100000000000031 *** 33883
-1000000000000037 *** 37390
-10000000000000061 *** 37852
-#+end_example
-
-Increasing the number of =times= that the =fast-prime?= test is
-performed linearly increases the runtime. But, overall, it can be seen
-that the rate of growth is *much* slower than the original =prime?=
-and =better-prime?= procedures.  Making this more concrete:
-
-#+name: thirdtime
-#+BEGIN_SRC sh :results silent :stdin fastprimetime
-  # Separate code block here so we can reuse these results easily in the
-  # next exercise
-  cut -f3 -d' '
-#+END_SRC
-
-
-#+BEGIN_SRC sh :stdin thirdtime :exports both :cache yes
-  echo Measured Predicted
-  for t in $(cut -f3 -d' '); do
-      if [ -n "${last}" ]; then
-          # annoyingly, dc doesn't have a log function, so this uses the
-          # completely non-standard (but readily available) qalc package.
-          guess=$(qalc -set "approximation 2" -t "log(2.9**(${last}) * 2.9,2.9)")
-      fi
-      echo $t $guess
-      last=$t
-  done
-#+END_SRC
-
-#+RESULTS[bbf5f3c89e9cc60ae512f1c450546fd42f5f43b7]:
-| Measured | Predicted |
-|     1481 |           |
-|     1677 |      1482 |
-|     2075 |      1678 |
-|     2392 |      2076 |
-|     2725 |      2393 |
-|     2933 |      2726 |
-|    21415 |      2934 |
-|    26661 |     21416 |
-|    32039 |     26662 |
-|    29515 |     32040 |
-|    33883 |     29516 |
-|    37390 |     33884 |
-|    37852 |     37391 |
+A simple improvement to the fidelity of these numbers could be made
+by testing multiple primes in each range, rather than just the first
+one found.
 
 ** Exercise 1.25: A not-so-fast use of =fast-expt=
 *** Problem
