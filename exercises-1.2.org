@@ -380,12 +380,14 @@ cpu time: 13 real time: 13 gc time: 0
 #+end_example
 
 ** WRITEUP Exercise 1.13: A Fibonacci proof
+*** Problem
 
    Prove that $\text{Fib}(n)$ is the closest integer to
    $\phi^n / \sqrt{5}$, where $\phi = (1 + \sqrt{5})/2$.  Hint: Let
    $\psi = (1 - \sqrt{5})/2$.  Use induction and the definition of
    the Fibonacci numbers (see section 1.2.2) to prove that
    $\text{Fib}(n) = (\phi^n - \psi^n)/\sqrt{5}$.
+*** Answer
 
 * Section 1.2.3 Orders of Growth
 ** TODO Exercise 1.14: Counting change
@@ -1404,7 +1406,7 @@ Now, we need to modify the relevant procedures to use =fast-prime?=.
     (if (> intervals 1) (fast-prime-scan k (- intervals 1) (* n 10) times)))
 #+END_SRC
 
-Using only 10 tests is super-fast:
+Using 10 tests is super-fast:
 
 #+BEGIN_SRC scheme :session 1-2 :results output :exports both
 (fast-prime-scan 1 28 (expt 10 3) 10)
@@ -1443,8 +1445,8 @@ Using only 10 tests is super-fast:
 #+end_example
 
 For a while, the increases in running time to appear to be
-logarithmic: each power of ten increase in the input results in an
-increase to the running time of around 3-6 milliseconds.
+more-or-less logarithmic: each power of ten increase in the input
+results in an increase to the running time of around 3-6 milliseconds.
 
 There is some oddities, though: the jump in execution time between
 10^9 and 10^10, which jumps up by almost an order of magnitude, and
@@ -1765,7 +1767,7 @@ the text are all found using this method.
 75361
 #+end_example
 
-** WRITEUP Exercise 1.28: The Miller-Rabin test
+** Exercise 1.28: The Miller-Rabin test
 *** Problem
 
      One variant of the Fermat test that cannot be fooled is called
@@ -1917,4 +1919,43 @@ exercise, it correctly identifies them all as non-prime:
 62745: #f
 63973: #f
 75361: #f
+#+end_example
+
+Additional, testing the same range of values as was examined in
+exercise 1.24 shows that the same set of primes is discovered.
+
+#+BEGIN_SRC scheme :session 1-2 :results output :exports both
+(mr-prime-scan 1 28 (expt 10 3) 10)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+1009 *** 19
+10007 *** 26
+100003 *** 30
+1000003 *** 35
+10000019 *** 43
+100000007 *** 48
+1000000007 *** 54
+10000000019 *** 367
+100000000003 *** 464
+1000000000039 *** 505
+10000000000037 *** 546
+100000000000031 *** 674
+1000000000000037 *** 652
+10000000000000061 *** 750
+100000000000000003 *** 731
+1000000000000000003 *** 781
+10000000000000000051 *** 1554
+100000000000000000039 *** 18993
+1000000000000000000117 *** 19905
+10000000000000000000009 *** 20005
+100000000000000000000117 *** 21337
+1000000000000000000000007 *** 25149
+10000000000000000000000013 *** 22381
+100000000000000000000000067 *** 26592
+1000000000000000000000000103 *** 26524
+10000000000000000000000000331 *** 25887
+100000000000000000000000000319 *** 29771
+1000000000000000000000000000057 *** 28188
 #+end_example
