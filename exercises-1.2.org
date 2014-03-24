@@ -455,7 +455,7 @@ and see what results.
 \text{Fib}(n+1) &= \text{Fib}(n-1) + \text{Fib}(n) \\
 &= \frac{\phi^{n-1} - \psi^{n-1}}{\sqrt{5}} + \frac{\phi^{n} - \psi^{n}}{\sqrt{5}} \\
 &= \frac{\phi^{n-1} - \psi^{n-1} + \phi^n - \psi^n}{\sqrt{5}} \\
-&= \frac{(\phi^n + \phi^{n-1}) - (\psi^n + \psi^{n-1})}{\sqrt{5}
+&= \frac{(\phi^n + \phi^{n-1}) - (\psi^n + \psi^{n-1})}{\sqrt{5}}
 \end{align*}
 
 It's at this point where the useful tidbit about $\phi$ from the text
@@ -467,8 +467,8 @@ numerator and substitute accordingly.
 
 \begin{align*}
 &= \frac{\phi^{n-1}(\phi + 1) - \psi^{n-1}(\psi +1)}{\sqrt{5}} \\
-&= \frac{\phi^{n-1}{\phi^2} - \psi^{n-1}\psi^2}{\sqrt{5} \\
-&= \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt{5}} \\
+&= \frac{\phi^{n-1}\phi^2 - \psi^{n-1}\psi^2}{\sqrt{5}} \\
+&= \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt{5}}
 \end{align*}
 
 This concludes the inductive portion of the proof, but it doesn't get
@@ -502,7 +502,7 @@ new equivalence:
 \begin{align*}
 \left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right| < \frac{1}{2} \\
 \left|\frac{\psi^n}{\sqrt{5}}\right| < \frac{1}{2} \\
-\left|\psi^n\right\| < \frac{\sqrt{5}{2}}
+\left|\psi^n\right\| < \frac{\sqrt{5}}{2}
 \end{align*}
 
 We can see that \[\frac{\sqrt{5}}{2} \approx 1.11803\] and by
@@ -515,7 +515,6 @@ latter is greater than one. This is sufficient to demonstrate that
 $\text{Fib}(n)$ is the closest integer to $\phi^n$.
 
 $\square$
-
 
 * Section 1.2.3 Orders of Growth
 ** TODO Exercise 1.14: Counting change
@@ -1121,7 +1120,6 @@ provided by the exercise.
                           q
                           (- count 1)))))
 #+END_src
-
 
 * Section 1.2.5 Greatest Common Divisors
 ** TODO Exercise 1.20: Revisiting applicative order and normal order
