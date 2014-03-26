@@ -239,7 +239,6 @@ commonly called a "power tower". A more formal term is /tetration/.
            (* 3 (f-rec (- n 3))))))
 
   (define (f-iter n)
-
     (define (f-inner i fn1 fn2 fn3)
       (define cur (+ fn1 (* 2 fn2) (* 3 fn3)))
       (if (= i n)
@@ -376,7 +375,7 @@ commonly called a "power tower". A more formal term is /tetration/.
 1 15 105 455 1365 3003 5005 6435 6435 5005 3003 1365 455 105 15 1
 1 16 120 560 1820 4368 8008 11440 12870 11440 8008 4368 1820 560 120 16 1
 1 17 136 680 2380 6188 12376 19448 24310 24310 19448 12376 6188 2380 680 136 17 1
-cpu time: 13 real time: 13 gc time: 0
+cpu time: 17 real time: 17 gc time: 0
 #+end_example
 
 ** Exercise 1.13: A Fibonacci proof
@@ -598,171 +597,171 @@ Now, the code itself with the above instrumentation included.
 
 #+RESULTS: dot-count-change-11
 #+begin_example
-    count_change_1145693 [shape=box,label="(count-change 11)"];
-    cc_1522064 [shape=box,label="(cc 11 5)"];
-    count_change_1145693 -> cc_1522064;
-    cc_2831707 [shape=box,label="(cc 11 4)"];
-    cc_1522064 -> cc_2831707;
-    cc_642958 [shape=box,label="(cc 11 3)"];
-    cc_2831707 -> cc_642958;
-    cc_2793901 [shape=box,label="(cc 11 2)"];
-    cc_642958 -> cc_2793901;
-    cc_4098491 [shape=box,label="(cc 11 1)"];
-    cc_2793901 -> cc_4098491;
-    cc_4165316 [shape=box,label="(cc 11 0)"];
-    cc_4098491 -> cc_4165316;
-    fd_1797179 [shape=box,label="(fd 1)"];
-    cc_4098491 -> fd_1797179;
-    cc_3288063 [shape=box,label="(cc 10 1)"];
-    cc_4098491 -> cc_3288063;
-    cc_14691 [shape=box,label="(cc 10 0)"];
-    cc_3288063 -> cc_14691;
-    fd_2089041 [shape=box,label="(fd 1)"];
-    cc_3288063 -> fd_2089041;
-    cc_2781086 [shape=box,label="(cc 9 1)"];
-    cc_3288063 -> cc_2781086;
-    cc_2091473 [shape=box,label="(cc 9 0)"];
-    cc_2781086 -> cc_2091473;
-    fd_501402 [shape=box,label="(fd 1)"];
-    cc_2781086 -> fd_501402;
-    cc_2520786 [shape=box,label="(cc 8 1)"];
-    cc_2781086 -> cc_2520786;
-    cc_4111324 [shape=box,label="(cc 8 0)"];
-    cc_2520786 -> cc_4111324;
-    fd_146084 [shape=box,label="(fd 1)"];
-    cc_2520786 -> fd_146084;
-    cc_3473684 [shape=box,label="(cc 7 1)"];
-    cc_2520786 -> cc_3473684;
-    cc_4545037 [shape=box,label="(cc 7 0)"];
-    cc_3473684 -> cc_4545037;
-    fd_2021609 [shape=box,label="(fd 1)"];
-    cc_3473684 -> fd_2021609;
-    cc_2345375 [shape=box,label="(cc 6 1)"];
-    cc_3473684 -> cc_2345375;
-    cc_754054 [shape=box,label="(cc 6 0)"];
-    cc_2345375 -> cc_754054;
-    fd_1048793 [shape=box,label="(fd 1)"];
-    cc_2345375 -> fd_1048793;
-    cc_1181863 [shape=box,label="(cc 5 1)"];
-    cc_2345375 -> cc_1181863;
-    cc_1574031 [shape=box,label="(cc 5 0)"];
-    cc_1181863 -> cc_1574031;
-    fd_3208762 [shape=box,label="(fd 1)"];
-    cc_1181863 -> fd_3208762;
-    cc_4712911 [shape=box,label="(cc 4 1)"];
-    cc_1181863 -> cc_4712911;
-    cc_4052578 [shape=box,label="(cc 4 0)"];
-    cc_4712911 -> cc_4052578;
-    fd_1804869 [shape=box,label="(fd 1)"];
-    cc_4712911 -> fd_1804869;
-    cc_2230091 [shape=box,label="(cc 3 1)"];
-    cc_4712911 -> cc_2230091;
-    cc_868045 [shape=box,label="(cc 3 0)"];
-    cc_2230091 -> cc_868045;
-    fd_3620 [shape=box,label="(fd 1)"];
-    cc_2230091 -> fd_3620;
-    cc_2113373 [shape=box,label="(cc 2 1)"];
-    cc_2230091 -> cc_2113373;
-    cc_1620385 [shape=box,label="(cc 2 0)"];
-    cc_2113373 -> cc_1620385;
-    fd_633508 [shape=box,label="(fd 1)"];
-    cc_2113373 -> fd_633508;
-    cc_1167423 [shape=box,label="(cc 1 1)"];
-    cc_2113373 -> cc_1167423;
-    cc_4683695 [shape=box,label="(cc 1 0)"];
-    cc_1167423 -> cc_4683695;
-    fd_879115 [shape=box,label="(fd 1)"];
-    cc_1167423 -> fd_879115;
-    cc_1272675 [shape=box,label="(cc 0 1)"];
-    cc_1167423 -> cc_1272675;
-    fd_1668680 [shape=box,label="(fd 2)"];
-    cc_2793901 -> fd_1668680;
-    cc_972929 [shape=box,label="(cc 6 2)"];
-    cc_2793901 -> cc_972929;
-    cc_2478968 [shape=box,label="(cc 6 1)"];
-    cc_972929 -> cc_2478968;
-    cc_1992075 [shape=box,label="(cc 6 0)"];
-    cc_2478968 -> cc_1992075;
-    fd_3128085 [shape=box,label="(fd 1)"];
-    cc_2478968 -> fd_3128085;
-    cc_1306360 [shape=box,label="(cc 5 1)"];
-    cc_2478968 -> cc_1306360;
-    cc_3552303 [shape=box,label="(cc 5 0)"];
-    cc_1306360 -> cc_3552303;
-    fd_2907537 [shape=box,label="(fd 1)"];
-    cc_1306360 -> fd_2907537;
-    cc_1727622 [shape=box,label="(cc 4 1)"];
-    cc_1306360 -> cc_1727622;
-    cc_4358581 [shape=box,label="(cc 4 0)"];
-    cc_1727622 -> cc_4358581;
-    fd_3129279 [shape=box,label="(fd 1)"];
-    cc_1727622 -> fd_3129279;
-    cc_2387009 [shape=box,label="(cc 3 1)"];
-    cc_1727622 -> cc_2387009;
-    cc_4660472 [shape=box,label="(cc 3 0)"];
-    cc_2387009 -> cc_4660472;
-    fd_2033694 [shape=box,label="(fd 1)"];
-    cc_2387009 -> fd_2033694;
-    cc_3575967 [shape=box,label="(cc 2 1)"];
-    cc_2387009 -> cc_3575967;
-    cc_2680839 [shape=box,label="(cc 2 0)"];
-    cc_3575967 -> cc_2680839;
-    fd_1370605 [shape=box,label="(fd 1)"];
-    cc_3575967 -> fd_1370605;
-    cc_1303559 [shape=box,label="(cc 1 1)"];
-    cc_3575967 -> cc_1303559;
-    cc_2394698 [shape=box,label="(cc 1 0)"];
-    cc_1303559 -> cc_2394698;
-    fd_3498538 [shape=box,label="(fd 1)"];
-    cc_1303559 -> fd_3498538;
-    cc_720121 [shape=box,label="(cc 0 1)"];
-    cc_1303559 -> cc_720121;
-    fd_552050 [shape=box,label="(fd 2)"];
-    cc_972929 -> fd_552050;
-    cc_1128428 [shape=box,label="(cc 1 2)"];
-    cc_972929 -> cc_1128428;
-    cc_4217369 [shape=box,label="(cc 1 1)"];
-    cc_1128428 -> cc_4217369;
-    cc_4278634 [shape=box,label="(cc 1 0)"];
-    cc_4217369 -> cc_4278634;
-    fd_2042917 [shape=box,label="(fd 1)"];
-    cc_4217369 -> fd_2042917;
-    cc_1202290 [shape=box,label="(cc 0 1)"];
-    cc_4217369 -> cc_1202290;
-    fd_2613321 [shape=box,label="(fd 2)"];
-    cc_1128428 -> fd_2613321;
-    cc_2371652 [shape=box,label="(cc -4 2)"];
-    cc_1128428 -> cc_2371652;
-    fd_2171770 [shape=box,label="(fd 3)"];
-    cc_642958 -> fd_2171770;
-    cc_4083060 [shape=box,label="(cc 1 3)"];
-    cc_642958 -> cc_4083060;
-    cc_4485085 [shape=box,label="(cc 1 2)"];
-    cc_4083060 -> cc_4485085;
-    cc_3632505 [shape=box,label="(cc 1 1)"];
-    cc_4485085 -> cc_3632505;
-    cc_4819578 [shape=box,label="(cc 1 0)"];
-    cc_3632505 -> cc_4819578;
-    fd_2655976 [shape=box,label="(fd 1)"];
-    cc_3632505 -> fd_2655976;
-    cc_124870 [shape=box,label="(cc 0 1)"];
-    cc_3632505 -> cc_124870;
-    fd_2771553 [shape=box,label="(fd 2)"];
-    cc_4485085 -> fd_2771553;
-    cc_425357 [shape=box,label="(cc -4 2)"];
-    cc_4485085 -> cc_425357;
-    fd_360903 [shape=box,label="(fd 3)"];
-    cc_4083060 -> fd_360903;
-    cc_3965173 [shape=box,label="(cc -9 3)"];
-    cc_4083060 -> cc_3965173;
-    fd_2479570 [shape=box,label="(fd 4)"];
-    cc_2831707 -> fd_2479570;
-    cc_4922131 [shape=box,label="(cc -14 4)"];
-    cc_2831707 -> cc_4922131;
-    fd_1022930 [shape=box,label="(fd 5)"];
-    cc_1522064 -> fd_1022930;
-    cc_2982393 [shape=box,label="(cc -39 5)"];
-    cc_1522064 -> cc_2982393;
+    count_change_3917750 [shape=box,label="(count-change 11)"];
+    cc_1567400 [shape=box,label="(cc 11 5)"];
+    count_change_3917750 -> cc_1567400;
+    cc_1362563 [shape=box,label="(cc 11 4)"];
+    cc_1567400 -> cc_1362563;
+    cc_2023215 [shape=box,label="(cc 11 3)"];
+    cc_1362563 -> cc_2023215;
+    cc_4399117 [shape=box,label="(cc 11 2)"];
+    cc_2023215 -> cc_4399117;
+    cc_1739825 [shape=box,label="(cc 11 1)"];
+    cc_4399117 -> cc_1739825;
+    cc_3761601 [shape=box,label="(cc 11 0)"];
+    cc_1739825 -> cc_3761601;
+    fd_1906553 [shape=box,label="(fd 1)"];
+    cc_1739825 -> fd_1906553;
+    cc_3812434 [shape=box,label="(cc 10 1)"];
+    cc_1739825 -> cc_3812434;
+    cc_3656145 [shape=box,label="(cc 10 0)"];
+    cc_3812434 -> cc_3656145;
+    fd_3592572 [shape=box,label="(fd 1)"];
+    cc_3812434 -> fd_3592572;
+    cc_2561297 [shape=box,label="(cc 9 1)"];
+    cc_3812434 -> cc_2561297;
+    cc_704070 [shape=box,label="(cc 9 0)"];
+    cc_2561297 -> cc_704070;
+    fd_4057614 [shape=box,label="(fd 1)"];
+    cc_2561297 -> fd_4057614;
+    cc_4690857 [shape=box,label="(cc 8 1)"];
+    cc_2561297 -> cc_4690857;
+    cc_1542371 [shape=box,label="(cc 8 0)"];
+    cc_4690857 -> cc_1542371;
+    fd_1278781 [shape=box,label="(fd 1)"];
+    cc_4690857 -> fd_1278781;
+    cc_1839033 [shape=box,label="(cc 7 1)"];
+    cc_4690857 -> cc_1839033;
+    cc_1803636 [shape=box,label="(cc 7 0)"];
+    cc_1839033 -> cc_1803636;
+    fd_4115514 [shape=box,label="(fd 1)"];
+    cc_1839033 -> fd_4115514;
+    cc_216209 [shape=box,label="(cc 6 1)"];
+    cc_1839033 -> cc_216209;
+    cc_795797 [shape=box,label="(cc 6 0)"];
+    cc_216209 -> cc_795797;
+    fd_1005074 [shape=box,label="(fd 1)"];
+    cc_216209 -> fd_1005074;
+    cc_815979 [shape=box,label="(cc 5 1)"];
+    cc_216209 -> cc_815979;
+    cc_176822 [shape=box,label="(cc 5 0)"];
+    cc_815979 -> cc_176822;
+    fd_1306686 [shape=box,label="(fd 1)"];
+    cc_815979 -> fd_1306686;
+    cc_2339030 [shape=box,label="(cc 4 1)"];
+    cc_815979 -> cc_2339030;
+    cc_3368525 [shape=box,label="(cc 4 0)"];
+    cc_2339030 -> cc_3368525;
+    fd_1629884 [shape=box,label="(fd 1)"];
+    cc_2339030 -> fd_1629884;
+    cc_874416 [shape=box,label="(cc 3 1)"];
+    cc_2339030 -> cc_874416;
+    cc_4156807 [shape=box,label="(cc 3 0)"];
+    cc_874416 -> cc_4156807;
+    fd_1972302 [shape=box,label="(fd 1)"];
+    cc_874416 -> fd_1972302;
+    cc_106644 [shape=box,label="(cc 2 1)"];
+    cc_874416 -> cc_106644;
+    cc_1566042 [shape=box,label="(cc 2 0)"];
+    cc_106644 -> cc_1566042;
+    fd_1456701 [shape=box,label="(fd 1)"];
+    cc_106644 -> fd_1456701;
+    cc_467393 [shape=box,label="(cc 1 1)"];
+    cc_106644 -> cc_467393;
+    cc_1400327 [shape=box,label="(cc 1 0)"];
+    cc_467393 -> cc_1400327;
+    fd_885410 [shape=box,label="(fd 1)"];
+    cc_467393 -> fd_885410;
+    cc_132102 [shape=box,label="(cc 0 1)"];
+    cc_467393 -> cc_132102;
+    fd_3061300 [shape=box,label="(fd 2)"];
+    cc_4399117 -> fd_3061300;
+    cc_4630547 [shape=box,label="(cc 6 2)"];
+    cc_4399117 -> cc_4630547;
+    cc_4091344 [shape=box,label="(cc 6 1)"];
+    cc_4630547 -> cc_4091344;
+    cc_4280776 [shape=box,label="(cc 6 0)"];
+    cc_4091344 -> cc_4280776;
+    fd_3654308 [shape=box,label="(fd 1)"];
+    cc_4091344 -> fd_3654308;
+    cc_4127011 [shape=box,label="(cc 5 1)"];
+    cc_4091344 -> cc_4127011;
+    cc_4968428 [shape=box,label="(cc 5 0)"];
+    cc_4127011 -> cc_4968428;
+    fd_4762431 [shape=box,label="(fd 1)"];
+    cc_4127011 -> fd_4762431;
+    cc_1670531 [shape=box,label="(cc 4 1)"];
+    cc_4127011 -> cc_1670531;
+    cc_716687 [shape=box,label="(cc 4 0)"];
+    cc_1670531 -> cc_716687;
+    fd_1328277 [shape=box,label="(fd 1)"];
+    cc_1670531 -> fd_1328277;
+    cc_857428 [shape=box,label="(cc 3 1)"];
+    cc_1670531 -> cc_857428;
+    cc_4100169 [shape=box,label="(cc 3 0)"];
+    cc_857428 -> cc_4100169;
+    fd_3860802 [shape=box,label="(fd 1)"];
+    cc_857428 -> fd_3860802;
+    cc_3935097 [shape=box,label="(cc 2 1)"];
+    cc_857428 -> cc_3935097;
+    cc_4703395 [shape=box,label="(cc 2 0)"];
+    cc_3935097 -> cc_4703395;
+    fd_2791336 [shape=box,label="(fd 1)"];
+    cc_3935097 -> fd_2791336;
+    cc_141191 [shape=box,label="(cc 1 1)"];
+    cc_3935097 -> cc_141191;
+    cc_2154194 [shape=box,label="(cc 1 0)"];
+    cc_141191 -> cc_2154194;
+    fd_3252305 [shape=box,label="(fd 1)"];
+    cc_141191 -> fd_3252305;
+    cc_4909085 [shape=box,label="(cc 0 1)"];
+    cc_141191 -> cc_4909085;
+    fd_2253698 [shape=box,label="(fd 2)"];
+    cc_4630547 -> fd_2253698;
+    cc_4939546 [shape=box,label="(cc 1 2)"];
+    cc_4630547 -> cc_4939546;
+    cc_1163547 [shape=box,label="(cc 1 1)"];
+    cc_4939546 -> cc_1163547;
+    cc_2260772 [shape=box,label="(cc 1 0)"];
+    cc_1163547 -> cc_2260772;
+    fd_736587 [shape=box,label="(fd 1)"];
+    cc_1163547 -> fd_736587;
+    cc_2214014 [shape=box,label="(cc 0 1)"];
+    cc_1163547 -> cc_2214014;
+    fd_366823 [shape=box,label="(fd 2)"];
+    cc_4939546 -> fd_366823;
+    cc_1052418 [shape=box,label="(cc -4 2)"];
+    cc_4939546 -> cc_1052418;
+    fd_2058970 [shape=box,label="(fd 3)"];
+    cc_2023215 -> fd_2058970;
+    cc_922076 [shape=box,label="(cc 1 3)"];
+    cc_2023215 -> cc_922076;
+    cc_1506836 [shape=box,label="(cc 1 2)"];
+    cc_922076 -> cc_1506836;
+    cc_792411 [shape=box,label="(cc 1 1)"];
+    cc_1506836 -> cc_792411;
+    cc_4975821 [shape=box,label="(cc 1 0)"];
+    cc_792411 -> cc_4975821;
+    fd_1034132 [shape=box,label="(fd 1)"];
+    cc_792411 -> fd_1034132;
+    cc_4186800 [shape=box,label="(cc 0 1)"];
+    cc_792411 -> cc_4186800;
+    fd_977194 [shape=box,label="(fd 2)"];
+    cc_1506836 -> fd_977194;
+    cc_1009686 [shape=box,label="(cc -4 2)"];
+    cc_1506836 -> cc_1009686;
+    fd_664834 [shape=box,label="(fd 3)"];
+    cc_922076 -> fd_664834;
+    cc_2561271 [shape=box,label="(cc -9 3)"];
+    cc_922076 -> cc_2561271;
+    fd_4138243 [shape=box,label="(fd 4)"];
+    cc_1362563 -> fd_4138243;
+    cc_95672 [shape=box,label="(cc -14 4)"];
+    cc_1362563 -> cc_95672;
+    fd_4503440 [shape=box,label="(fd 5)"];
+    cc_1567400 -> fd_4503440;
+    cc_3957014 [shape=box,label="(cc -39 5)"];
+    cc_1567400 -> cc_3957014;
 #+end_example
 
 #+BEGIN_SRC dot :file count-change-11.png :var input=dot-count-change-11 :exports results
@@ -906,7 +905,7 @@ the new =fast-expt-2= to take a single argument.
 #+begin_example
 1: 2 (0 ms) 2 (0 ms) => #t
 2: 4 (0 ms) 4 (0 ms) => #t
-3: 8 (0 ms) 8 (0 ms) => #t
+3: 8 (0 ms) 8 (1 ms) => #t
 4: 16 (0 ms) 16 (0 ms) => #t
 5: 32 (0 ms) 32 (0 ms) => #t
 6: 64 (0 ms) 64 (0 ms) => #t
@@ -1176,21 +1175,21 @@ First, the relevant code from section 1.2.6:
 #+END_SRC
 
 #+RESULTS:
-: 199
+: An error occurred.
 
 #+BEGIN_SRC scheme :session 1-2 :results value :exports both
 (smallest-divisor 1999)
 #+END_SRC
 
 #+RESULTS:
-: 1999
+: An error occurred.
 
 #+BEGIN_SRC scheme :session 1-2 :results value :exports both
 (smallest-divisor 19999)
 #+END_SRC
 
 #+RESULTS:
-: 7
+: An error occurred.
 
 ** Exercise 1.22: Measuring runtime
 *** Problem
@@ -1280,9 +1279,7 @@ Using this, finding the first three primes larger than 1,000 is easy:
 #+END_SRC
 
 #+RESULTS:
-: 1009 *** 1
-: 1013 *** 2
-: 1019 *** 2
+: An error occurred.
 
 And for 10,000, 100,000, and 1,000,000::
 
@@ -1291,15 +1288,7 @@ And for 10,000, 100,000, and 1,000,000::
 #+END_SRC
 
 #+RESULTS:
-: 10007 *** 4
-: 10009 *** 4
-: 10037 *** 5
-: 100003 *** 14
-: 100019 *** 13
-: 100043 *** 14
-: 1000003 *** 43
-: 1000033 *** 42
-: 1000037 *** 42
+: An error occurred.
 
 On my machine, calculating primality using this method for numbers
 around 10^4 takes about 8-9 microseconds, 10^5 takes about 25
@@ -1466,15 +1455,7 @@ Here are the 12 primes that are specified in the exercise:
 #+END_SRC
 
 #+RESULTS:
-: 10007 *** 3
-: 10009 *** 3
-: 10037 *** 2
-: 100003 *** 9
-: 100019 *** 8
-: 100043 *** 9
-: 1000003 *** 26
-: 1000033 *** 27
-: 1000037 *** 27
+: An error occurred.
 
 These results are very close to those for the original version...but,
 since these magnitudes are quite small relative to numbers that would
