@@ -4,7 +4,7 @@
 #+TODO: TODO(t) WRITEUP(w) || (d)
 
 * 2.1.1 Example: Arithmetic Operations for Rational Numbers
-** Exercise 2.1: Improving =make-rat=
+** WRITEUP Exercise 2.1: Improving =make-rat=
 *** Problem
      Define a better version of =make-rat= that handles both positive
      and negative arguments.  =make-rat= should normalize the sign so
@@ -28,7 +28,7 @@
 #+END_SRC
 
 * 2.1.2 Abstraction Barriers
-** Exercise 2.2:
+** WRITEUP Exercise 2.2:
 *** Problem
      Consider the problem of representing line segments
      in a plane.  Each segment is represented as a pair of points: a
@@ -84,7 +84,7 @@
 #+END_SRC
 
 
-** Exercise 2.3:
+** TODO Exercise 2.3:
 *** Problem
      Implement a representation for rectangles in a plane.  (Hint: You
      may want to make use of Exercise 2-2.)  In terms of your
@@ -97,7 +97,7 @@
 *** Solution
 
 * 2.1.3 What Is Meant by Data?
-** Exercise 2.4:
+** TODO Exercise 2.4:
 *** Problem
      Here is an alternative procedural representation
      of pairs.  For this representation, verify that =(car (cons x y))=
@@ -118,7 +118,7 @@
 
 *** Solution
 
-** Exercise 2.5:
+** TODO Exercise 2.5:
 *** Problem
      Show that we can represent pairs of non-negative integers using
      only numbers and arithmetic operations if we represent the pair
@@ -127,7 +127,7 @@
      and =cdr=.
 *** Solution
 
-** Exercise 2.6:
+** TODO Exercise 2.6:
 *** Problem
      In case representing pairs as procedures wasn't mind-boggling
      enough, consider that, in a language that can manipulate
@@ -153,7 +153,7 @@
 *** Solution
 
 * 2.1.4 Extended Exercise: Interval Arithmetic
-** Exercise 2.7:
+** TODO Exercise 2.7:
 *** Problem
      Alyssa's program is incomplete because she has not
      specified the implementation of the interval abstraction.  Here is
@@ -167,14 +167,14 @@
      implementation.
 *** Solution
 
-** Exercise 2.8:
+** TODO Exercise 2.8:
 *** Problem
      Using reasoning analogous to Alyssa's, describe how the
      difference of two intervals may be computed.  Define a
      corresponding subtraction procedure, called =sub-interval=.
 *** Solution
 
-** Exercise 2.9:
+** TODO Exercise 2.9:
 *** Problem
      The "width" of an interval is half of the difference between its
      upper and lower bounds.  The width is a measure of the
@@ -189,7 +189,7 @@
      multiplication or division.
 *** Solution
 
-** Exercise 2.10:
+** TODO Exercise 2.10:
 *** Problem
      Ben Bitdiddle, an expert systems programmer, looks over Alyssa's
      shoulder and comments that it is not clear what it means to
@@ -197,7 +197,7 @@
      check for this condition and to signal an error if it occurs.
 *** Solution
 
-** Exercise 2.11:
+** TODO Exercise 2.11:
 *** Problem
      In passing, Ben also cryptically comments: "By testing the signs
      of the endpoints of the intervals, it is possible to break
@@ -232,7 +232,7 @@
      the resistor specifications given earlier.
 *** Solution
 
-** Exercise 2.12:
+** TODO Exercise 2.12:
 *** Problem
      Define a constructor =make-center-percent= that
      takes a center and a percentage tolerance and produces the desired
@@ -241,7 +241,7 @@
      selector is the same as the one shown above.
 *** Solution
 
-** Exercise 2.13:
+** TODO Exercise 2.13:
 *** Problem
      Show that under the assumption of small percentage tolerances
      there is a simple formula for the approximate percentage
@@ -251,7 +251,7 @@
 
 *** Solution
 
-** Exercise 2.14:
+** TODO Exercise 2.14:
 *** Problem
      After considerable work, Alyssa P. Hacker delivers her finished
      system.  Several years later, after she has forgotten all about
@@ -290,7 +290,7 @@
      Exercise 2.12).
 *** Solution
 
-** Exercise 2.15:
+** TODO Exercise 2.15:
 *** Problem
      Eva Lu Ator, another user, has also noticed the different
      intervals computed by different but algebraically equivalent
@@ -302,7 +302,7 @@
      right?  Why?
 *** Solution
 
-** Exercise 2.16:
+** TODO Exercise 2.16:
 *** Problem
      Explain, in general, why equivalent algebraic expressions may
      lead to different answers.  Can you devise an interval-arithmetic
