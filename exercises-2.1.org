@@ -4,13 +4,14 @@
 #+TODO: TODO(t) WRITEUP(w) || (d)
 
 * 2.1.1 Example: Arithmetic Operations for Rational Numbers
-** Exercise 2.1:
+** Exercise 2.1: Improving =make-rat=
 *** Problem
      Define a better version of =make-rat= that handles both positive
      and negative arguments.  =make-rat= should normalize the sign so
      that if the rational number is positive, both the numerator and
      denominator are positive, and if the rational number is negative,
      only the numerator is negative.
+
 *** Solution
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
@@ -45,16 +46,43 @@
      points:
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
-          (define (print-point p)
-            (newline)
-            (display "(")
-            (display (x-point p))
-            (display ",")
-            (display (y-point p))
-            (display ")"))
+  (define (print-point p)
+    (newline)
+    (display "(")
+    (display (x-point p))
+    (display ",")
+    (display (y-point p))
+    (display ")"))
 #+END_SRC
 
 *** Solution
+#+BEGIN_SRC scheme :session 2-1 :results silent
+    (define (make-point x y)
+      (cons x y))
+
+    (define (x-point p)
+      (car p))
+
+    (define (y-point p)
+      (cdr p))
+
+    (define (make-segment a b)
+      (cons a b))
+
+    (define (start-segment s)
+      (car s))
+
+    (define (end-segment s)
+      (cdr s))
+
+    (define (midpoint-segment s)
+      (let ((x1 (x-point (start-segment s)))
+            (y1 (y-point (start-segment s)))
+            (x2 (x-point (end-segment s)))
+            (y2 (y-point (end-segment s))))
+        (make-point (/ (+ x1 x2) 2) (/ (+ y1 y2) 2))))
+#+END_SRC
+
 
 ** Exercise 2.3:
 *** Problem
