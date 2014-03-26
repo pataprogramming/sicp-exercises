@@ -13,6 +13,19 @@
      only the numerator is negative.
 *** Solution
 
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (gcd a b)
+    (if (= b 0)
+        a
+        (gcd b (remainder a b))))
+
+  (define (make-rat n d)
+    (let ((nf (if (< d 0) (- n) n))
+          (df (abs d))
+          (g (abs (gcd n d))))
+      (cons (/ nf g) (/ df g))))
+#+END_SRC
+
 * 2.1.2 Abstraction Barriers
 ** Exercise 2.2:
 *** Problem
