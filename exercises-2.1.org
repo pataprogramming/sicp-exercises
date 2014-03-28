@@ -151,6 +151,13 @@
 
 *** Solution
 
+First, a definition for =cdr= using this approach:
+
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (cdr z)
+    (z (lambda (p q) q)))
+#+END_SRC
+
 ** TODO Exercise 2.5:
 *** Problem
      Show that we can represent pairs of non-negative integers using
