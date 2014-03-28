@@ -153,12 +153,12 @@
 
 First, a definition for =cdr= using this approach:
 
-#+BEGIN_SRC scheme :session 2-1 :results silent
+#+BEGIN_SRC :results silent
   (define (cdr z)
     (z (lambda (p q) q)))
 #+END_SRC
 
-** TODO Exercise 2.5:
+** WRITEUP Exercise 2.5:
 *** Problem
      Show that we can represent pairs of non-negative integers using
      only numbers and arithmetic operations if we represent the pair
@@ -167,6 +167,30 @@ First, a definition for =cdr= using this approach:
      and =cdr=.
 *** Solution
 
+This one is fun. We can reuse the =expt= procedure for our encoding,
+but need a specific answer to decode a pair: the number of times 2
+occurs as a factor of the pair is the value of $a$, and the number of
+time 3 occurs as a factor is the value of $b$.  Rather than implement
+it separately for our =icar= and =icdr= procedures, it's best to
+capture this in another descriptive procedure: =factor-count=.
+
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (icons a b)
+    (* (expt 2 a) (expt 3 b)))
+
+  (define (factor-count i f)
+    (define (iter i c)
+      (if (= (remainder i f) 0)
+          (iter (/ i f) (+ c 1))
+          c))
+    (iter i 0))
+
+  (define (icar p)
+    (factor-count p 2))
+
+  (define (icdr p)
+    (factor-count p 3))
+#+END_SRC
 ** TODO Exercise 2.6:
 *** Problem
      In case representing pairs as procedures wasn't mind-boggling
