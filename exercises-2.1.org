@@ -83,7 +83,7 @@
         (make-point (/ (+ x1 x2) 2) (/ (+ y1 y2) 2))))
 #+END_SRC
 
-** TODO Exercise 2.3:
+** Exercise 2.3: Rectangular representations
 *** Problem
 
      Implement a representation for rectangles in a plane.  (Hint: You
@@ -96,6 +96,10 @@
      representation?
 
 *** Solution
+
+One possibility is to represent a rectangle using any two points in the
+plane. For tidiness, we can normalize the internal representation
+of these much as we did for exercise 2.1.
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
   (define (make-rectangle point1 point2)
@@ -128,6 +132,42 @@
   (define (perimeter-rectangle r)
     (* 2 (+ (width-rectangle r) (height-rectangle r))))
 #+END_SRC
+
+For another representation we could construct a representation from a
+point and offsets from this point in terms of width and height.
+
+If we were constructing a real representation (rather than just
+working with an exercise in a book), we might like to do some
+additional normalization for this representation as well.  In this
+case, though, we'll just go with a simple constructor.
+
+Since we haven't been introduced to robust error-checking mechanisms,
+yet (such as contracts in Racket), we'll just assume that the width
+and height provided are positive, and providing negative values will
+result in undefined behavior.
+
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (make-rectangle point width height)
+    (cons point (cons width height)))
+
+  (define (bottom-right-rectangle r)
+    (let ((x1 (x-point (top-left-rectangle r)))
+          (y1 (y-point (top-left-rectangle r))))
+      (make-point (+ x1 (car (cdr r))) (+ y1 (cdr (cdr r))))))
+#+END_SRC
+
+This isn't the most satisfying reimplementation, not least because
+we're missing a most important language feature: polymorphism: there's
+no way for a procedure to detect which internal representation is
+being used.
+
+We could get around this by have this alternate constructor produce an
+internal representation that's the same as the first version, but
+that's not the description of the problem.  For the moment, we'll just
+note that none of the other procedures need to be changed for this to
+work, but that based on the facilities we have available to us right
+now we can't easily use rectangles that use differing internal
+representations.
 
 * 2.1.3 What Is Meant by Data?
 ** TODO Exercise 2.4:
