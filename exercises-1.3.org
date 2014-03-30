@@ -1170,7 +1170,7 @@ that procedure once it is returned.
 #+RESULTS:
 : 21
 
-The result is an explosive 16 ($2^2^2$) calls to =inc=.
+The result is an explosive 16 ($2^{2^2}$) calls to =inc=.
 
 ** Exercise 1.42: Composing functions
 *** Problem

@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>SICP Exercise Solutions for Section 2.1</title>
+<!-- 2014-03-30 Sun 19:32 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Paul L. Snyder" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">SICP Exercise Solutions for Section 2.1</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 2.1.1 Example: Arithmetic Operations for Rational Numbers</a>
+<ul>
+<li><a href="#sec-1-1">1.1. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.1: Improving <code>make-rat</code></a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. Problem</a></li>
+<li><a href="#sec-1-1-2">1.1.2. Solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-2">2. 2.1.2 Abstraction Barriers</a>
+<ul>
+<li><a href="#sec-2-1">2.1. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.2:</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1. Problem</a></li>
+<li><a href="#sec-2-1-2">2.1.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2. Exercise 2.3: Rectangular representations</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1. Problem</a></li>
+<li><a href="#sec-2-2-2">2.2.2. Solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-3">3. 2.1.3 What Is Meant by Data?</a>
+<ul>
+<li><a href="#sec-3-1">3.1. Exercise 2.4: Lambdas as data structures</a>
+<ul>
+<li><a href="#sec-3-1-1">3.1.1. Problem</a></li>
+<li><a href="#sec-3-1-2">3.1.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">3.2. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.5:</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1. Problem</a></li>
+<li><a href="#sec-3-2-2">3.2.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3">3.3. <span class="todo TODO">TODO</span> Exercise 2.6:</a>
+<ul>
+<li><a href="#sec-3-3-1">3.3.1. Problem</a></li>
+<li><a href="#sec-3-3-2">3.3.2. Solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-4">4. 2.1.4 Extended Exercise: Interval Arithmetic</a>
+<ul>
+<li><a href="#sec-4-1">4.1. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.7: Selectors for interval arithmetic</a>
+<ul>
+<li><a href="#sec-4-1-1">4.1.1. Problem</a></li>
+<li><a href="#sec-4-1-2">4.1.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-2">4.2. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.8: Subtracting intervals</a>
+<ul>
+<li><a href="#sec-4-2-1">4.2.1. Problem</a></li>
+<li><a href="#sec-4-2-2">4.2.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3">4.3. <span class="todo TODO">TODO</span> Exercise 2.9:</a>
+<ul>
+<li><a href="#sec-4-3-1">4.3.1. Problem</a></li>
+<li><a href="#sec-4-3-2">4.3.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-4">4.4. <span class="todo TODO">TODO</span> Exercise 2.10:</a>
+<ul>
+<li><a href="#sec-4-4-1">4.4.1. Problem</a></li>
+<li><a href="#sec-4-4-2">4.4.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-5">4.5. <span class="todo TODO">TODO</span> Exercise 2.11: Percentage tolerances for intervals</a>
+<ul>
+<li><a href="#sec-4-5-1">4.5.1. Problem</a></li>
+<li><a href="#sec-4-5-2">4.5.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-6">4.6. <span class="todo TODO">TODO</span> Exercise 2.12:</a>
+<ul>
+<li><a href="#sec-4-6-1">4.6.1. Problem</a></li>
+<li><a href="#sec-4-6-2">4.6.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-7">4.7. <span class="todo TODO">TODO</span> Exercise 2.13:</a>
+<ul>
+<li><a href="#sec-4-7-1">4.7.1. Problem</a></li>
+<li><a href="#sec-4-7-2">4.7.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-8">4.8. <span class="todo TODO">TODO</span> Exercise 2.14:</a>
+<ul>
+<li><a href="#sec-4-8-1">4.8.1. Problem</a></li>
+<li><a href="#sec-4-8-2">4.8.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-9">4.9. <span class="todo TODO">TODO</span> Exercise 2.15:</a>
+<ul>
+<li><a href="#sec-4-9-1">4.9.1. Problem</a></li>
+<li><a href="#sec-4-9-2">4.9.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-10">4.10. <span class="todo TODO">TODO</span> Exercise 2.16:</a>
+<ul>
+<li><a href="#sec-4-10-1">4.10.1. Problem</a></li>
+<li><a href="#sec-4-10-2">4.10.2. Solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 2.1.1 Example: Arithmetic Operations for Rational Numbers</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.1: Improving <code>make-rat</code></h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Define a better version of <code>make-rat</code> that handles both positive
+and negative arguments.  <code>make-rat</code> should normalize the sign so
+that if the rational number is positive, both the numerator and
+denominator are positive, and if the rational number is negative,
+only the numerator is negative.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Solution</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (remainder a b))))
+
+(define (make-rat n d)
+  (let ((nf (if (&lt; d 0) (- n) n))
+        (df (abs d))
+        (g (abs (gcd n d))))
+    (cons (/ nf g) (/ df g))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 2.1.2 Abstraction Barriers</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.2:</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+Consider the problem of representing line segments
+in a plane.  Each segment is represented as a pair of points: a
+starting point and an ending point.  Define a constructor
+<code>make-segment</code> and selectors <code>start-segment</code> and <code>end-segment</code>
+that define the representation of segments in terms of points.
+Furthermore, a point can be represented as a pair of numbers: the
+\(x\) coordinate and the \(y\) coordinate.  Accordingly, specify a
+constructor <code>make-point</code> and selectors <code>x-point</code> and <code>y-point</code>
+that define this representation.  Finally, using your selectors
+and constructors, define a procedure <code>midpoint-segment</code> that takes
+a line segment as argument and returns its midpoint (the point
+whose coordinates are the average of the coordinates of the
+endpoints).  To try your procedures, you'll need a way to print
+points:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (print-point p)
+  (newline)
+  (display "(")
+  (display (x-point p))
+  (display ",")
+  (display (y-point p))
+  (display ")"))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-point x y)
+  (cons x y))
+
+(define (x-point p)
+  (car p))
+
+(define (y-point p)
+  (cdr p))
+
+(define (make-segment a b)
+  (cons a b))
+
+(define (start-segment s)
+  (car s))
+
+(define (end-segment s)
+  (cdr s))
+
+(define (midpoint-segment s)
+  (let ((x1 (x-point (start-segment s)))
+        (y1 (y-point (start-segment s)))
+        (x2 (x-point (end-segment s)))
+        (y2 (y-point (end-segment s))))
+    (make-point (/ (+ x1 x2) 2) (/ (+ y1 y2) 2))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Exercise 2.3: Rectangular representations</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+Implement a representation for rectangles in a plane.  (Hint: You
+may want to make use of Exercise 2-2.)  In terms of your
+constructors and selectors, create procedures that compute the
+perimeter and the area of a given rectangle.  Now implement a
+different representation for rectangles.  Can you design your
+system with suitable abstraction barriers, so that the same
+perimeter and area procedures will work using either
+representation?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> Solution</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+One possibility is to represent a rectangle using any two points in the
+plane. For tidiness, we can normalize the internal representation
+of these much as we did for exercise 2.1.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-rectangle point1 point2)
+  ;; normalize to top-left and bottom-right points
+  (let ((x1 (min (x-point point1) (x-point point2)))
+        (x2 (max (x-point point1) (x-point point2)))
+        (y1 (max (y-point point1) (y-point point2)))
+        (y2 (min (y-point point1) (y-point point2))))
+    (cons (make-point x1 y1) (make-point x2 y2))))
+
+(define (top-left-rectangle r)
+  (car r))
+
+(define (bottom-right-rectangle r)
+  (cdr r))
+
+(define (width-rectangle r)
+  (let ((x1 (x-point (top-left-rectangle r)))
+        (x2 (x-point (bottom-right-rectangle r))))
+    (abs (- x2 x1))))
+
+(define (height-rectangle r)
+  (let ((y1 (y-point (top-left-rectangle r)))
+        (y2 (y-point (bottom-right-rectangle r))))
+    (abs (- y1 y2))))
+
+(define (area-rectangle r)
+  (* (width-rectangle r) (height-rectangle r)))
+
+(define (perimeter-rectangle r)
+  (* 2 (+ (width-rectangle r) (height-rectangle r))))
+</pre>
+</div>
+
+<p>
+For another representation we could construct a representation from a
+point and offsets from this point in terms of width and height.
+</p>
+
+<p>
+If we were constructing a real representation (rather than just
+working with an exercise in a book), we might like to do some
+additional normalization for this representation as well.  In this
+case, though, we'll just go with a simple constructor.
+</p>
+
+<p>
+Since we haven't been introduced to robust error-checking mechanisms,
+yet (such as contracts in Racket), we'll just assume that the width
+and height provided are positive, and providing negative values will
+result in undefined behavior.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-rectangle point width height)
+  (cons point (cons width height)))
+
+(define (bottom-right-rectangle r)
+  (let ((x1 (x-point (top-left-rectangle r)))
+        (y1 (y-point (top-left-rectangle r))))
+    (make-point (+ x1 (car (cdr r))) (+ y1 (cdr (cdr r))))))
+</pre>
+</div>
+
+<p>
+This isn't the most satisfying reimplementation, not least because
+we're missing a most important language feature: polymorphism: there's
+no way for a procedure to detect which internal representation is
+being used.
+</p>
+
+<p>
+We could get around this by have this alternate constructor produce an
+internal representation that's the same as the first version, but
+that's not the description of the problem.  For the moment, we'll just
+note that none of the other procedures need to be changed for this to
+work, but that based on the facilities we have available to us right
+now we can't easily use rectangles that use differing internal
+representations.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 2.1.3 What Is Meant by Data?</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Exercise 2.4: Lambdas as data structures</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+Here is an alternative procedural representation
+of pairs.  For this representation, verify that <code>(car (cons x y))</code>
+yields <code>x</code> for any objects <code>x</code> and <code>y</code>.
+</p>
+
+
+<pre class="example">
+(define (cons x y)
+  (lambda (m) (m x y)))
+
+(define (car z)
+  (z (lambda (p q) p)))
+</pre>
+
+<p>
+What is the corresponding definition of <code>cdr</code>? (Hint: To verify
+that this works, make use of the substitution model of section
+1.1.5.)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> Solution</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+First, a definition for <code>cdr</code> using this approach:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-:results">(define (cdr z)
+  (z (lambda (p q) q)))
+</pre>
+</div>
+
+<p>
+Now, we verify these alternate versions of both <code>car</code> and <code>cdr</code>.
+First, to verify <code>car</code> we follow the suggestion in the exercise and
+use the substitution method.
+</p>
+
+<pre class="example">
+1&gt; (car (cons x y))
+2&gt; (car (lambda (m) (m x y))
+3&gt; ((lambda (m) (m x y)) (lambda (p q) p))
+4&gt; ((lambda (p q) p) x y)
+5&gt; ((lambda (x y) x))
+6&gt; x
+</pre>
+
+<p>
+Verifying the alternative version of <code>cdr</code> follows exactly the same
+pattern.
+</p>
+
+<pre class="example">
+1&gt; (cdr (cons x y))
+2&gt; (cdr (lambda (m) (m x y))
+3&gt; ((lambda (m) (m x y)) (lambda (p q) q))
+4&gt; ((lambda (p q) q) x y)
+5&gt; ((lambda (x y) y))
+6&gt; y
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.5:</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Show that we can represent pairs of non-negative integers using
+only numbers and arithmetic operations if we represent the pair
+\(a\) and \(b\) as the integer that is the product \(2^a 3^b\).  Give
+the corresponding definitions of the procedures <code>cons</code>, <code>car</code>,
+and <code>cdr</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2"><span class="section-number-4">3.2.2</span> Solution</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+This one is fun. We can reuse the <code>expt</code> procedure for our encoding,
+but need a specific answer to decode a pair: the number of times 2
+occurs as a factor of the pair is the value of \(a\), and the number of
+time 3 occurs as a factor is the value of \(b\).  Rather than implement
+it separately for our <code>icar</code> and <code>icdr</code> procedures, it's best to
+capture this in another descriptive procedure: <code>factor-count</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (icons a b)
+  (* (expt 2 a) (expt 3 b)))
+
+(define (factor-count i f)
+  (define (iter i c)
+    (if (= (remainder i f) 0)
+        (iter (/ i f) (+ c 1))
+        c))
+  (iter i 0))
+
+(define (icar p)
+  (factor-count p 2))
+
+(define (icdr p)
+  (factor-count p 3))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> <span class="todo TODO">TODO</span> Exercise 2.6:</h3>
+<div class="outline-text-3" id="text-3-3">
+</div><div id="outline-container-sec-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+In case representing pairs as procedures wasn't mind-boggling
+enough, consider that, in a language that can manipulate
+procedures, we can get by without numbers (at least insofar as
+non-negative integers are concerned) by implementing 0 and the
+operation of adding 1 as
+</p>
+
+<pre class="example">
+(define zero (lambda (f) (lambda (x) x)))
+
+(define (add-1 n)
+  (lambda (f) (lambda (x) (f ((n f) x)))))
+</pre>
+
+<p>
+This representation is known as "Church numerals", after its
+inventor, Alonzo Church, the logician who invented the \(\lambda\)
+calculus.
+</p>
+
+<p>
+Define <code>one</code> and <code>two</code> directly (not in terms of <code>zero</code> and
+<code>add-1</code>).  (Hint: Use substitution to evaluate <code>(add-1 zero)</code>).
+Give a direct definition of the addition procedure `+' (not in
+terms of repeated application of `add-1').
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3-2" class="outline-4">
+<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> Solution</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 2.1.4 Extended Exercise: Interval Arithmetic</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.7: Selectors for interval arithmetic</h3>
+<div class="outline-text-3" id="text-4-1">
+</div><div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<p>
+Alyssa's program is incomplete because she has not
+specified the implementation of the interval abstraction.  Here is
+a definition of the interval constructor:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-interval a b) (cons a b))
+</pre>
+</div>
+
+<p>
+Define selectors <code>upper-bound</code> and <code>lower-bound</code> to complete the
+implementation.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> Solution</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<p>
+First, we reproduce the definitions of Alyssa's procedures from the text:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+
+(define (mul-interval x y)
+  (let ((p1 (* (lower-bound x) (lower-bound y)))
+        (p2 (* (lower-bound x) (upper-bound y)))
+        (p3 (* (upper-bound x) (lower-bound y)))
+        (p4 (* (upper-bound x) (upper-bound y))))
+    (make-interval (min p1 p2 p3 p4)
+                   (max p1 p2 p3 p4))))
+
+(define (div-interval x y)
+  (mul-interval x
+                (make-interval (/ 1.0 (upper-bound y))
+                               (/ 1.0 (lower-bound y)))))
+</pre>
+</div>
+
+<p>
+The definitions of <code>upper-bound</code> and <code>lower-bound</code> could not be more
+straightforward.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (upper-bound i)
+  (cdr i))
+
+(define (lower-bound i)
+  (car i))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.8: Subtracting intervals</h3>
+<div class="outline-text-3" id="text-4-2">
+</div><div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+Using reasoning analogous to Alyssa's, describe how the
+difference of two intervals may be computed.  Define a
+corresponding subtraction procedure, called <code>sub-interval</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> Solution</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+This one is a little bit tricky: the "analogous reasoning" that we
+need to do is to figure out the smallest and largest possible results
+of the operation.  For the smallest, the lowest value we can achieve
+is when we subtract the highest possible value of the second interval
+for the lowest possible value of the first.  Similarly, the largest
+results could occur if the first interval is at its highest value and
+the second interval is at its lowest.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (sub-interval x y)
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> <span class="todo TODO">TODO</span> Exercise 2.9:</h3>
+<div class="outline-text-3" id="text-4-3">
+</div><div id="outline-container-sec-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<p>
+The "width" of an interval is half of the difference between its
+upper and lower bounds.  The width is a measure of the
+uncertainty of the number specified by the interval.  For some
+arithmetic operations the width of the result of combining two
+intervals is a function only of the widths of the argument
+intervals, whereas for others the width of the combination is not
+a function of the widths of the argument intervals.  Show that
+the width of the sum (or difference) of two intervals is a
+function only of the widths of the intervals being added (or
+subtracted).  Give examples to show that this is not true for
+multiplication or division.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> Solution</h4>
+</div>
+</div>
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> <span class="todo TODO">TODO</span> Exercise 2.10:</h3>
+<div class="outline-text-3" id="text-4-4">
+</div><div id="outline-container-sec-4-4-1" class="outline-4">
+<h4 id="sec-4-4-1"><span class="section-number-4">4.4.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-4-1">
+<p>
+Ben Bitdiddle, an expert systems programmer, looks over Alyssa's
+shoulder and comments that it is not clear what it means to
+divide by an interval that spans zero.  Modify Alyssa's code to
+check for this condition and to signal an error if it occurs.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4-2" class="outline-4">
+<h4 id="sec-4-4-2"><span class="section-number-4">4.4.2</span> Solution</h4>
+</div>
+</div>
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> <span class="todo TODO">TODO</span> Exercise 2.11: Percentage tolerances for intervals</h3>
+<div class="outline-text-3" id="text-4-5">
+</div><div id="outline-container-sec-4-5-1" class="outline-4">
+<h4 id="sec-4-5-1"><span class="section-number-4">4.5.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-5-1">
+<p>
+In passing, Ben also cryptically comments: "By testing the signs
+of the endpoints of the intervals, it is possible to break
+<code>mul-interval</code> into nine cases, only one of which requires more
+than two multiplications."  Rewrite this procedure using Ben's
+suggestion.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-5-2" class="outline-4">
+<h4 id="sec-4-5-2"><span class="section-number-4">4.5.2</span> Solution</h4>
+</div>
+</div>
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6"><span class="section-number-3">4.6</span> <span class="todo TODO">TODO</span> Exercise 2.12:</h3>
+<div class="outline-text-3" id="text-4-6">
+</div><div id="outline-container-sec-4-6-1" class="outline-4">
+<h4 id="sec-4-6-1"><span class="section-number-4">4.6.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-6-1">
+<p>
+Define a constructor <code>make-center-percent</code> that
+takes a center and a percentage tolerance and produces the desired
+interval.  You must also define a selector <code>percent</code> that produces
+the percentage tolerance for a given interval.  The <code>center</code>
+selector is the same as the one shown above.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6-2" class="outline-4">
+<h4 id="sec-4-6-2"><span class="section-number-4">4.6.2</span> Solution</h4>
+<div class="outline-text-4" id="text-4-6-2">
+<pre class="example">
+(define (make-center-width c w)
+  (make-interval (- c w) (+ c w)))
+
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+(define (width i)
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-center-percent c p)
+  (make-center-width c (* c */ p 100.0)))
+
+(define (percent i)
+  (* 100.0 (/ width i) (center i)))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-7" class="outline-3">
+<h3 id="sec-4-7"><span class="section-number-3">4.7</span> <span class="todo TODO">TODO</span> Exercise 2.13:</h3>
+<div class="outline-text-3" id="text-4-7">
+</div><div id="outline-container-sec-4-7-1" class="outline-4">
+<h4 id="sec-4-7-1"><span class="section-number-4">4.7.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-7-1">
+<p>
+Show that under the assumption of small percentage tolerances
+there is a simple formula for the approximate percentage
+tolerance of the product of two intervals in terms of the
+tolerances of the factors.  You may simplify the problem by
+assuming that all numbers are positive.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-7-2" class="outline-4">
+<h4 id="sec-4-7-2"><span class="section-number-4">4.7.2</span> Solution</h4>
+</div>
+</div>
+<div id="outline-container-sec-4-8" class="outline-3">
+<h3 id="sec-4-8"><span class="section-number-3">4.8</span> <span class="todo TODO">TODO</span> Exercise 2.14:</h3>
+<div class="outline-text-3" id="text-4-8">
+</div><div id="outline-container-sec-4-8-1" class="outline-4">
+<h4 id="sec-4-8-1"><span class="section-number-4">4.8.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-8-1">
+<p>
+After considerable work, Alyssa P. Hacker delivers her finished
+system.  Several years later, after she has forgotten all about
+it, she gets a frenzied call from an irate user, Lem E. Tweakit.
+It seems that Lem has noticed that the formula for parallel
+resistors can be written in two algebraically equivalent ways:
+\[\frac{r_1 r_2}{r_1 + r_2}\]
+and
+\[\frac{1}{1/r_1 + 1/r_2}\]
+</p>
+
+<p>
+He has written the following two programs, each of which computes
+the parallel-resistors formula differently:
+</p>
+
+<pre class="example">
+(define (par1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+
+(define (par2 r1 r2)
+  (let ((one (make-interval 1 1)))
+    (div-interval one
+                  (add-interval (div-interval one r1)
+                                (div-interval one r2)))))
+</pre>
+
+
+<p>
+Lem complains that Alyssa's program gives different answers for
+the two ways of computing. This is a serious complaint.
+</p>
+
+<p>
+Demonstrate that Lem is right.  Investigate the
+behavior of the system on a variety of arithmetic expressions.
+Make some intervals \(A\) and \(B\), and use them in computing the
+expressions \(A/A\) and \(A/B\).  You will get the most insight by using
+intervals whose width is a small percentage of the center value.
+Examine the results of the computation in center-percent form (see
+Exercise 2.12).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-8-2" class="outline-4">
+<h4 id="sec-4-8-2"><span class="section-number-4">4.8.2</span> Solution</h4>
+</div>
+</div>
+<div id="outline-container-sec-4-9" class="outline-3">
+<h3 id="sec-4-9"><span class="section-number-3">4.9</span> <span class="todo TODO">TODO</span> Exercise 2.15:</h3>
+<div class="outline-text-3" id="text-4-9">
+</div><div id="outline-container-sec-4-9-1" class="outline-4">
+<h4 id="sec-4-9-1"><span class="section-number-4">4.9.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-9-1">
+<p>
+Eva Lu Ator, another user, has also noticed the different
+intervals computed by different but algebraically equivalent
+expressions. She says that a formula to compute with intervals
+using Alyssa's system will produce tighter error bounds if it can
+be written in such a form that no variable that represents an
+uncertain number is repeated.  Thus, she says, <code>par2</code> is a
+"better" program for parallel resistances than <code>par1</code>.  Is she
+right?  Why?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-9-2" class="outline-4">
+<h4 id="sec-4-9-2"><span class="section-number-4">4.9.2</span> Solution</h4>
+</div>
+</div>
+<div id="outline-container-sec-4-10" class="outline-3">
+<h3 id="sec-4-10"><span class="section-number-3">4.10</span> <span class="todo TODO">TODO</span> Exercise 2.16:</h3>
+<div class="outline-text-3" id="text-4-10">
+</div><div id="outline-container-sec-4-10-1" class="outline-4">
+<h4 id="sec-4-10-1"><span class="section-number-4">4.10.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-10-1">
+<p>
+Explain, in general, why equivalent algebraic expressions may
+lead to different answers.  Can you devise an interval-arithmetic
+package that does not have this shortcoming, or is this task
+impossible?  (Warning: This problem is very difficult.)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-10-2" class="outline-4">
+<h4 id="sec-4-10-2"><span class="section-number-4">4.10.2</span> Solution</h4>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Paul L. Snyder</p>
+<p class="date">Created: 2014-03-30 Sun 19:32</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

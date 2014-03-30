@@ -1,0 +1,2867 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>SICP Exercise Solutions for Section 1.2</title>
+<!-- 2014-03-30 Sun 19:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Paul L. Snyder" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">SICP Exercise Solutions for Section 1.2</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Section 1.2.1 Linear Recursion and Iteration</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Exercise 1.9: Thinking about procedures and processes</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. Problem</a></li>
+<li><a href="#sec-1-1-2">1.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. Exercise 1.10: Ackermann's function</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. Section 1.2.2 Tree Recursion</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Exercise 1.11: Converting a recursive process to an iterative process</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1. Problem</a></li>
+<li><a href="#sec-2-1-2">2.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2. Exercise 1.12: Computing Pascal's triangle</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1. Problem</a></li>
+<li><a href="#sec-2-2-2">2.2.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-3">2.3. Exercise 1.13: A Fibonacci proof</a>
+<ul>
+<li><a href="#sec-2-3-1">2.3.1. Problem</a></li>
+<li><a href="#sec-2-3-2">2.3.2. Answer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Section 1.2.3 Orders of Growth</a>
+<ul>
+<li><a href="#sec-3-1">3.1. <span class="todo TODO">TODO</span> Exercise 1.14: Counting change</a>
+<ul>
+<li><a href="#sec-3-1-1">3.1.1. Problem</a></li>
+<li><a href="#sec-3-1-2">3.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">3.2. Exercise 1.15: Approximating sine</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1. a.</a></li>
+<li><a href="#sec-3-2-2">3.2.2. b.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Section 1.2.4 Exponentiation</a>
+<ul>
+<li><a href="#sec-4-1">4.1. Exercise 1.16: Iterative exponentiation in logarithmic time</a>
+<ul>
+<li><a href="#sec-4-1-1">4.1.1. Problem</a></li>
+<li><a href="#sec-4-1-2">4.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-2">4.2. Exercise 1.17: Recursive integer multiplication with <code>square</code> and <code>halve</code></a>
+<ul>
+<li><a href="#sec-4-2-1">4.2.1. Problem</a></li>
+<li><a href="#sec-4-2-2">4.2.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3">4.3. Exercise 1.18: Iterative integer multiplication with <code>square</code> and <code>halve</code></a>
+<ul>
+<li><a href="#sec-4-3-1">4.3.1. Problem</a></li>
+<li><a href="#sec-4-3-2">4.3.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-4">4.4. Exercise 1.19: Logarithmic Fibonacci calculations</a>
+<ul>
+<li><a href="#sec-4-4-1">4.4.1. Problem</a></li>
+<li><a href="#sec-4-4-2">4.4.2. Answer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-5">5. Section 1.2.5 Greatest Common Divisors</a>
+<ul>
+<li><a href="#sec-5-1">5.1. <span class="todo TODO">TODO</span> Exercise 1.20: Revisiting applicative order and normal order</a>
+<ul>
+<li><a href="#sec-5-1-1">5.1.1. Problem</a></li>
+<li><a href="#sec-5-1-2">5.1.2. Answer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Section 1.2.6 Testing for Primality</a>
+<ul>
+<li><a href="#sec-6-1">6.1. Exercise 1.21: Using <code>smallest-divisor</code></a>
+<ul>
+<li><a href="#sec-6-1-1">6.1.1. Problem</a></li>
+<li><a href="#sec-6-1-2">6.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-2">6.2. Exercise 1.22: Measuring runtime</a>
+<ul>
+<li><a href="#sec-6-2-1">6.2.1. Problem</a></li>
+<li><a href="#sec-6-2-2">6.2.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-3">6.3. Exercise 1.23: Speeding up <code>smallest-divisor</code></a>
+<ul>
+<li><a href="#sec-6-3-1">6.3.1. Problem</a></li>
+<li><a href="#sec-6-3-2">6.3.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-4">6.4. Exercise 1.24: Putting the Fermat method to work</a>
+<ul>
+<li><a href="#sec-6-4-1">6.4.1. Problem</a></li>
+<li><a href="#sec-6-4-2">6.4.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-5">6.5. Exercise 1.25: A not-so-fast use of <code>fast-expt</code></a>
+<ul>
+<li><a href="#sec-6-5-1">6.5.1. Problem</a></li>
+<li><a href="#sec-6-5-2">6.5.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-6">6.6. Exercise 1.26: A subtle slowdown in <code>expmod</code></a>
+<ul>
+<li><a href="#sec-6-6-1">6.6.1. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-7">6.7. Exercise 1.27: Fooling Fermat with Carmichael numbers</a>
+<ul>
+<li><a href="#sec-6-7-1">6.7.1. Problem</a></li>
+<li><a href="#sec-6-7-2">6.7.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-8">6.8. Exercise 1.28: The Miller-Rabin test</a>
+<ul>
+<li><a href="#sec-6-8-1">6.8.1. Problem</a></li>
+<li><a href="#sec-6-8-2">6.8.2. Answer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Section 1.2.1 Linear Recursion and Iteration</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Exercise 1.9: Thinking about procedures and processes</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Each of the following two procedures defines a
+method for adding two positive integers in terms of the procedures
+<code>inc</code>, which increments its argument by 1, and <code>dec</code>, which
+decrements its argument by 1.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (+ a b)
+  (if (= a 0)
+  b
+  (inc (+ (dec a) b))))
+
+(define (+ a b)
+  (if (= a 0)
+  b
+  (+ (dec a) (inc b))))
+</pre>
+</div>
+
+<p>
+Using the substitution model, illustrate the process generated by
+each procedure in evaluating <code>(+ 4 5)</code>.  Are these processes
+iterative or recursive?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+First procedure:
+</p>
+
+<pre class="example">
+(+ 4 5)
+(if (= 4 0)
+    5
+    (inc (+ (dec 4) 5)))
+(inc (+ (dec 4) 5))
+(inc (+ 3 5))
+(inc (if (= 3 5)
+         5
+         (inc (+ (dec 3) 5))))
+(inc (inc (+ (dec 3) 5)))
+(inc (inc (+ 2 5) ))
+(inc (inc (if (= 2 5)
+              5
+              (inc (+ (dec 2) 5)))))
+(inc (inc (inc (+ (dec 2) 5))))
+(inc (inc (inc (+ 1 5))))
+(inc (inc (inc (if (= 1 0)
+                   5
+                   (inc (+ (dec 1) 5))))))
+(inc (inc (inc (inc (+ (dec 1) 5)))))
+(inc (inc (inc (inc (+ 0 5)))))
+(inc (inc (inc (inc (if (= 0 0)
+                        5
+                        (inc (+ (dec 0) 5)))))))
+(inc (inc (inc (inc 5))))
+(inc (inc (inc 6)))
+(inc (inc 7))
+(inc 8)
+9
+</pre>
+
+<p>
+Second procedure:
+</p>
+
+<pre class="example">
+(+ 4 5)
+(if (= 4 0)
+    5
+    (+ (dec 4) (inc 5)))
+(+ (dec 4) (inc 5))
+(+ 3 6)
+(if (= 3 0)
+    6
+    (+ (dec 3) (inc 6)))
+(+ (dec 3) (inc 6))
+(+ 2 7)
+(if (= 2 0)
+    7
+    (+ (dec 2) (inc 7)))
+(+ (dec 2) (inc 7))
+(+ 1 8)
+(if (= 1 0)
+    8
+    (+ (dec 1) (inc 8)))
+(+ (dec 1) (inc 8))
+(+ 0 9)
+(if (= 0 0)
+    9
+    (+ (dec 0) (inc 9)))
+9
+</pre>
+
+<p>
+As can be seen, the first procedure is a linear recursive process,
+building up deferred operations. The second is a linear iterative process.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Exercise 1.10: Ackermann's function</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+The following procedure computes a mathematical function called
+Ackermann's function.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (- x 1)
+                 (A x (- y 1))))))
+</pre>
+</div>
+
+<p>
+What are the values of the following expressions?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(A 1 10)
+</pre>
+</div>
+
+<pre class="example">
+1024
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(A 2 4)
+</pre>
+</div>
+
+<pre class="example">
+65536
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(A 3 3)
+</pre>
+</div>
+
+<pre class="example">
+65536
+</pre>
+
+<p>
+Consider the following procedures, where <code>A</code> is the procedure
+defined above:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (f n) (A 0 n))
+
+(define (g n) (A 1 n))
+
+(define (h n) (A 2 n))
+
+(define (k n) (* 5 n n))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (investigate name func num)
+
+  (define (investigate-iter i)
+    (cond ((&lt; i num)
+           (printf " ~a:~a" i (func i))
+           (investigate-iter (+ i 1)))
+          (else (newline))))
+  (display name)
+  (investigate-iter 0))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(investigate "k" k 5)
+</pre>
+</div>
+
+<p>
+Give concise mathematical definitions for the functions computed
+by the procedures <code>f</code>, <code>g</code>, and <code>h</code> for positive integer values of
+\(n\).  For example, <code>(k n)</code> computes \(5n^2\).
+</p>
+
+
+
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(investigate "f" f 17)
+</pre>
+</div>
+
+<p>
+The output of <code>f</code> is straightforward to analyze:
+$$f(n) => 2*n$$
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(investigate "g" g 17)
+</pre>
+</div>
+
+<p>
+Similarly, <code>g</code> is easy to identify for anyone who's been programming
+for any length of time:
+$$g(n) => 2^n$$
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(investigate "h" h 5)
+</pre>
+</div>
+
+<p>
+<code>h</code>, on the other hand, is a serious pain!
+</p>
+
+<pre class="example">
+(A 2 1) =&gt; 2                                             (2^(2^0))
+(A 2 2) =&gt; (A 1 (A 2 1)) =&gt; (A 1 2) =&gt; 4                 (2^(2^1))  (2^(2^(2^0))
+(A 2 3) =&gt; (A 1 (A 2 2)) =&gt; (A 1 4) =&gt; 16                (2^(2^2))  (2^(2^(2^1))
+(A 2 4) =&gt; (A 1 (A 2 3)) =&gt; (A 1 16) =&gt; 65536            (2^(2^4))  (2^(2^(2^2))
+(A 2 5) =&gt; (A 1 (A 2 4)) =&gt; (A 1 65536) =&gt; 20035...56736 (2^(2^16)) (2^(2^(2^4))
+
+2^2 ^ 2^(1)
+2^3 ^ 2^2 ^ 2^1
+
+h(1) =&gt; 2
+h(2) =&gt; 2 ^ 2
+h(3) =&gt; 2 ^ 2 ^ 2
+h(4) =&gt; 2 ^ 2 ^ 2 ^ 2
+...
+</pre>
+
+<p>
+There's no standard mathematical notation for this pattern; which is
+commonly called a "power tower". A more formal term is <i>tetration</i>.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Section 1.2.2 Tree Recursion</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Exercise 1.11: Converting a recursive process to an iterative process</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+A function f is defined by the rule that \(f(n) = n\) if \(n<3\) and
+\(f(n) = f(n - 1) + 2f(n - 2) + 3f(n - 3)\) if \(n>= 3\).  Write a
+procedure that computes \(f\) by means of a recursive process.  Write a
+procedure that computes \(f\) by means of an iterative process.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (f-rec n)
+  (if (&lt; n 3)
+      n
+      (+ (f-rec (- n 1))
+         (* 2 (f-rec (- n 2)))
+         (* 3 (f-rec (- n 3))))))
+
+(define (f-iter n)
+  (define (f-inner i fn1 fn2 fn3)
+    (define cur (+ fn1 (* 2 fn2) (* 3 fn3)))
+    (if (= i n)
+        cur
+        (f-inner (+ i 1) cur fn1 fn2)))
+
+  (if (&lt; n 3)
+      n
+      (f-inner 3 2 1 0)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (compare f1 f2 k)
+  (define (compare-iter i good?)
+    (define t0 (current-milliseconds))
+    (define r1 (f1 i))
+    (define t1 (current-milliseconds))
+    (define r2 (f2 i))
+    (define t2 (current-milliseconds))
+
+    (printf "~a: ~a (~a ms) ~a (~a ms) =&gt; ~a~n"
+            i
+            r1 (- t1 t0)
+            r2 (- t2 t1)
+            (= r1 r2))
+    (if (&lt; i k)
+        (compare-iter (+ i 1) (and good? (= r1 r2)))
+        (and good? (= r1 r2))))
+
+  (compare-iter 1 true))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(compare f-rec f-iter 33)
+</pre>
+</div>
+
+<pre class="example">
+1: 1 (0 ms) 1 (0 ms) =&gt; #t
+2: 2 (0 ms) 2 (0 ms) =&gt; #t
+3: 4 (0 ms) 4 (0 ms) =&gt; #t
+4: 11 (0 ms) 11 (0 ms) =&gt; #t
+5: 25 (0 ms) 25 (0 ms) =&gt; #t
+6: 59 (0 ms) 59 (0 ms) =&gt; #t
+7: 142 (0 ms) 142 (0 ms) =&gt; #t
+8: 335 (0 ms) 335 (0 ms) =&gt; #t
+9: 796 (0 ms) 796 (0 ms) =&gt; #t
+10: 1892 (0 ms) 1892 (0 ms) =&gt; #t
+11: 4489 (0 ms) 4489 (0 ms) =&gt; #t
+12: 10661 (0 ms) 10661 (0 ms) =&gt; #t
+13: 25315 (0 ms) 25315 (0 ms) =&gt; #t
+14: 60104 (0 ms) 60104 (0 ms) =&gt; #t
+15: 142717 (0 ms) 142717 (0 ms) =&gt; #t
+16: 338870 (1 ms) 338870 (0 ms) =&gt; #t
+17: 804616 (0 ms) 804616 (0 ms) =&gt; #t
+18: 1910507 (1 ms) 1910507 (0 ms) =&gt; #t
+19: 4536349 (1 ms) 4536349 (0 ms) =&gt; #t
+20: 10771211 (2 ms) 10771211 (0 ms) =&gt; #t
+21: 25575430 (4 ms) 25575430 (0 ms) =&gt; #t
+22: 60726899 (8 ms) 60726899 (0 ms) =&gt; #t
+23: 144191392 (13 ms) 144191392 (0 ms) =&gt; #t
+24: 342371480 (26 ms) 342371480 (0 ms) =&gt; #t
+25: 812934961 (46 ms) 812934961 (0 ms) =&gt; #t
+26: 1930252097 (84 ms) 1930252097 (0 ms) =&gt; #t
+27: 4583236459 (154 ms) 4583236459 (0 ms) =&gt; #t
+28: 10882545536 (288 ms) 10882545536 (0 ms) =&gt; #t
+29: 25839774745 (522 ms) 25839774745 (0 ms) =&gt; #t
+30: 61354575194 (963 ms) 61354575194 (0 ms) =&gt; #t
+31: 145681761292 (1821 ms) 145681761292 (0 ms) =&gt; #t
+32: 345910235915 (3296 ms) 345910235915 (0 ms) =&gt; #t
+33: 821337484081 (6081 ms) 821337484081 (0 ms) =&gt; #t
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Exercise 1.12: Computing Pascal's triangle</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+The following pattern of numbers is called "Pascal's
+triangle".
+</p>
+
+<pre class="example">
+        1
+      1   1
+    1   2   1
+  1   3   3   1
+1   4   6   4   1
+</pre>
+
+<p>
+The numbers at the edge of the triangle are all 1, and each number
+inside the triangle is the sum of the two numbers above it.
+Write a procedure that computes elements of Pascal's triangle by
+means of a recursive process.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> Answer</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">;; Find the m-th number in the n-th row of Pascal's triangle
+(define (pascal n m)
+  (cond ((or (&gt; m n) (&lt; m 1) (&lt; n 1)) -1) ; Error condition
+        ((or (= m 1) (= m n)) 1)  ; Outer numbers
+        (else (+ (pascal (- n 1) (- m 1))
+                 (pascal (- n 1) m)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">;; Display first k rows of Pascal's triangle
+(define (display-pascal k)
+  (define (display-pascal-inner i j)
+    (display (pascal i j))
+    (cond ((&lt; j i) (display " ") (display-pascal-inner i (+ j 1)))
+          ((= i k) (newline))
+          ((= i j) (newline) (display-pascal-inner (+ i 1) 1))))
+
+  (display-pascal-inner 1 1))
+
+(time (display-pascal 18))
+</pre>
+</div>
+
+<pre class="example">
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+1 5 10 10 5 1
+1 6 15 20 15 6 1
+1 7 21 35 35 21 7 1
+1 8 28 56 70 56 28 8 1
+1 9 36 84 126 126 84 36 9 1
+1 10 45 120 210 252 210 120 45 10 1
+1 11 55 165 330 462 462 330 165 55 11 1
+1 12 66 220 495 792 924 792 495 220 66 12 1
+1 13 78 286 715 1287 1716 1716 1287 715 286 78 13 1
+1 14 91 364 1001 2002 3003 3432 3003 2002 1001 364 91 14 1
+1 15 105 455 1365 3003 5005 6435 6435 5005 3003 1365 455 105 15 1
+1 16 120 560 1820 4368 8008 11440 12870 11440 8008 4368 1820 560 120 16 1
+1 17 136 680 2380 6188 12376 19448 24310 24310 19448 12376 6188 2380 680 136 17 1
+cpu time: 15 real time: 15 gc time: 0
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Exercise 1.13: A Fibonacci proof</h3>
+<div class="outline-text-3" id="text-2-3">
+</div><div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+Prove that \(\text{Fib}(n)\) is the closest integer to
+\(\phi^n / \sqrt{5}\), where \(\phi = (1 + \sqrt{5})/2\).  Hint: Let
+\(\psi = (1 - \sqrt{5})/2\).  Use induction and the definition of
+the Fibonacci numbers (see section 1.2.2) to prove that
+\(\text{Fib}(n) = (\phi^n - \psi^n)/\sqrt{5}\).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> Answer</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+This one is pretty hairy, and requires a modicum of mathematical
+sophication to work through.  For a proof like this (particularly when
+given a broad hint like this), the best approach is frequently to leap
+in and see where things take you.
+</p>
+
+<p>
+In addition to the definition of \(\psi\) in the exercise, we also have
+a pointer to section 1.2.2, which gives us the definition of the
+Fibonacci sequence:
+</p>
+
+<p>
+\[ \text{Fib}(n) = \begin{cases}
+0 &\mbox{if } n=0 \\
+1 &\mbox{if } n=1 \\
+\text{Fib}(n-1) + \text{Fib}(n-2) &\mbox{otherwise}
+\end{cases}\]
+</p>
+
+<p>
+Significantly, it also gives us a couple of facts about \(\phi\) that
+will prove to be useful, as well:
+</p>
+
+\begin{align*}
+\phi   &= 1 + \sqrt{5}/2 \approx 1.6180 \\
+\phi^2 &= \phi + 1
+\end{align*}
+
+<p>
+Since this is a proof by induction, the first thing to do is to
+demonstrate the base cases.  In this case, we have two, \(n=0\) and \(n=1\).
+</p>
+
+<p>
+Starting with \(n=0\), we need to show \(\text{Fib}(0)=0\).
+</p>
+
+<p>
+\[
+\text{Fib}(0) = \frac{\phi^0 - \psi^0}{\sqrt{5}}
+= \frac{1-1}{\sqrt{5}}
+= \frac{0}{\sqrt{5}}
+= 0
+\]
+</p>
+
+<p>
+Easy! Now we show \(\text{Fib}(1)=1\).
+</p>
+
+\begin{align*}
+\text{Fib}(1) &= \frac{phi^1 - \psi^1}{\sqrt{5}} \\
+&= \frac{\frac{1+\sqrt{5}}{2} - \frac{1-\sqrt{5}}{2}}{\sqrt{5}} \\
+&= \frac{\frac{1 + \sqrt{5} - 1 + \sqrt{5}}{2}}{\sqrt{5}} \\
+&= \frac{\frac{2\sqrt{5}}{2}}{\sqrt{5}} = \frac{\sqrt{5}}{\sqrt{5}}=1
+\end{align*}
+
+<p>
+These are straightforward enough. Next, we need to assume that the
+hypothesis holds for \(n-1\) and \(n\), and use this to show that this
+implies it also must hold for \(n+1\). That is, if we assume
+</p>
+
+<p>
+\[\text{Fib}(n-1) = \frac{\phi^{n-1} - \psi^{n-1}}{\sqrt{5}}\]
+</p>
+
+<p>
+and
+</p>
+
+<p>
+\[\text{Fib}(n) = \frac{\phi^{n} - \psi^{n}}{\sqrt{5}}\]
+</p>
+
+<p>
+we show that it implies that
+</p>
+
+<p>
+\[\text{Fib}(n+1) = \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt{5}}\]
+</p>
+
+<p>
+Once again, the best thing to do is just leap in, start substituting,
+and see what results.
+</p>
+
+\begin{align*}
+\text{Fib}(n+1) &= \text{Fib}(n-1) + \text{Fib}(n) \\
+&= \frac{\phi^{n-1} - \psi^{n-1}}{\sqrt{5}} + \frac{\phi^{n} - \psi^{n}}{\sqrt{5}} \\
+&= \frac{\phi^{n-1} - \psi^{n-1} + \phi^n - \psi^n}{\sqrt{5}} \\
+&= \frac{(\phi^n + \phi^{n-1}) - (\psi^n + \psi^{n-1})}{\sqrt{5}}
+\end{align*}
+
+<p>
+It's at this point where the useful tidbit about \(\phi\) from the text
+comes in handy, that \(\phi^2 = \phi + 1\).  (As a note, if would have
+been helpful if the exercise had mentioned that it is also the case
+that $&psi;<sup>2</sup> = &psi; + 1$!) With these identities in hand, we can
+factor out \(\phi^{n-1}\) and \(\psi^{n-1}\) from the terms in the
+numerator and substitute accordingly.
+</p>
+
+\begin{align*}
+&= \frac{\phi^{n-1}(\phi + 1) - \psi^{n-1}(\psi +1)}{\sqrt{5}} \\
+&= \frac{\phi^{n-1}\phi^2 - \psi^{n-1}\psi^2}{\sqrt{5}} \\
+&= \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt{5}}
+\end{align*}
+
+<p>
+This concludes the inductive portion of the proof, but it doesn't get
+us all the way to what we were supposed to demonstrate: that,
+therefore, \(\text{Fib}(n)\) is the closest integer to \(\frac{\phi^n}{\sqrt{5}}\).
+</p>
+
+<p>
+What would it mean for this to be the case? As the \(\text{Fib}(n)\) will
+always be an integer, the distance between it and the other term must
+be less than \(\frac{1}{2}\); if it were not the case than
+\(\phi^n\) would be closer to a different integer. As an edge case, the
+difference can't be exactly \(\frac{1}{2}\), as that would mean
+\(\phi^{n}\) was equally close to a second integer.  We can specify
+algebraically using the absolute value:
+</p>
+
+<p>
+\[
+\left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right| < \frac{1}{2}
+\]
+</p>
+
+<p>
+Trying out some substitutions, we can get this down to something manageable.
+</p>
+
+<p>
+\[
+\left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right|
+= \left|\frac{\phi^n - \psi^n}{\sqrt{5}} -
+\frac{\phi^n}{\sqrt{5}}\right| = \left|-\frac{\psi^n}{\sqrt{5}}\right|
+= \left|\frac{\psi^n}{\sqrt{5}}\right|
+\]
+</p>
+
+<p>
+This lets us examine what we are trying to prove in the light of this
+new equivalence:
+</p>
+
+\begin{align*}
+\left|\text{Fib}(n) - \frac{\phi^n}{\sqrt{5}}\right| < \frac{1}{2} \\
+\left|\frac{\psi^n}{\sqrt{5}}\right| < \frac{1}{2} \\
+\left|\psi^n\right\| < \frac{\sqrt{5}}{2}
+\end{align*}
+
+<p>
+We can see that \[\frac{\sqrt{5}}{2} \approx 1.11803\] and by
+definition, \[\psi = \frac{1 - \sqrt{5}}{2} \approx -0.61803\]
+</p>
+
+<p>
+Raising a real number \(n\neq 0\) in the range \(-1 < n < 1\) to a
+positive integer power can never result in a value that is outside
+that range.  Thus, it can never exceed \(\frac{\sqrt{5}}{2}\), since the
+latter is greater than one. This is sufficient to demonstrate that
+\(\text{Fib}(n)\) is the closest integer to \(\phi^n\).
+</p>
+
+<p>
+\(\square\)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Section 1.2.3 Orders of Growth</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> <span class="todo TODO">TODO</span> Exercise 1.14: Counting change</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+Draw the tree illustrating the process generated by the
+<code>count-change</code> procedure of section *Note 1-2-2:: in making
+change for 11 cents.  What are the orders of growth of the space
+and number of steps used by this process as the amount to be
+changed increases?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+First, we'll setup some tooling to output to GraphViz's <code>dot</code>
+format. This could be done in more complex (and interesting) ways, but
+this tries to stick as closely as possible to the Scheme features that
+have been discussed in the book so far.  The additional features used
+are <code>format</code> and <code>printf</code> (for displaying output) and <code>random</code> for
+creating a sort-of-unique ID. If we were to just use the information
+available in a procedure (that is, its name and the parameters with
+which it was called), we wouldn't have a tree, as multiple calls to
+the same procedure with the same parameters would be collapsed.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (random-id)
+  (random 5000000))
+
+(define (make-name str)
+  ;; Append random number to given string for a hopefully unique node
+  ;; name.  This isn't perfect, as there is a small possibility that
+  ;; IDs could be repeated.  As we aren't using assignment yet, this
+  ;; is probably good enough.
+  (format "~a_~a" str (random-id)))
+
+(define (dot-node name label)
+  (printf "    ~a [shape=box,label=\"~a\"];~n" name label))
+
+(define (dot-edge parent child)
+  (printf "    ~a -&gt; ~a;~n" parent child))
+</pre>
+</div>
+
+<p>
+Now, the code itself with the above instrumentation included.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (count-change amount)
+  (define name (make-name "count_change"))
+  (dot-node name (format "(count-change ~a)" amount))
+  (cc amount 5 name))
+
+(define (cc amount kinds-of-coins parent)
+  (define name (make-name "cc"))
+  (dot-node name (format "(cc ~a ~a)" amount kinds-of-coins))
+  (dot-edge parent name)
+  (cond ((= amount 0) 1)
+        ((or (&lt; amount 0) (= kinds-of-coins 0)) 0)
+        (else (+ (cc amount
+                     (- kinds-of-coins 1)
+                     name)
+                 (cc (- amount
+                        (first-denomination kinds-of-coins name))
+                     kinds-of-coins
+                     name)))))
+
+(define (first-denomination kinds-of-coins parent)
+  (define name (make-name "fd"))
+  (dot-node name (format "(fd ~a)" kinds-of-coins))
+  (dot-edge parent name)
+
+  (cond ((= kinds-of-coins 1) 1)
+        ((= kinds-of-coins 2) 5)
+        ((= kinds-of-coins 3) 10)
+        ((= kinds-of-coins 4) 25)
+        ((= kinds-of-coins 5) 50)))
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-scheme" id="dot-count-change-11">(count-change 11)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="count-change-11.png" alt="count-change-11.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Exercise 1.15: Approximating sine</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+The sine of an angle (specified in radians) can
+be computed by making use of the approximation \(\sin x\approx x\) if
+\(x\) is sufficiently small, and the trigonometric identity
+</p>
+
+
+<p>
+$$\sin x = 3\sin\frac{x}{3} - 4\sin^3\frac{x}{3}$$
+</p>
+
+<p>
+to reduce the size of the argument of \(sin\).  (For purposes of this
+exercise an angle is considered "sufficiently small" if its
+magnitude is not greater than 0.1 radians.) These ideas are
+incorporated in the following procedures:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (cube x) (* x x x))
+
+(define (p x)
+  ;; (Modified to show calls to p)
+  (printf "(p ~a)~n" x)
+  (- (* 3 x) (* 4 (cube x))))
+
+(define (sine angle)
+   (if (not (&gt; (abs angle) 0.1))
+       angle
+       (p (sine (/ angle 3.0)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> a.</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+How many times is the procedure <code>p</code> applied when <code>(sine 12.15)</code> is
+          evaluated?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(sine 12.15)
+</pre>
+</div>
+
+<pre class="example">
+(p 0.049999999999999996)
+(p 0.1495)
+(p 0.4351345505)
+(p 0.9758465331678772)
+(p -0.7895631144708228)
+</pre>
+
+<p>
+5 calls to <code>p</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2"><span class="section-number-4">3.2.2</span> b.</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+What is the order of growth in space and number of steps (as a
+    function of <code>a</code>) used by the process generated by the <code>sine</code>
+    procedure when <code>(sine a)</code> is evaluated?
+</p>
+
+<p>
+Logarithms answer, more or less, the question "how many times can I
+divide one number by another?" The second number is the <i>base</i>. So,
+consider log base 2 of 8: 8/2=4, 4/2=2, 2/2=1; thus, \(\log_2 8 = 3\).
+</p>
+
+<p>
+The actual definition is that the log of a number is the exponent to
+which the base must be raised to equal that number. Thus, since \(2^3 =
+8\), then \(\log_2 8 = 3\).
+</p>
+
+<p>
+As can be seen by the single call to <code>p</code> in the body of <code>sine</code>, each
+recursive call reduces <code>angle</code> by a factor of 3; thus, <code>p</code> is going to
+be of \(\theta(\log n)\). (The specific logarithmic base is effectively
+a constant, so all logarithmic processes are considered to be of them
+same order of computational complexity.)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Section 1.2.4 Exponentiation</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Exercise 1.16: Iterative exponentiation in logarithmic time</h3>
+<div class="outline-text-3" id="text-4-1">
+</div><div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<p>
+Design a procedure that evolves an iterative exponentiation
+process that uses successive squaring and uses a logarithmic
+number of steps, as does <code>fast-expt</code>.  (Hint: Using the
+observation that \((b^{n/2})^2 = (b^2)^{n/2}\), keep, along with
+the exponent \(n\) and the base \(b\), an additional state variable
+\(a\), and define the state transformation in such a way that the
+product \(ab^n\) is unchanged from state to state.  At the
+beginning of the process \(a\) is taken to be 1, and the answer is
+given by the value of \(a\) at the end of the process.  In general,
+the technique of defining an "invariant quantity" that remains
+unchanged from state to state is a powerful way to think about
+the design of iterative algorithms.)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<p>
+Here's the code from the section for the original <code>fast-expt</code>
+algorithm.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (square n)
+  (* n n))
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
+</pre>
+</div>
+
+<p>
+Note that the <code>even?</code> case in the <code>cond</code> is building up calls to
+<code>square</code> and the <code>else</code> is building up calls to <code>*</code>. The stack
+of calls to <code>fast-expt</code> keeps building up until it bottoms out
+with the first case, after which all of the pending computations
+can be rolled back up.
+</p>
+
+<p>
+This problem is to switch from this from a logarithmic recursive
+process to a logarithmic iterative process.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (fast-expt-2 b n)
+  (define (fast-expt-iter b n a)
+    (cond ((= n 0) a)
+          ((even? n) (fast-expt-iter (square b) (/ n 2) a))
+          (else (fast-expt-iter b (- n 1) (* a b)))))
+  (fast-expt-iter b n 1))
+</pre>
+</div>
+
+<p>
+To evaulate this, we'll reuse the <code>compare</code> function used for Problem
+1.11. To enable this, we wrap the calls to the text's <code>fast-expt</code> and
+the new <code>fast-expt-2</code> to take a single argument.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (expt-by-two n) (fast-expt 2 n))
+(define (expt-by-two-2 n) (fast-expt-2 2 n))
+(compare expt-by-two expt-by-two-2 20)
+</pre>
+</div>
+
+<pre class="example">
+1: 2 (0 ms) 2 (0 ms) =&gt; #t
+2: 4 (0 ms) 4 (0 ms) =&gt; #t
+3: 8 (0 ms) 8 (1 ms) =&gt; #t
+4: 16 (0 ms) 16 (0 ms) =&gt; #t
+5: 32 (0 ms) 32 (0 ms) =&gt; #t
+6: 64 (0 ms) 64 (0 ms) =&gt; #t
+7: 128 (0 ms) 128 (0 ms) =&gt; #t
+8: 256 (0 ms) 256 (0 ms) =&gt; #t
+9: 512 (0 ms) 512 (0 ms) =&gt; #t
+10: 1024 (0 ms) 1024 (0 ms) =&gt; #t
+11: 2048 (0 ms) 2048 (0 ms) =&gt; #t
+12: 4096 (0 ms) 4096 (0 ms) =&gt; #t
+13: 8192 (0 ms) 8192 (0 ms) =&gt; #t
+14: 16384 (0 ms) 16384 (0 ms) =&gt; #t
+15: 32768 (0 ms) 32768 (0 ms) =&gt; #t
+16: 65536 (0 ms) 65536 (0 ms) =&gt; #t
+17: 131072 (0 ms) 131072 (0 ms) =&gt; #t
+18: 262144 (0 ms) 262144 (0 ms) =&gt; #t
+19: 524288 (0 ms) 524288 (0 ms) =&gt; #t
+20: 1048576 (0 ms) 1048576 (0 ms) =&gt; #t
+</pre>
+
+<p>
+As can be seen, both are extremely fast and return identical results.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Exercise 1.17: Recursive integer multiplication with <code>square</code> and <code>halve</code></h3>
+<div class="outline-text-3" id="text-4-2">
+</div><div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+The exponentiation algorithms in this section are based on
+performing exponentiation by means of repeated multiplication.
+In a similar way, one can perform integer multiplication by means
+of repeated addition.  The following multiplication procedure (in
+which it is assumed that our language can only add, not multiply)
+is analogous to the <code>expt</code> procedure:
+</p>
+
+<pre class="example">
+(define (mult a b)
+  (if (= b 0)
+      0
+      (+ a (* a (- b 1)))))
+</pre>
+
+<p>
+This algorithm takes a number of steps that is linear in \(b\).
+Now suppose we include, together with addition, operations
+<code>double</code>, which doubles an integer, and <code>halve</code>, which divides an
+(even) integer by 2.  Using these, design a multiplication
+procedure analogous to `fast-expt' that uses a logarithmic number
+of steps.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> Answer</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+This is a straightforward translation of the <code>fast-expt</code> code from the
+text to the multiplication problem&#x2026;the problem (and solution) have
+exactly the same shape.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (double n) (* n 2))
+
+(define (halve n) (/ n 2))
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (fast-mult a b)
+  (cond ((= b 0) 0)
+        ((even? b) (double (fast-mult a (halve b))))
+        (else (+ a (fast-mult a (- b 1))))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Exercise 1.18: Iterative integer multiplication with <code>square</code> and <code>halve</code></h3>
+<div class="outline-text-3" id="text-4-3">
+</div><div id="outline-container-sec-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<p>
+Using the results of Exercise 1.16 and Exercise 1.17, devise a
+procedure that generates an iterative process for multiplying two
+integers in terms of adding, doubling, and halving and uses a
+logarithmic number of steps.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> Answer</h4>
+<div class="outline-text-4" id="text-4-3-2">
+<p>
+This solution is also straightforward. The only trick part is keeping
+straight what needs to be added and subtracted, and from where.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (fast-mult-2 a b)
+  (define (fast-mult-iter a b c)
+    (cond ((= b 0) c)
+          ((even? b) (fast-mult-iter (double a) (halve b) c))
+          (else (fast-mult-iter a (- b 1) (+ c a)))))
+  (fast-mult-iter a b 0))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> Exercise 1.19: Logarithmic Fibonacci calculations</h3>
+<div class="outline-text-3" id="text-4-4">
+</div><div id="outline-container-sec-4-4-1" class="outline-4">
+<h4 id="sec-4-4-1"><span class="section-number-4">4.4.1</span> Problem</h4>
+<div class="outline-text-4" id="text-4-4-1">
+<p>
+There is a clever algorithm for computing the Fibonacci numbers
+in a logarithmic number of steps.  Recall the transformation of
+the state variables <code>a</code> and <code>b</code> in the <code>fib-iter</code> process of
+section 1.2.2: \(a \leftarrow a + b\) and \(b \leftarrow a\).  Call
+this transformation \(T\), and observe that applying \(T\) over and
+over again \(n\) times, starting with 1 and 0, produces the pair
+\(\text{Fib}(n + 1)\) and \(\text{Fib}(n)\).  In other words, the
+Fibonacci numbers are produced by applying \(T^n\), the $n$th power
+of the transformation \(T\), starting with the pair \((1,0)\).  Now
+consider \(T\) to be the special case of \(p = 0\) and \(q = 1\) in a
+family of transformations \(T_{pq}\), where \(T_{pq}\) transforms the
+pair \((a,b)\) according to \(a \leftarrow bq + aq + ap\) and \(b
+     \leftarrow bp + aq\).  Show that if we apply such a transformation
+\(T_{pq}\) twice, the effect is the same as using a single
+transformation \(T_{p'q'}\) of the same form, and compute \(p'\) and
+\(q'\) in terms of \(p\) and \(q\).  This gives us an explicit way to
+square these transformations, and thus we can compute \(T^n\) using
+successive squaring, as in the <code>fast-expt</code> procedure.  Put this
+all together to complete the following procedure, which runs in a
+logarithmic number of steps:
+</p>
+
+<pre class="example">
+(define (fib n)
+  (fib-iter 1 0 0 1 n))
+
+(define (fib-iter a b p q count)
+  (cond ((= count 0) b)
+        ((even? count)
+         (fib-iter a
+                   b
+                   &lt;??&gt;      ; compute p'
+                   &lt;??&gt;      ; compute q'
+                   (/ count 2)))
+        (else (fib-iter (+ (* b q) (* a q) (* a p))
+                        (+ (* b p) (* a q))
+                        p
+                        q
+                        (- count 1)))))
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-4-4-2" class="outline-4">
+<h4 id="sec-4-4-2"><span class="section-number-4">4.4.2</span> Answer</h4>
+<div class="outline-text-4" id="text-4-4-2">
+<p>
+Deriving the new transformation is slightly painful, and requires a
+lot of algebraic manipulation.  The general procedure is to start with
+the initial transformation, apply it twice to the same inputs, and
+keep simplifying and reorganizing until you reach a form which is has
+the same structure as the transformation, which will give the new \(p'\)
+and \(q'\).
+</p>
+
+<p>
+The form of a single transformation is
+</p>
+
+<p>
+\[T_{pq}(a,b) = (bq + aq + ap, bp + aq)\]
+</p>
+
+<p>
+Applying this twice gives
+</p>
+\begin{align*}
+T_{pq}\left(T_{pq}(a,b)\right) = (&(bp+aq)q + (bq+aq+ap)q + bq+aq+ap)p,\\
+                            &(bp + aq)p + (bq + aq + ap)q)
+\end{align*}
+
+<p>
+To make line lengths a bit shorter, we can examine the each part of
+the tuple separately; we'll call them \(a'\) and \(b'\). To start, we'll
+by simplifying \(a'\):
+</p>
+
+\begin{align*}
+a' &= (bp+aq)q + (bq+aq+ap)q + bq+aq+ap)p \\
+   &= bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2 \\
+   &= 2aq^2 + 2apq + 2bpq + bq^2 + bq^2 + ap^2
+\end{align*}
+
+<p>
+From here, we want to move things around into a form that is "shaped
+like" \(bq + aq + ap\). To do this, we can note that no terms have both
+\(a\)s and \(b\)s, so we can pull those terms out:
+</p>
+
+<p>
+\[ = b(2pq + q^2) + a(2q^2 + 2pq + p^2) \]
+</p>
+
+<p>
+This gives us our \(q'\), since \(q'\) is what should be multiplied by \(b\)
+in the new expression:
+</p>
+
+<p>
+\[ q' = 2pq + q^2 \]
+</p>
+
+<p>
+This lets us split up the other expression into its \(p'\) and \(q'\)
+components:
+</p>
+
+\begin{align*}
+a' &= b(2pq + q^2) + a(q^2 + q^2 + 2pq + p^2) \\
+   &= b(2pq + q^2) + a(2pq + q^2) + a(q^2 + p^2)
+\end{align*}
+
+<p>
+Sure enough, this gives us a value for \(p'\), as well:
+</p>
+
+<p>
+\[ p' = q^2 + p^2 \]
+</p>
+
+<p>
+We can double-check this by making sure we get the same results for
+\(b'\):
+</p>
+
+\begin{align*}
+b' &= (bp + aq)p + (bq + aq ap)q \\
+   &= bp^2 + apq + bq^2 + aq^2 + apq \\
+   &= aq^2 + 2apq + bq^2 + bp^2 \\
+   &= a(q^2 + 2pq) + b(q^2 + p^2)
+\end{align*}
+
+<p>
+This matches up exactly. Thus, the double-application of T<sub>pq</sub> is
+identical to T<sub>p'q'</sub>, where \(p' = q^2 + p^2\) and \(q' = 2pq + q^2\).
+With that done, we just need to plug these formulae into the template
+provided by the exercise.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (fib-t n)
+  (fib-iter 1 0 0 1 n))
+
+(define (fib-t-iter a b p q count)
+  (cond ((= count 0) b)
+        ((even? count)
+         (fib-t-iter a
+                     b
+                     (+ (square q) (square p))
+                     (+ (* 2 p q) (square q))
+                     (/ count 2)))
+        (else (fib-t-iter (+ (* b q) (* a q) (* a p))
+                        (+ (* b p) (* a q))
+                        p
+                        q
+                        (- count 1)))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Section 1.2.5 Greatest Common Divisors</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> <span class="todo TODO">TODO</span> Exercise 1.20: Revisiting applicative order and normal order</h3>
+<div class="outline-text-3" id="text-5-1">
+</div><div id="outline-container-sec-5-1-1" class="outline-4">
+<h4 id="sec-5-1-1"><span class="section-number-4">5.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<p>
+The process that a procedure generates is of course dependent on
+ the rules used by the interpreter.  As an example, consider the
+ iterative <code>gcd</code> procedure given above.  Suppose we were to
+ interpret this procedure using normal-order evaluation, as
+ discussed in section 1.1.5.  (The normal-order-evaluation rule
+ for <code>if</code> is described in Exercise 1.5.)  Using the substitution
+ method (for normal order), illustrate the process generated in
+ evaluating <code>(gcd 206 40)</code> and indicate the <code>remainder</code>
+ operations that are actually performed.  How many <code>remainder</code>
+ operations are actually performed in the normal-order evaluation
+ of <code>(gcd 206 40)</code>?  In the applicative-order evaluation?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5-1-2" class="outline-4">
+<h4 id="sec-5-1-2"><span class="section-number-4">5.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<p>
+Recall that for applicative order, arguments are first evaluated, then
+the procedure is applied. For normal order, everything is fully
+expanded before the arguments are evaluated.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Section 1.2.6 Testing for Primality</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Exercise 1.21: Using <code>smallest-divisor</code></h3>
+<div class="outline-text-3" id="text-6-1">
+</div><div id="outline-container-sec-6-1-1" class="outline-4">
+<h4 id="sec-6-1-1"><span class="section-number-4">6.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-1-1">
+<p>
+Use the <code>smallest-divisor</code> procedure to find the smallest divisor
+of each of the following numbers: 199, 1999, 19999.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-1-2" class="outline-4">
+<h4 id="sec-6-1-2"><span class="section-number-4">6.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-1-2">
+<p>
+First, the relevant code from section 1.2.6:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(require (planet neil/sicp:1:17))
+
+(define (square n) (* n n))
+
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n test-divisor)
+  (cond ((&gt; (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))))
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (prime? n)
+  (= n (smallest-divisor n)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(smallest-divisor 199)
+</pre>
+</div>
+
+<pre class="example">
+199
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(smallest-divisor 1999)
+</pre>
+</div>
+
+<pre class="example">
+1999
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(smallest-divisor 19999)
+</pre>
+</div>
+
+<pre class="example">
+7
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> Exercise 1.22: Measuring runtime</h3>
+<div class="outline-text-3" id="text-6-2">
+</div><div id="outline-container-sec-6-2-1" class="outline-4">
+<h4 id="sec-6-2-1"><span class="section-number-4">6.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-2-1">
+<p>
+Most Lisp implementations include a primitive called `runtime'
+that returns an integer that specifies the amount of time the
+system has been running (measured, for example, in microseconds).
+The following `timed-prime-test' procedure, when called with an
+integer n, prints n and checks to see if n is prime.  If n is
+prime, the procedure prints three asterisks followed by the
+amount of time used in performing the test.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">;; This code has been tweaked slightly to return true/false so
+;; the return value can be used in tests. Also, only displays
+;; output for prime numbers.
+
+(define (timed-prime-test n)
+  ;(display n)
+  ;(display " ")
+  (start-prime-test n (runtime)))
+
+(define (start-prime-test n start-time)
+  (if (prime? n)
+      (report-prime n (- (runtime) start-time))
+      false))
+
+(define (report-prime prime elapsed-time)
+  (display prime)
+  (display " *** ")
+  (display elapsed-time)
+  (newline)
+  true)
+</pre>
+</div>
+
+<p>
+Using this procedure, write a procedure `search-for-primes' that
+checks the primality of consecutive odd integers in a specified
+range.  Use your procedure to find the three smallest primes
+larger than 1000; larger than 10,000; larger than 100,000; larger
+than 1,000,000.  Note the time needed to test each prime.  Since
+the testing algorithm has order of growth of
+[theta](<sub>[sqrt]</sub><sub>(n)</sub>), you should expect that testing for primes
+around 10,000 should take about _[sqrt]<sub>(10)</sub> times as long as
+testing for primes around 1000.  Do your timing data bear this
+out?  How well do the data for 100,000 and 1,000,000 support the
+_[sqrt]<sub>(n)</sub> prediction?  Is your result compatible with the
+notion that programs on your machine run in time proportional to
+the number of steps required for the computation?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-2-2" class="outline-4">
+<h4 id="sec-6-2-2"><span class="section-number-4">6.2.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-2-2">
+<p>
+First, a procedure to scan a range of consecutive odd numbers for primality:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (odd? n) (= (remainder n 2) 1))
+
+;; Find primes in range from a to b
+(define (search-for-primes a b)
+  (if (&lt; a b)
+      (cond ((odd? a)
+             (timed-prime-test a)
+             (search-for-primes (+ a 2) b))
+            (else
+             (search-for-primes (+ a 1) b)))))
+
+;; Find the first k primes larger than n
+(define (find-k-primes k n)
+  (if (odd? n)
+   (if (&gt; k 0)
+       (if (timed-prime-test n)
+           (find-k-primes (- k 1) (+ n 2))
+           (find-k-primes k (+ n 2))))
+   (find-k-primes k (+ n 1))))
+
+;; Starting with =, find the first k higher primes;
+;; then multiply n by 10 and repeat intervals times.
+(define (prime-scan k intervals n)
+  (find-k-primes k n)
+  (if (&gt; intervals 1) (prime-scan k (- intervals 1) (* n 10))))
+</pre>
+</div>
+
+<p>
+Using this, finding the first three primes larger than 1,000 is easy:
+1,009, 1,013, and 1,019.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(find-k-primes 3 1000)
+</pre>
+</div>
+
+<pre class="example">
+1009 *** 3
+1013 *** 3
+1019 *** 3
+</pre>
+
+<p>
+And for 10,000, 100,000, and 1,000,000::
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(prime-scan 3 3 (expt 10 4))
+</pre>
+</div>
+
+<pre class="example">
+10007 *** 8
+10009 *** 8
+10037 *** 8
+100003 *** 25
+100019 *** 25
+100043 *** 26
+1000003 *** 79
+1000033 *** 79
+1000037 *** 51
+</pre>
+
+<p>
+On my machine, calculating primality using this method for numbers
+around 10<sup>4</sup> takes about 8-9 microseconds, 10<sup>5</sup> takes about 25
+microseconds, and 10<sup>6</sup> takes around 78 microseconds.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(display (* 8 (sqrt 10)))
+(newline)
+(display (* 25 (sqrt 10)))
+</pre>
+</div>
+
+<pre class="example">
+25.298221281347036
+79.05694150420949
+</pre>
+
+<p>
+These results match almost perfectly to the predicted execution time.
+The tweaked version of <code>prime-scan</code> makes it easy to test this at a
+broad range of magnitudes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme" id="primetime">(prime-scan 1 13 (expt 10 4))
+</pre>
+</div>
+
+<p>
+For a quick-and-dirty evaluation of this output, we'll munge it fast
+in the shell.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="firsttime"># Separate code block here so we can reuse these results easily in the
+# next exercise
+cut -f3 -d' '
+</pre>
+</div>
+
+
+<p>
+And a quick script to churn through and verify the results against
+the predicted time:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">echo Measured Predicted
+for t in $(cut -f3 -d' '); do
+    if [ -n "${last}" ]; then
+        # dc is an ancient RPN calculator
+        # space pushes a number, 'v' is sqrt
+        # and 'p' prints the value on the top of the stack
+        guess=$(dc -e"${last} 10v*p")
+    fi
+    echo $t $guess
+    last=$t
+done
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="right" />
+
+<col  class="right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="right">Measured</td>
+<td class="right">Predicted</td>
+</tr>
+
+<tr>
+<td class="right">9</td>
+<td class="right">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="right">25</td>
+<td class="right">27</td>
+</tr>
+
+<tr>
+<td class="right">79</td>
+<td class="right">75</td>
+</tr>
+
+<tr>
+<td class="right">278</td>
+<td class="right">237</td>
+</tr>
+
+<tr>
+<td class="right">804</td>
+<td class="right">834</td>
+</tr>
+
+<tr>
+<td class="right">2717</td>
+<td class="right">2412</td>
+</tr>
+
+<tr>
+<td class="right">8151</td>
+<td class="right">8151</td>
+</tr>
+
+<tr>
+<td class="right">15956</td>
+<td class="right">24453</td>
+</tr>
+
+<tr>
+<td class="right">50409</td>
+<td class="right">47868</td>
+</tr>
+
+<tr>
+<td class="right">159217</td>
+<td class="right">151227</td>
+</tr>
+
+<tr>
+<td class="right">507144</td>
+<td class="right">477651</td>
+</tr>
+
+<tr>
+<td class="right">1588455</td>
+<td class="right">1521432</td>
+</tr>
+
+<tr>
+<td class="right">4938960</td>
+<td class="right">4765365</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+These results continue to stay close to the predicted values which
+supports the analysis that run time is proportional to the number of
+steps required for the computation.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> Exercise 1.23: Speeding up <code>smallest-divisor</code></h3>
+<div class="outline-text-3" id="text-6-3">
+</div><div id="outline-container-sec-6-3-1" class="outline-4">
+<h4 id="sec-6-3-1"><span class="section-number-4">6.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-3-1">
+<p>
+The `smallest-divisor' procedure shown at the start of this
+section does lots of needless testing: After it checks to see if
+the number is divisible by 2 there is no point in checking to see
+if it is divisible by any larger even numbers.  This suggests
+that the values used for `test-divisor' should not be 2, 3, 4, 5,
+6, &#x2026;, but rather 2, 3, 5, 7, 9, &#x2026;.  To implement this change,
+define a procedure `next' that returns 3 if its input is equal to
+2 and otherwise returns its input plus 2.  Modify the
+`smallest-divisor' procedure to use `(next test-divisor)' instead
+of `(+ test-divisor 1)'.  With `timed-prime-test' incorporating
+this modified version of `smallest-divisor', run the test for
+each of the 12 primes found in *Note Exercise 1-22::.  Since this
+modification halves the number of test steps, you should expect
+it to run about twice as fast.  Is this expectation confirmed?
+If not, what is the observed ratio of the speeds of the two
+algorithms, and how do you explain the fact that it is different
+from 2?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-3-2" class="outline-4">
+<h4 id="sec-6-3-2"><span class="section-number-4">6.3.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-3-2">
+<p>
+This is a little messy since we haven't had higher-order functions
+introduced, yet, so here are all of the relevant functions rewritten
+to use the new <code>better-smallest-divisor</code> procedure.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (next test-divisor)
+  (if (= test-divisor 2)
+      3
+      (+ test-divisor 2)))
+
+(define (better-smallest-divisor n)
+  (better-find-divisor n 2))
+
+(define (better-find-divisor n test-divisor)
+  (cond ((&gt; (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (better-find-divisor n (next test-divisor)))))
+
+(define (better-prime? n)
+  (= n (better-smallest-divisor n)))
+
+(define (better-timed-prime-test n)
+  ;(display n)
+  ;(display " ")
+  (better-start-prime-test n (runtime)))
+
+(define (better-start-prime-test n start-time)
+  (if (better-prime? n)
+      (report-prime n (- (runtime) start-time))
+      false))
+
+(define (better-find-k-primes k n)
+  (if (odd? n)
+   (if (&gt; k 0)
+       (if (better-timed-prime-test n)
+           (better-find-k-primes (- k 1) (+ n 2))
+           (better-find-k-primes k (+ n 2))))
+   (better-find-k-primes k (+ n 1))))
+
+;; Starting with =, find the first k higher primes;
+;; then multiply n by 10 and repeat intervals times.
+
+(define (better-prime-scan k intervals n)
+  (better-find-k-primes k n)
+  (if (&gt; intervals 1) (better-prime-scan k (- intervals 1) (* n 10))))
+</pre>
+</div>
+
+<p>
+Here are the 12 primes that are specified in the exercise:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(better-prime-scan 3 3 (expt 10 4))
+</pre>
+</div>
+
+<pre class="example">
+10007 *** 3
+10009 *** 3
+10037 *** 3
+100003 *** 9
+100019 *** 9
+100043 *** 9
+1000003 *** 28
+1000033 *** 28
+1000037 *** 28
+</pre>
+
+<p>
+These results are very close to those for the original version&#x2026;but,
+since these magnitudes are quite small relative to numbers that would
+have been expensive to calculate in 1996 (when SICP 2ed was
+published), it's difficult to differentiate. More useful is comparing
+at larger magnitudes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme" id="betterprimetime">(better-prime-scan 1 13 (expt 10 4))
+</pre>
+</div>
+
+<pre class="example">
+10007 *** 5
+100003 *** 15
+1000003 *** 49
+10000019 *** 151
+100000007 *** 479
+1000000007 *** 1519
+10000000019 *** 4891
+100000000003 *** 14766
+1000000000039 *** 27112
+10000000000037 *** 85590
+100000000000031 *** 271503
+1000000000000037 *** 855910
+10000000000000061 *** 2741465
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-sh" id="secondtime">cut -f3 -d' '
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(mapcar* 'append first second)
+</pre>
+</div>
+
+<p>
+The first column is the original figures, and the second is the
+<code>better-*</code> version (it's a bit fussy to get the headers added into an
+org-babel block that combines two sets of output). These results at
+larger scales make the improved running time obvious.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="section-number-3">6.4</span> Exercise 1.24: Putting the Fermat method to work</h3>
+<div class="outline-text-3" id="text-6-4">
+</div><div id="outline-container-sec-6-4-1" class="outline-4">
+<h4 id="sec-6-4-1"><span class="section-number-4">6.4.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-4-1">
+<p>
+Modify the <code>timed-prime-test</code> procedure of Exercise 1.22
+to use <code>fast-prime?</code> (the Fermat method), and test each of the 12
+primes you found in that exercise.  Since the Fermat test has
+\(\theta \log n\)) growth, how would you expect the time to test
+primes near 1,000,000 to compare with the time needed to test
+primes near 1000?  Do your data bear this out?  Can you explain
+any discrepancy you find?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-4-2" class="outline-4">
+<h4 id="sec-6-4-2"><span class="section-number-4">6.4.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-4-2">
+<p>
+First, the code from Section 1.2.6. Since we're pushing the input size
+larger than 4294967087, we can't use Racket's built-in <code>random</code>, so an
+external library from Planet (Racket's package repository) is used
+that does not cap the range (<code>williams/science/random-source</code>).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(require (planet williams/science/random-source))
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random-integer (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) true)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else false)))
+</pre>
+</div>
+
+<p>
+Now, we need to modify the relevant procedures to use <code>fast-prime?</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (fast-timed-prime-test n times)
+  (fast-start-prime-test n times (runtime)))
+
+(define (fast-start-prime-test n times start-time)
+  (if (fast-prime? n times)
+      (report-prime n (- (runtime) start-time))
+      false))
+
+(define (fast-find-k-primes k n times)
+  (if (odd? n)
+   (if (&gt; k 0)
+       (if (fast-timed-prime-test n times)
+           (fast-find-k-primes (- k 1) (+ n 2) times)
+           (fast-find-k-primes k (+ n 2) times)))
+   (fast-find-k-primes k (+ n 1) times)))
+
+(define (fast-prime-scan k intervals n times)
+  (fast-find-k-primes k n times)
+  (if (&gt; intervals 1) (fast-prime-scan k (- intervals 1) (* n 10) times)))
+</pre>
+</div>
+
+<p>
+Using 10 tests is super-fast:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(fast-prime-scan 1 28 (expt 10 3) 10)
+</pre>
+</div>
+
+<pre class="example">
+1009 *** 27
+10007 *** 27
+100003 *** 30
+1000003 *** 35
+10000019 *** 42
+100000007 *** 47
+1000000007 *** 52
+10000000019 *** 431
+100000000003 *** 467
+1000000000039 *** 662
+10000000000037 *** 504
+100000000000031 *** 333
+1000000000000037 *** 362
+10000000000000061 *** 385
+100000000000000003 *** 427
+1000000000000000003 *** 425
+10000000000000000051 *** 445
+100000000000000000039 *** 10719
+1000000000000000000117 *** 11862
+10000000000000000000009 *** 11956
+100000000000000000000117 *** 12132
+1000000000000000000000007 *** 14719
+10000000000000000000000013 *** 13153
+100000000000000000000000067 *** 15327
+1000000000000000000000000103 *** 15774
+10000000000000000000000000331 *** 15855
+100000000000000000000000000319 *** 15625
+1000000000000000000000000000057 *** 19173
+</pre>
+
+<p>
+For a while, the increases in running time to appear to be
+more-or-less logarithmic: each power of ten increase in the input
+results in an increase to the running time of around 3-6 milliseconds.
+</p>
+
+<p>
+There is some oddities, though: the jump in execution time between
+10<sup>9</sup> and 10<sup>10</sup>, which jumps up by almost an order of magnitude, and
+the jump between 10<sup>19</sup> and 10<sup>20</sup>, which multiplies the running time by
+around 25! A bit of thought reveals that a significant number occurs
+in the first range: 4294967087, which was the maximum integer that
+could be returned by Racket's <code>random</code>. Thus, we can guess that there
+may be a transparent promotion to a different internal representation
+that happens around that point, resulting in much higher constant
+costs to each operation. Presumably, a similar (and much for
+expensive) overflow happens at the higher threshold.
+</p>
+
+<p>
+In the middle range, runtimes increase by around 20-60 milliseconds
+per power of ten increase to the inputs, which seems to confirm the
+prediction of logarithmic running time.  In the upper range (10<sup>20</sup> and
+higher), the numbers are a bit messier but the general trend of slow
+increase continues.
+</p>
+
+<p>
+A simple improvement to the fidelity of these numbers could be made
+by testing multiple primes in each range, rather than just the first
+one found.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-5" class="outline-3">
+<h3 id="sec-6-5"><span class="section-number-3">6.5</span> Exercise 1.25: A not-so-fast use of <code>fast-expt</code></h3>
+<div class="outline-text-3" id="text-6-5">
+</div><div id="outline-container-sec-6-5-1" class="outline-4">
+<h4 id="sec-6-5-1"><span class="section-number-4">6.5.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-5-1">
+<p>
+Alyssa P. Hacker complains that we went to a lot of extra work in
+writing <code>expmod</code>.  After all, she says, since we already know how
+to compute exponentials, we could have simply written
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (bad-expmod base exp m)
+  (remainder (fast-expt base exp) m))
+</pre>
+</div>
+
+<p>
+Is she correct?  Would this procedure serve as well for our fast
+prime tester?  Explain.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-5-2" class="outline-4">
+<h4 id="sec-6-5-2"><span class="section-number-4">6.5.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-5-2">
+<p>
+First, recall the relevant supporting code:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (square n)
+  (* n n))
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
+</pre>
+</div>
+
+<p>
+And compare the problem's definition of <code>expmod</code> with the one used for
+Section 1.24:
+</p>
+
+<pre class="example">
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+</pre>
+
+<p>
+The final result of both the original <code>expmod</code> and Alyssa's
+<code>bad-expmod</code> will be the same: they both calculate \(base^{exp} \mod
+m\). <code>bad-expmod</code> has to do a lot more work to achieve the same end,
+though, as it's manipulating much longer numbers: it generates the
+full exponential value before applying <code>remainder</code>&#x2026;and <code>remainder</code>
+gets put through the wringer as it must divide that very large number
+by <code>m</code>.  The original <code>expmod</code>, on the other hand, applies <code>remainder</code>
+at every step of the way, keeping the number in the range where it
+is both useful and easier to manipulate.
+</p>
+
+<p>
+To test this, we'll set up a batch of procedures to use <code>bad-expmod</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (bad-fermat-test n)
+  (define (try-it a)
+    (= (bad-expmod a n n) a))
+  (try-it (+ 1 (random-integer (- n 1)))))
+
+(define (bad-prime? n times)
+  (cond ((= times 0) true)
+        ((bad-fermat-test n) (bad-prime? n (- times 1)))
+        (else false)))
+
+(define (bad-timed-prime-test n times)
+  (bad-start-prime-test n times (runtime)))
+
+(define (bad-start-prime-test n times start-time)
+  (if (bad-prime? n times)
+      (report-prime n (- (runtime) start-time))
+      false))
+
+(define (bad-find-k-primes k n times)
+  (if (odd? n)
+   (if (&gt; k 0)
+       (if (bad-timed-prime-test n times)
+           (bad-find-k-primes (- k 1) (+ n 2) times)
+           (bad-find-k-primes k (+ n 2) times)))
+   (bad-find-k-primes k (+ n 1) times)))
+
+(define (bad-prime-scan k intervals n times)
+  (bad-find-k-primes k n times)
+  (if (&gt; intervals 1) (bad-prime-scan k (- intervals 1) (* n 10) times)))
+</pre>
+</div>
+
+<p>
+Here are some values for <code>fast-prime?</code> using the original <code>expmod</code>,
+using a small number of tests (just 10):
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(fast-prime-scan 1 4 100 10)
+</pre>
+</div>
+
+<pre class="example">
+101 *** 79
+1009 *** 20
+10007 *** 26
+100003 *** 30
+</pre>
+
+<p>
+Barely any time at all, on the order of 10 microseconds.  The new
+<code>bad-expmod</code> approach, however, does indeed live up to the name:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(bad-prime-scan 1 4 100 10)
+</pre>
+</div>
+
+<pre class="example">
+101 *** 264
+1009 *** 596
+10007 *** 18598
+100003 *** 634653
+</pre>
+
+<p>
+For even an input as small as 10<sup>5</sup>, the runtime is already nearing a
+second!  This exercise is a great demonstration of potentially
+difficult to notice computation complexity bottlenecks, and the
+importance of picking the right algorithm for the job.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-6" class="outline-3">
+<h3 id="sec-6-6"><span class="section-number-3">6.6</span> Exercise 1.26: A subtle slowdown in <code>expmod</code></h3>
+<div class="outline-text-3" id="text-6-6">
+<p>
+Louis Reasoner is having great difficulty doing Exercise
+1-24.  His <code>fast-prime?</code> test seems to run more slowly than
+his <code>prime?</code> test.  Louis calls his friend Eva Lu Ator over to
+help.  When they examine Louis's code, they find that he has
+rewritten the <code>expmod</code> procedure to use an explicit
+multiplication, rather than calling <code>square</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (slow-expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (* (slow-expmod base (/ exp 2) m)
+                       (slow-expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (slow-expmod base (- exp 1) m))
+                    m))))
+</pre>
+</div>
+
+<p>
+"I don't see what difference that could make," says Louis.  "I
+do."  says Eva.  "By writing the procedure like that, you have
+transformed the \(\Theta(\log n)\) process into a \(\Theta(n)\)
+process."  Explain.
+</p>
+</div>
+
+<div id="outline-container-sec-6-6-1" class="outline-4">
+<h4 id="sec-6-6-1"><span class="section-number-4">6.6.1</span> Answer</h4>
+<div class="outline-text-4" id="text-6-6-1">
+<p>
+Once again, recall the original <code>expmod</code> procedure:
+</p>
+
+<pre class="example">
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+</pre>
+
+<p>
+This is a lovely and subtle change. While appearing to be a simple
+in-place substitution of a procedure, it actually changes the single
+recursive call to <code>expmod</code> to be a tree of recursive calls, with two
+recursive calls at each internal node of the tree.
+</p>
+
+<p>
+The original version divides the size of \(n\) by two at each
+stage&#x2026;since \(n\) can only be divided by 2 at most \(\log_2 n\) times,
+this gives the expected complexity.  While <code>slow-expmod</code> also divides
+the size of its argument by two, it also generates two recursive
+calls, one for each half.  Thus, is does not reduce the size of the
+overall problem to be solved: while the tree has only \(log_2 n\)
+levels, there are \(2^k\) subproblems at each level \(k\). (Level 0 has a
+single problem; level 1 has \(2^1=2\) problem. Each of those two
+problems generates two recursive children for \(2^2=4\) problems at
+level two, and so on.
+</p>
+
+<p>
+So, given \(\Theta(\log_2 2^n)\), the log and the exponential cancel
+each other out (by the definition of logarithm, and the overall
+complexity is \(\Theta(n)\).
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-7" class="outline-3">
+<h3 id="sec-6-7"><span class="section-number-3">6.7</span> Exercise 1.27: Fooling Fermat with Carmichael numbers</h3>
+<div class="outline-text-3" id="text-6-7">
+</div><div id="outline-container-sec-6-7-1" class="outline-4">
+<h4 id="sec-6-7-1"><span class="section-number-4">6.7.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-7-1">
+<p>
+Demonstrate that the Carmichael numbers listed in Footnote
+1.47  really do fool the Fermat test.  That is, write a
+procedure that takes an integer n and tests whether \(a^n\) is
+congruent to \(a \mod n\) for every \(a<n\), and try your procedure
+on the given Carmichael numbers.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-7-2" class="outline-4">
+<h4 id="sec-6-7-2"><span class="section-number-4">6.7.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-7-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (verify-fermat n)
+  (define (verify-fermat-iter a n)
+    (cond ((&gt;= a n)
+           true)
+          ((= (expmod a n n) a)
+           (verify-fermat-iter (+ a 1) n))
+          (else
+           false)))
+  (verify-fermat-iter 1 n))
+
+(define (descriptive-verify-fermat n)
+  (display n)
+  (if (verify-fermat n)
+      (if (prime? n)
+          (display ": prime and correctly passes the Fermat test")
+          (display ": not prime and incorrectly passes the Fermat test"))
+      (if (prime? n)
+          (display ": prime and incorrectly fails the Fermat test")
+          (display ": not prime and correctly fails the Fermat test")))
+  (newline))
+
+(define (fermat-scan-range a b)
+  (descriptive-verify-fermat a)
+  (if (&lt; a b)
+      (fermat-scan-range (+ a 1) b)))
+</pre>
+</div>
+
+<p>
+This procedure does indeed show that the first six Carmichael numbers
+slip through the Fermat test.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(descriptive-verify-fermat 561)
+(descriptive-verify-fermat 1105)
+(descriptive-verify-fermat 1729)
+(descriptive-verify-fermat 2465)
+(descriptive-verify-fermat 2821)
+(descriptive-verify-fermat 6601)
+</pre>
+</div>
+
+<pre class="example">
+561: not prime and incorrectly passes the Fermat test
+1105: not prime and incorrectly passes the Fermat test
+1729: not prime and incorrectly passes the Fermat test
+2465: not prime and incorrectly passes the Fermat test
+2821: not prime and incorrectly passes the Fermat test
+6601: not prime and incorrectly passes the Fermat test
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(fermat-scan-range 1101 1109)
+</pre>
+</div>
+
+<pre class="example">
+1101: not prime and correctly fails the Fermat test
+1102: not prime and correctly fails the Fermat test
+1103: prime and correctly passes the Fermat test
+1104: not prime and correctly fails the Fermat test
+1105: not prime and incorrectly passes the Fermat test
+1106: not prime and correctly fails the Fermat test
+1107: not prime and correctly fails the Fermat test
+1108: not prime and correctly fails the Fermat test
+1109: prime and correctly passes the Fermat test
+</pre>
+
+<p>
+For a bit more fun, we can turn this into a test for Carmichael
+numbers and find them ourselves.  This could be much more fun with
+lists, <code>map</code>, and <code>filter</code>, but we haven't had them introduced, yet,
+so this sticks with printing out the relevant numbers.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (carmichael? n)
+   (and (not (prime? n)) (verify-fermat n)))
+
+(define (carmichael-scan-range a b)
+  (if (carmichael? a) (printf "~a~n" a))
+  (if (&lt; a b) (carmichael-scan-range (+ a 1) b)))
+</pre>
+</div>
+
+<p>
+Here's an example of using this to find all the Carmichael numbers
+under 10,000. As can be seen, the first six numbers mentioned in
+the text are all found using this method.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(carmichael-scan-range 1 100000)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-8" class="outline-3">
+<h3 id="sec-6-8"><span class="section-number-3">6.8</span> Exercise 1.28: The Miller-Rabin test</h3>
+<div class="outline-text-3" id="text-6-8">
+</div><div id="outline-container-sec-6-8-1" class="outline-4">
+<h4 id="sec-6-8-1"><span class="section-number-4">6.8.1</span> Problem</h4>
+<div class="outline-text-4" id="text-6-8-1">
+<p>
+One variant of the Fermat test that cannot be fooled is called
+the "Miller-Rabin test" (Miller 1976; Rabin 1980).  This starts
+from an alternate form of Fermat's Little Theorem, which states
+that if \(n\) is a prime number and \(a\) is any positive integer
+less than \(n\), then \(a\) raised to the \((n - 1)\)st power is
+congruent to 1 modulo \(n\).  To test the primality of a number \(n\)
+by the Miller-Rabin test, we pick a random number \(a<n\) and raise
+\(a\) to the \((n - 1)\)st power modulo \(n\) using the <code>expmod</code>
+procedure.  However, whenever we perform the squaring step in
+<code>expmod</code>, we check to see if we have discovered a "nontrivial
+square root of 1 modulo \(n\)," that is, a number not equal to 1 or
+\(n - 1\) whose square is equal to 1 modulo \(n\).  It is possible to
+prove that if such a nontrivial square root of 1 exists, then \(n\)
+is not prime.  It is also possible to prove that if \(n\) is an odd
+number that is not prime, then, for at least half the numbers
+\(a<n\), computing \(a^(n-1)\) in this way will reveal a nontrivial
+square root of 1 modulo \(n\).  (This is why the Miller-Rabin test
+cannot be fooled.)  Modify the <code>expmod</code> procedure to signal if it
+discovers a nontrivial square root of 1, and use this to
+implement the Miller-Rabin test with a procedure analogous to
+<code>fermat-test</code>.  Check your procedure by testing various known
+primes and non-primes.  Hint: One convenient way to make <code>expmod</code>
+signal is to have it return 0.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-8-2" class="outline-4">
+<h4 id="sec-6-8-2"><span class="section-number-4">6.8.2</span> Answer</h4>
+<div class="outline-text-4" id="text-6-8-2">
+<p>
+This has some ugly bits&#x2026;judicious use of <code>let</code> (which isn't
+introduced until the next section) would again simplify some of these
+expressions.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">;; Test whether i is a nontrivial square root of 1 modulo m
+(define (nontrivial-sqrt-mod? i m)
+  (and (not (= i 1))
+       (not (= i (- m 1)))
+       (= (remainder (square i) m) 1)))
+
+(define (mr-expmod base exp m)
+  (define (maybe-continue i)
+    (if (or (= i 0) (nontrivial-sqrt-mod? i m))
+        0
+        (remainder (square i) m)))
+
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (maybe-continue (mr-expmod base (/ exp 2) m)))
+        (else
+         (remainder (* base (mr-expmod base (- exp 1) m))
+                    m))))
+
+(define (mr-test n)
+  (define (try-it a)
+    ;; We don't need to check if the return of mr-expmod = 0,
+    ;; as it is always the case that a&gt;1.
+    (= (mr-expmod a (- n 1) n) 1))
+  (try-it (+ 1 (random-integer (- n 1)))))
+
+(define (mr-prime? n times)
+  ;; We have to special-case n=1 and n=2.
+  ;; (Note prime? incorrectly reports 1 as prime, and
+  ;; fast-prime also fails outright.)
+  (cond ((= times 0) true)
+        ((= n 1) false)
+        ((= n 2) true)
+        ((mr-test n) (mr-prime? n (- times 1)))
+        (else false)))
+
+(define (mr-timed-prime-test n times)
+  (mr-start-prime-test n times (runtime)))
+
+(define (mr-start-prime-test n times start-time)
+  (if (mr-prime? n times)
+      (report-prime n (- (runtime) start-time))
+      false))
+
+(define (mr-find-k-primes k n times)
+  (if (odd? n)
+      (if (&gt; k 0)
+          (if (mr-timed-prime-test n times)
+              (mr-find-k-primes (- k 1) (+ n 2) times)
+              (mr-find-k-primes k (+ n 2) times)))
+      (mr-find-k-primes k (+ n 1) times)))
+
+(define (mr-prime-scan k intervals n times)
+  (mr-find-k-primes k n times)
+  (if (&gt; intervals 1) (mr-prime-scan k (- intervals 1) (* n 10) times)))
+</pre>
+</div>
+
+<p>
+Trying this out, <code>mr-prime?</code> successfully detects discriminates
+primes and non-primes.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(mr-prime-scan 3 3 (expt 10 4) 3)
+</pre>
+</div>
+
+<pre class="example">
+10007 *** 14
+10009 *** 15
+10037 *** 14
+100003 *** 16
+100019 *** 21
+100043 *** 16
+1000003 *** 19
+1000033 *** 19
+1000037 *** 19
+</pre>
+
+<p>
+When we test it against the Carmichael numbers found in the previous
+exercise, it correctly identifies them all as non-prime:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (mr-check n)
+  (printf "~a: ~a~n" n (mr-prime? n 5)))
+(mr-check 561)
+(mr-check 1105)
+(mr-check 1729)
+(mr-check 2465)
+(mr-check 2821)
+(mr-check 6601)
+(mr-check 8911)
+(mr-check 10585)
+(mr-check 15841)
+(mr-check 29341)
+(mr-check 41041)
+(mr-check 46657)
+(mr-check 52633)
+(mr-check 62745)
+(mr-check 63973)
+(mr-check 75361)
+</pre>
+</div>
+
+<pre class="example">
+561: #f
+1105: #f
+1729: #f
+2465: #f
+2821: #f
+6601: #f
+8911: #f
+10585: #f
+15841: #f
+29341: #f
+41041: #f
+46657: #f
+52633: #f
+62745: #f
+63973: #f
+75361: #f
+</pre>
+
+<p>
+Additional, testing the same range of values as was examined in
+exercise 1.24 shows that the same set of primes is discovered.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(mr-prime-scan 1 28 (expt 10 3) 10)
+</pre>
+</div>
+
+<pre class="example">
+1009 *** 19
+10007 *** 45
+100003 *** 52
+1000003 *** 61
+10000019 *** 75
+100000007 *** 84
+1000000007 *** 94
+10000000019 *** 564
+100000000003 *** 769
+1000000000039 *** 830
+10000000000037 *** 909
+100000000000031 *** 1020
+1000000000000037 *** 599
+10000000000000061 *** 633
+100000000000000003 *** 707
+1000000000000000003 *** 704
+10000000000000000051 *** 834
+100000000000000000039 *** 19781
+1000000000000000000117 *** 21058
+10000000000000000000009 *** 21204
+100000000000000000000117 *** 22570
+1000000000000000000000007 *** 23813
+10000000000000000000000013 *** 22962
+100000000000000000000000067 *** 25446
+1000000000000000000000000103 *** 26650
+10000000000000000000000000331 *** 28544
+100000000000000000000000000319 *** 29400
+1000000000000000000000000000057 *** 29286
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Paul L. Snyder</p>
+<p class="date">Created: 2014-03-30 Sun 19:31</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

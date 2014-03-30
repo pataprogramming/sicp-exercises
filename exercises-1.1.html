@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>SICP Exercise Solutions for Section 1.1</title>
+<!-- 2014-03-30 Sun 19:30 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Paul L. Snyder" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">SICP Exercise Solutions for Section 1.1</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Section 1.1.6</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Exercise 1.1: Interpreting expressions</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. Problem</a></li>
+<li><a href="#sec-1-1-2">1.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. Exercise 1.2: Translating to prefix notation</a></li>
+<li><a href="#sec-1-3">1.3. Exercise 1.3: Summing the squares of two larger numbers</a>
+<ul>
+<li><a href="#sec-1-3-1">1.3.1. Problem</a></li>
+<li><a href="#sec-1-3-2">1.3.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-4">1.4. Exercise 1.4: Evaluating combinations</a>
+<ul>
+<li><a href="#sec-1-4-1">1.4.1. Problem</a></li>
+<li><a href="#sec-1-4-2">1.4.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-5">1.5. Exercise 1.5: Applicative order vs normal order</a>
+<ul>
+<li><a href="#sec-1-5-1">1.5.1. Problem</a></li>
+<li><a href="#sec-1-5-2">1.5.2. Answer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-2">2. Section 1.1.7</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Exercise 1.6: <code>if</code> and the reason for special forms</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1. Problem</a></li>
+<li><a href="#sec-2-1-2">2.1.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2. Exercise 1.7: When <code>good-enough?</code> is not good enough</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1. Problem</a></li>
+<li><a href="#sec-2-2-2">2.2.2. Answer</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-3">2.3. Exercise 1.8</a>
+<ul>
+<li><a href="#sec-2-3-1">2.3.1. Problem</a></li>
+<li><a href="#sec-2-3-2">2.3.2. Answer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Section 1.1.6</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Exercise 1.1: Interpreting expressions</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Below is a sequence of expressions.  What is the
+result printed by the interpreter in response to each expression?
+Assume that the sequence is to be evaluated in the order in which
+it is presented.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">10
+(+ 5 3 4)
+(- 9 1)
+(/ 6 2)
+(+ (* 2 4) (- 4 6))
+(define a 3)
+(define b (+ a 1))
+(+ a b (* a b))
+(= a b)
+(if (and (&gt; b a) (&lt; b (* a b)))
+    b
+    a)
+(cond ((= a 4) 6)
+      ((= b 4) (+ 6 7 a))
+      (else 25))
+(+ 2 (if (&gt; b a) b a))
+(* (cond ((&gt; a b) a)
+         ((&lt; a b) b)
+         (else -1))
+   (+ a 1))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<pre class="example">
+&gt; 10
+10
+&gt; (+ 5 3 4)
+12
+&gt; (- 9 1)
+8
+&gt; (/ 6 2)
+3
+&gt; (+ (* 2 4) (- 4 6))
+-16
+&gt; (define a 3)
+&gt; (define b (+ a 1))
+&gt; (+ a b (* a b))
+19
+&gt; (= a b)
+#f
+&gt; (if (and (&gt; b a) (&lt; b (* a b)))
+      b
+      a)
+4
+&gt; (cond ((= a 4) 5)
+        ((= b 4) (+ 6 7 a)))
+16
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Exercise 1.2: Translating to prefix notation</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Translate the following expression into prefix form.
+</p>
+
+<p>
+$$\frac{5 + 4 + ( 2 - (3 = (6 + \frac{4}{5})))}{3 (6 - 2)(2 - 7)}$$
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
+   (* 3 (- 6 2) (- 2 7)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Exercise 1.3: Summing the squares of two larger numbers</h3>
+<div class="outline-text-3" id="text-1-3">
+</div><div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Define a procedure that takes three numbers as arguments and
+returns the sum of the squares of the two larger numbers.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2"><span class="section-number-4">1.3.2</span> Answer</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (square a) (* a a))
+
+(define (sum-of-squares a b) (+ (square a) (square b)))
+
+(define (sum-of-squares-of-larger-two a b c)
+  (cond
+   ((and (&lt;= a b) (&lt;= a c))  (sum-of-squares b c))
+   ((and (&lt;= b a) (&lt;= b c))  (sum-of-squares a c))
+   (else                     (sum-of-squares a b))))
+
+(define (sum-of-squares-of-larger-two-alt a b c)
+  (if (&gt;= a b)
+      (if (&gt;= b c)    ; we know a is in, as it's at least as large
+                      ; as one other number
+          (sum-of-squares a b)     ; c is out
+          (sum-of-squares a c))    ; b is out
+      (if (&gt;= a c)    ; we know b is in for this branch, since
+                      ;it's strictly larger than a
+          (sum-of-squares b a)     ; c is out
+          (sum-of-squares b c))))  ; a is out
+
+;; This can be made even shorter by exploiting the return value of if
+(define (sum-of-squares-of-larger-two-altalt a b c)
+  (if (&gt;= a b)
+      (sum-of-squares a (if (&gt;= b c) b c))
+      (sum-of-squares b (if (&gt;= a c) a c))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> Exercise 1.4: Evaluating combinations</h3>
+<div class="outline-text-3" id="text-1-4">
+</div><div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1"><span class="section-number-4">1.4.1</span> Problem</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+Observe that our model of evaluation allows for combinations
+whose operators are compound expressions.  Use this observation
+to describe the behavior of the following procedure:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (a-plus-abs-b a b)
+  ((if (&gt; b 0) + -) a b))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2"><span class="section-number-4">1.4.2</span> Answer</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+When the expression containing the <code>if</code> operator is evaluated, if <code>b</code>
+is strictly larger than 0, the expression returns <code>+</code>, which is used
+as the operator for the containing expression, adding <code>a</code> and
+<code>b</code>. Otherwise, the <code>if</code> returns <code>-</code>, subtracting <code>b</code> from <code>a</code>; since
+<code>b</code> is negative in this case (or 0) this increases the value by the
+same amount as it would have increased were <code>b</code> to be positive.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Exercise 1.5: Applicative order vs normal order</h3>
+<div class="outline-text-3" id="text-1-5">
+</div><div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> Problem</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+Ben Bitdiddle has invented a test to determine whether the
+interpreter he is faced with is using applicative-order
+evaluation or normal-order evaluation.  He defines the following
+two procedures:
+</p>
+
+<pre class="example">
+(define (p) (p))
+
+(define (test x y)
+  (if (= x 0)
+      0
+      y))
+</pre>
+
+<p>
+Then he evaluates the expression
+</p>
+
+<pre class="example">
+(test 0 (p))
+</pre>
+
+<p>
+What behavior will Ben observe with an interpreter that uses
+applicative-order evaluation?  What behavior will he observe with
+an interpreter that uses normal-order evaluation?  Explain your
+answer.  (Assume that the evaluation rule for the special form
+`if' is the same whether the interpreter is using normal or
+applicative order: The predicate expression is evaluated first,
+and the result determines whether to evaluate the consequent or
+the alternative expression.)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-5-2" class="outline-4">
+<h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> Answer</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<p>
+The procedure <code>p</code> will cause an infinitely recursive loop if
+executed. If Ben is using an applicative-order interpreter, the
+operands will be evaluated first, and the command will enter the loop.
+If the interpreter is normal order, the value of the operands will not
+be resolved immediately. Instead, test will be executed. <code>x</code> will be
+resolved in the predicate of the <code>if</code>, which succeeds. As the consequent
+branch is followed, <code>y</code> will never be evaluated, and thus <code>p</code> will never
+be executed.
+</p>
+
+<p>
+To clarify the difference between normal and applicative order,
+consider nested applications of the <code>sq</code> procedure:
+</p>
+
+<pre class="example">
+(define (sq n) (* n n)
+(sq (sq (sq (+ 1 1))))
+</pre>
+
+<p>
+Suppose this is evaluated in normal order (combining some of the
+expansion steps to save space):
+</p>
+
+<pre class="example">
+1&gt; (sq (sq (sq (+ 1 1))))
+2&gt; (* (sq (sq (+ 1 1)))
+      (sq (sq (+ 1 1))))
+3&gt; (* (* (sq (+ 1 1))
+         (sq (+ 1 1))
+      (* (sq (+ 1 1))
+         (sq (+ 1 1)))
+4&gt; (* (* (* (+ 1 1) (+ 1 1))
+         (* (+ 1 1) (+ 1 1)))
+      (* (* (+ 1 1) (+ 1 1))
+         (* (+ 1 1) (+ 1 1))))
+5&gt; (* (* (* 2 2) (* 2 2))
+      (* (* 2 2) (* 2 2)))
+6&gt; (* (* 4 4) (* 4 4)
+7&gt; (* 16 16)
+8&gt; 256
+</pre>
+
+<p>
+As can be seen, none of the "leaf" additions are evaluated until
+everything is expanded, so there are eight individual addition and
+seven multiplication operations performed (as seen in steps 4 through
+7). Compare this to an applicative-order evaluation:
+</p>
+
+<pre class="example">
+1&gt; (sq (sq (sq (+ 1 1))))
+2&gt; (sq (sq (sq 2)))
+3&gt; (sq (sq (* 2 2)))
+4&gt; (sq (sq 4))
+5&gt; (sq (* 4 4))
+6&gt; (sq 16)
+7&gt; (* 16 16)
+8&gt; 256
+</pre>
+
+<p>
+Only a single addition and three multiplications need to be performed!
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Section 1.1.7</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Exercise 1.6: <code>if</code> and the reason for special forms</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+Alyssa P. Hacker doesn't see why <code>if</code> needs to be
+provided as a special form.  "Why can't I just define it as an
+ordinary procedure in terms of <code>cond?</code>," she asks.  Alyssa's friend
+Eva Lu Ator claims this can indeed be done, and she defines a new
+version of <code>if</code>:
+</p>
+
+<pre class="example">
+(define (new-if predicate then-clause else-clause)
+  (if predicate
+      then-clause
+      else-clause))
+</pre>
+
+<p>
+Eva demonstrates the program for Alyssa:
+</p>
+
+<pre class="example">
+(new-if (= 2 3) 0 5)
+5
+
+(new-if (= 1 1) 0 5)
+0
+</pre>
+
+<p>
+Delighted, Alyssa uses <code>new-if</code> to rewrite the square-root program:
+</p>
+
+<pre class="example">
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x)
+                     x)))
+
+(sqrt-iter 1 4)
+
+(if true
+        guess
+        (sqrt-iter (improve guess x)
+                   x))
+
+
+(new-if true
+        guess
+        (sqrt-iter (improve guess x)
+                   x))
+(new-if (good-enough? guess x)
+        guess
+        (new-if (good-enough? guess x)
+                guess
+                (sqrt-iter (improve guess x)
+                           x)))
+</pre>
+
+<p>
+What happens when Alyssa attempts to use this to compute square
+roots?  Explain.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Answer</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+In <code>sqrt-iter</code>, before <code>new-if</code> is called, the arguments are evaluated
+in applicative order. This includes the recursive call to
+itself. Thus, even when the good-enough? termination condition is
+satisfied, the recursion will continue, resulting in an infinite
+recursion.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Exercise 1.7: When <code>good-enough?</code> is not good enough</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+The <code>good-enough?</code> test used in computing square roots will not
+be very effective for finding the square roots of very small
+numbers.  Also, in real computers, arithmetic operations are
+almost always performed with limited precision.  This makes our
+test inadequate for very large numbers.  Explain these
+statements, with examples showing how the test fails for small
+and large numbers.  An alternative strategy for implementing
+<code>good-enough?</code> is to watch how <code>guess</code> changes from one iteration
+to the next and to stop when the change is a very small fraction
+of the guess.  Design a square-root procedure that uses this kind
+of end test.  Does this work better for small and large numbers?
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> Answer</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x)
+                 x)))
+
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+(define (good-enough? guess x)
+  (&lt; (abs (- (square guess) x)) 0.001))
+
+(define (sqrt1 x)
+  (sqrt-iter 1.0 x))
+
+(define (percent-changed new old)
+  (/ (- new old) old))
+
+(define (small-change? new-guess old-guess)
+  (&lt; (abs (percent-changed new-guess old-guess)) 0.001))
+
+(define (sqrt-scaled x)
+  (define (sqrt-iter-scaled current-guess last-guess x)
+    (if (smallest-divisor small-change? current-guess last-guess)
+        current-guess
+        (sqrt-iter-scaled (improve current-guess x)
+                          current-guess x)))
+  (sqrt-iter-scaled 1.0 100.0 x))
+
+(define sqrt sqrt-scaled)
+</pre>
+</div>
+
+<p>
+Checking the results:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(sqrt 10000000.0)        ; Racket's built-in
+(sqrt1 10000000.0)       ; Version from text
+(sqrt-scaled 10000000.0) ; Scale-sensitive version
+</pre>
+</div>
+
+<pre class="example">
+&gt; (sqrt 10000000.0)        ; Racket's built-in
+3162.2776601683795
+&gt; (sqrt1 10000000.0)       ; Version from text
+3162.277660168379
+&gt; (sqrt-scaled 10000000.0) ; Scale-sensitive version
+3162.277666486375
+</pre>
+
+<p>
+As can be seen the scale sensitive version does not perform as well at
+large scales (as the iterative steps are larger, it is somewhat easier
+to satisfy the <code>small-change?</code> predicate.
+</p>
+
+<pre class="example">
+&gt; (sqrt 0.00000001)
+0.0001
+&gt; (sqrt1 0.00000001)
+0.03125010656242753
+&gt; (sqrt-scaled 0.00000001)
+0.00010000000000082464
+</pre>
+
+<p>
+The value of this version becomes evident at very small scales.  The
+original version from the text is more easily satisfied in this case,
+as the improvement steps are so tiny.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Exercise 1.8</h3>
+<div class="outline-text-3" id="text-2-3">
+</div><div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> Problem</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+Newton's method for cube roots is based on the fact that if \(y\) is
+an approximation to the cube root of \(x\), then a better
+approximation is given by the value
+</p>
+
+<p>
+$$ \frac{x/y^2 + 2y}{3} $$
+</p>
+
+<p>
+Use this formula to implement a cube-root procedure analogous to
+the square-root procedure.  (In section 1.3.4we will see how to
+implement Newton's method in general as an abstraction of these
+square-root and cube-root procedures.)
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> Answer</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+Extending to cube roots is straightforward. Building on the code in the last
+exercise:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (cube x)
+  (* x x x))
+
+(define (improve-cubic-guess guess x)
+  (average guess (/ (+ (/ x (square guess)) (* 2 guess)) 3)))
+
+(define (cbrt-iter-scaled current-guess last-guess x)
+  (if (small-change? current-guess last-guess)
+      current-guess
+      (cbrt-iter-scaled (improve-cubic-guess current-guess x) current-guess x)))
+
+(define (cbrt x)
+  (cbrt-iter-scaled 1.0 100.0 x))
+</pre>
+</div>
+
+<p>
+This gives results that do indeed look like an approximation to the
+cubic root of a number. Comparing against the results of the Racket
+<code>expt</code> function:
+</p>
+
+<pre class="example">
+&gt; (cbrt 27)
+3.0018696341051916
+&gt; (expt 27 1/3)
+3.0
+
+&gt; (cbrt 1000)
+10.009419213708078
+&gt; (expt 1000 1/3)
+9.999999999999998
+
+&gt; (cbrt 100000000)
+464.61792889946435
+&gt; (expt 100000000 1/3)
+464.15888336127773
+
+&gt; (cbrt 0.0000001)
+0.004645991760883334
+&gt; (expt 0.0000001 1/3)
+0.00464158883361278
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Paul L. Snyder</p>
+<p class="date">Created: 2014-03-30 Sun 19:30</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
