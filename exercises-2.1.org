@@ -376,7 +376,7 @@ the second interval is at its lowest.
      check for this condition and to signal an error if it occurs.
 *** Solution
 
-** TODO Exercise 2.11:
+** TODO Exercise 2.11: Percentage tolerances for intervals
 *** Problem
      In passing, Ben also cryptically comments: "By testing the signs
      of the endpoints of the intervals, it is possible to break
@@ -410,6 +410,11 @@ the second interval is at its lowest.
      specify percentage tolerances on the parameters of devices, as in
      the resistor specifications given earlier.
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (make-center-percent c p)
+    (make-center-width c (* c */ p 100.0)))
+#+END_SRC
 
 ** TODO Exercise 2.12:
 *** Problem
