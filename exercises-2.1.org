@@ -332,12 +332,26 @@ straightforward.
     (car i))
 #+END_SRC
 
-** TODO Exercise 2.8:
+** WRITEUP Exercise 2.8: Subtracting intervals
 *** Problem
      Using reasoning analogous to Alyssa's, describe how the
      difference of two intervals may be computed.  Define a
      corresponding subtraction procedure, called =sub-interval=.
 *** Solution
+
+This one is a little bit tricky: the "analogous reasoning" that we
+need to do is to figure out the smallest and largest possible results
+of the operation.  For the smallest, the lowest value we can achieve
+is when we subtract the highest possible value of the second interval
+for the lowest possible value of the first.  Similarly, the largest
+results could occur if the first interval is at its highest value and
+the second interval is at its lowest.
+
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (sub-interval x y)
+    (make-interval (- (lower-bound x) (upper-bound y))
+                   (- (upper-bound x) (lower-bound y))))
+#+END_SRC
 
 ** TODO Exercise 2.9:
 *** Problem
