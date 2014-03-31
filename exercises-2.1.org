@@ -28,7 +28,7 @@
 #+END_SRC
 
 * 2.1.2 Abstraction Barriers
-** WRITEUP Exercise 2.2:
+** WRITEUP Exercise 2.2: Representations for line segments
 *** Problem
      Consider the problem of representing line segments
      in a plane.  Each segment is represented as a pair of points: a
@@ -223,7 +223,7 @@ pattern.
 6> y
 #+END_EXAMPLE
 
-** WRITEUP Exercise 2.5:
+** WRITEUP Exercise 2.5: Creative data representation
 *** Problem
      Show that we can represent pairs of non-negative integers using
      only numbers and arithmetic operations if we represent the pair
@@ -257,7 +257,7 @@ capture this in another descriptive procedure: =factor-count=.
     (factor-count p 3))
 #+END_SRC
 
-** WRITEUP Exercise 2.6:
+** WRITEUP Exercise 2.6: Church numerals
 *** Problem
 
      In case representing pairs as procedures wasn't mind-boggling
@@ -489,7 +489,7 @@ the second interval is at its lowest.
                    (- (upper-bound x) (lower-bound y))))
 #+END_SRC
 
-** TODO Exercise 2.9:
+** TODO Exercise 2.9: Interval widths
 *** Problem
      The "width" of an interval is half of the difference between its
      upper and lower bounds.  The width is a measure of the
@@ -504,7 +504,7 @@ the second interval is at its lowest.
      multiplication or division.
 *** Solution
 
-** TODO Exercise 2.10:
+** TODO Exercise 2.10: Intervals spanning zero and error signalling
 *** Problem
      Ben Bitdiddle, an expert systems programmer, looks over Alyssa's
      shoulder and comments that it is not clear what it means to
@@ -512,7 +512,7 @@ the second interval is at its lowest.
      check for this condition and to signal an error if it occurs.
 *** Solution
 
-** TODO Exercise 2.11: Percentage tolerances for intervals
+** TODO Exercise 2.11: Reducing multiplications for =mul-interval=
 *** Problem
      In passing, Ben also cryptically comments: "By testing the signs
      of the endpoints of the intervals, it is possible to break
@@ -522,7 +522,7 @@ the second interval is at its lowest.
 
 *** Solution
 
-** TODO Exercise 2.12:
+** TODO Exercise 2.12: Center-percentage representations for intervals
 *** Problem
      Define a constructor =make-center-percent= that
      takes a center and a percentage tolerance and produces the desired
@@ -551,7 +551,7 @@ the second interval is at its lowest.
 #+END_SRC
 
 
-** TODO Exercise 2.13:
+** TODO Exercise 2.13: Approximating small tolerances
 *** Problem
      Show that under the assumption of small percentage tolerances
      there is a simple formula for the approximate percentage
@@ -561,7 +561,7 @@ the second interval is at its lowest.
 
 *** Solution
 
-** TODO Exercise 2.14:
+** TODO Exercise 2.14: Problems with the interval representation
 *** Problem
      After considerable work, Alyssa P. Hacker delivers her finished
      system.  Several years later, after she has forgotten all about
@@ -600,7 +600,7 @@ the second interval is at its lowest.
      Exercise 2.12).
 *** Solution
 
-** TODO Exercise 2.15:
+** TODO Exercise 2.15: Examining the growth of uncertainty
 *** Problem
      Eva Lu Ator, another user, has also noticed the different
      intervals computed by different but algebraically equivalent
@@ -612,7 +612,7 @@ the second interval is at its lowest.
      right?  Why?
 *** Solution
 
-** TODO Exercise 2.16:
+** TODO Exercise 2.16: On the non-equivalence of algebraic expressions
 *** Problem
      Explain, in general, why equivalent algebraic expressions may
      lead to different answers.  Can you devise an interval-arithmetic
