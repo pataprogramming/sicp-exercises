@@ -257,7 +257,7 @@ capture this in another descriptive procedure: =factor-count=.
     (factor-count p 3))
 #+END_SRC
 
-** TODO Exercise 2.6:
+** WRITEUP Exercise 2.6:
 *** Problem
 
      In case representing pairs as procedures wasn't mind-boggling
@@ -281,7 +281,143 @@ capture this in another descriptive procedure: =factor-count=.
      =add-1=).  (Hint: Use substitution to evaluate =(add-1 zero)=).
      Give a direct definition of the addition procedure `+' (not in
      terms of repeated application of `add-1').
+
 *** Solution
+
+
+There's another sneaky thing going on here.  Note that =add-1= is
+defined as a /procedure/...this means that there's really an implicit
+lambda here that the syntactic sugar obscures. I wish that the authors
+hadn't done this, as it obscures the clarity of the substitution
+process. To make things a bit clearly, I'll use a slightly different
+(but effectively identical) desugared definition of =add-1=:
+
+#+BEGIN_SRC
+  (define add-1 (lambda (n)
+   (lambda (f) (lambda (x) (f ((n f) x))))))
+#+END_SRC
+
+Now, we can use this to shuffling all of these symbols around to try
+to come up with a direct definition of =one=:
+
+#+BEGIN_EXAMPLE
+  1> (add-1 zero)
+  2> (add-1 (lambda (f) (lambda (x) x)))
+  3> ((lambda (n)
+       (lambda (f)
+        (lambda (x)
+         (f ((n f) x))))
+       (lambda (f) (lambda (x) x)))) ;; this line holds 'zero'
+#+END_EXAMPLE
+
+In step 3, note how =add-1='s lambda is substituted into the execution
+position. Thus, =zero= becomes the argument =n= and is substituted
+into the body of =add-1=:
+
+#+BEGIN_EXAMPLE
+  4> (lambda (f)
+      (lambda (x)
+       (f (( (lambda (f) (lambda (x) x)) ) f) x)))
+#+END_EXAMPLE
+
+Whew! Keeping all of the parentheses straight is pretty painful. The
+really important thing to note here is that =zero= lands not only in
+execution position, but in a /nested/ execution position: it's going
+to be called itself, and then its resulting lambda will be called as
+well.
+
+#+BEGIN_EXAMPLE
+  5> (lambda (f)
+      (lambda (x)
+       (f ((lambda (x) x)) x)))
+#+END_EXAMPLE
+
+After the first of these substitutions, the inner =f= disappears.
+Look again at the definition of =zero= to see why this must be so.
+
+#+BEGIN_EXAMPLE
+  5> (lambda (f)
+      (lambda (x)
+       (f x)))
+#+END_EXAMPLE
+
+And here's the tasty surprise: we end up with a lambda that performs a
+single function application of its argument =f= on the argument to its
+inner lambda! Note that neither of these lambdas land in an execution
+position, so they can't be substituted out. This gives us our new,
+direct definition for =one=:
+
+#+BEGIN_SRC
+  (define one (lambda (f) (lambda (x) (f x))))
+#+END_SRC
+
+With this in hand, we can take it to the next step: a definition for
+=two=. (You can probably guess what it is, if you've followed the
+logic of the substitutions to this point.)
+
+  (define add-1 (lambda (n)
+   (lambda (f) (lambda (x) (f ((n f) x))))))
+
+#+BEGIN_EXAMPLE
+  1> (add-1 one)
+  2> (add-1 (lambda (f) (lambda (x) (f x))))
+  3> ((lambda (n)
+       (lambda (f)
+        (lambda (x)
+         (f ((n f) x)))))
+      (lambda (f) (lambda (x) (f x))))
+#+END_EXAMPLE
+
+Having fought through =one=, teasing this out isn't too bad. The
+hardest part is keeping track of the scoping (that is, which nested
+=f= is associated with which lambda.
+
+#+BEGIN_EXAMPLE
+  4> (lambda (f)
+      (lambda (x)
+       (f (( (lambda (f) (lambda (x) (f x))) f) x))))
+  5> (lambda (f)
+      (lambda (x)
+       (f ( (lambda (x) (f x)) x))))
+#+END_EXAMPLE
+
+Look carefully at the inner =lambda (f)= and the outer =lambda (f)=;
+the outer =f= is substituted into the inner for step 5. This is a
+likely source of confusion.
+
+#+BEGIN_EXAMPLE
+  6> (lambda (f)
+      (lambda (x)
+       (f (f x))))
+#+END_EXAMPLE
+
+The same thing happens to inner and outer =x= in step 6. Yikes! But
+the result is reassuringly concise. (There are no prizes for guessing
+what the definition for =three= is going to be!)
+
+So: we can see that a Church numeral is represented by a number of
+repeated applications of the same function to some abstract =x= at the
+bottom of the chain.
+
+The jump from this to addition is actually extremely straightforward.
+Let's say we have two Church numerals is this representation, =p= and
+=q=: each is represented by a stack of nested calls to =f=.  The goal
+is to merge those two stacks together.
+
+Remember that each of those stacks is applied to some base
+case...which could simply be the result of the other stack!  Thus,
+crafting a definition is actually quite straightforward (again, as
+long as we keep our nested function definitions straight).  =q= needs
+to be applied to =x=, and then =p= needs to be applied to be result of
+that operation.  Each of these stacks must also be passed the =f= that
+is being used, as well. This gives us our result:
+
+#+BEGIN_EXAMPLE
+  (define (add p q)
+   (lambda (f)
+    (lambda (x)
+     ((p f) ((q f) x)))))
+#+END_EXAMPLE
 
 * 2.1.4 Extended Exercise: Interval Arithmetic
 ** WRITEUP Exercise 2.7: Selectors for interval arithmetic
