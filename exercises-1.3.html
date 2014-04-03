@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>SICP Exercise Solutions for Section 1.3</title>
-<!-- 2014-03-30 Sun 19:29 -->
+<!-- 2014-04-03 Thu 16:14 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Paul L. Snyder" />
@@ -210,7 +210,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-4-2">1.4.2. Answer</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-5">1.5. Exercise 1.33: Further generalization with <code>filtered-accumulate</code></a>
+<li><a href="#sec-1-5">1.5. Exercise 1.33: Further generalization of accumulation</a>
 <ul>
 <li><a href="#sec-1-5-1">1.5.1. Problem</a></li>
 <li><a href="#sec-1-5-2">1.5.2. Answer</a></li>
@@ -328,13 +328,13 @@ integral of a function \(f\) between \(a\) and \(b\) is approximated as
 </p>
 
 <p>
-$$\frac{h}{3}(y_0 + 4y_1 + 2y_2 + 4y+3 + 2y_4 + \ldots +
-    2y_{n-2} + 4y_{n-1} + y_n$$
+$$\frac{h}{3}(y_0 + 4y_1 + 2y_2 + 4y+3 + 2y_4 + \cdots +
+    2y_{n-2} + 4y_{n-1} + y_n)$$
 </p>
 
 <p>
-where \(h = (b - a)/n\), for some even integer \(n\), and$ y<sub>k</sub> =
-f(a + kh)$.  (Increasing \(n\) increases the accuracy of the
+where \(h = (b - a)/n\), for some even integer \(n\), and \(y_k =
+    f(a + kh)\).  (Increasing \(n\) increases the accuracy of the
 approximation.)  Define a procedure that takes as arguments \(f\),
 \(a\), \(b\), and \(n\) and returns the value of the integral, computed
 using Simpson's Rule.  Use your procedure to integrate <code>cube</code>
@@ -393,9 +393,12 @@ captured in <code>term-mult</code>):
           ((even? k) 2)))
   (define (simpson-term k)
     (* (term-mult k) (y k)))
-  (if (and (&gt; n 0) (&gt; b a) (even? n))
-      (* (/ h 3) (sum simpson-term 0.0 inc n))
-      (printf "n must be even and greater than 0, and a must be greater than b~n")))
+  (cond ((or (odd? n) (&lt;= n 0))
+         (printf "n must be even and greater than zero)~n"))
+        ((&lt;= b a)
+         (printf "a must be greater than b~n"))
+        (else
+         (* (/ h 3) (sum simpson-term 0.0 inc n)))))
 </pre>
 </div>
 
@@ -422,7 +425,7 @@ other.
             i
             r1 (- t1 t0))
     (if (&lt; i end)
-        (iter (+ i increment)))) ; Simpson's rule needs an even n
+        (iter (+ i increment)))) ; Simpson's rule needs even n
 
   (iter start))
 </pre>
@@ -462,13 +465,14 @@ error depending on the intervals selected. It is extremely fast, though:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define simpsons-n2 (lambda (n) (simpsons-integral square 1 4 n)))
+<pre class="src src-scheme">(define simpsons-n2
+  (lambda (n) (simpsons-integral square 1 4 n)))
 (exercise simpsons-n2 2 8 40)
 </pre>
 </div>
 
 <pre class="example">
-2: 21.0 (1 ms)
+2: 21.0 (0 ms)
 10: 21.0 (0 ms)
 18: 20.999999999999996 (0 ms)
 26: 21.000000000000007 (0 ms)
@@ -498,7 +502,7 @@ very close, but it takes the better part of a second to execute:
 </div>
 
 <pre class="example">
-16.250000000258588 (184 ms)
+16.250000000258588 (180 ms)
 </pre>
 
 <p>
@@ -509,7 +513,8 @@ depending on the subdivisions:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define simpsons-n3 (lambda (n) (simpsons-integral cube -2 3 n)))
+<pre class="src src-scheme">(define simpsons-n3
+  (lambda (n) (simpsons-integral cube -2 3 n)))
 (exercise simpsons-n3 2 4 20)
 </pre>
 </div>
@@ -537,7 +542,7 @@ approximation, but takes over a full <i>second</i> to do so on my machine!
 </div>
 
 <pre class="example">
--0.54402111069616 (846 ms)
+-0.54402111069616 (770 ms)
 </pre>
 
 <p>
@@ -547,7 +552,8 @@ of the time.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define simpsons-cos (lambda (n) (simpsons-integral cos 0 10 n)))
+<pre class="src src-scheme">(define simpsons-cos
+  (lambda (n) (simpsons-integral cos 0 10 n)))
 (exercise simpsons-cos 2 50 500)
 </pre>
 </div>
@@ -555,15 +561,15 @@ of the time.
 <pre class="example">
 2: 2.1592953546274214 (0 ms)
 52: -0.5440252627727152 (0 ms)
-102: -0.5440213904266393 (0 ms)
-152: -0.5440211675384317 (1 ms)
+102: -0.5440213904266393 (1 ms)
+152: -0.5440211675384317 (0 ms)
 202: -0.5440211290472229 (0 ms)
 252: -0.5440211183852472 (0 ms)
 302: -0.5440211145232634 (0 ms)
-352: -0.5440211128582283 (0 ms)
+352: -0.5440211128582283 (1 ms)
 402: -0.5440211120467381 (0 ms)
-452: -0.5440211116134976 (1 ms)
-502: -0.5440211113653068 (0 ms)
+452: -0.5440211116134976 (0 ms)
+502: -0.5440211113653068 (1 ms)
 </pre>
 </div>
 </div>
@@ -677,7 +683,8 @@ a. The <code>sum</code> procedure is only the simplest of a vast number of
 </p>
 
 <p>
-$$\frac{pi}{4} = \frac{2*4*4*6*6*9\ldots}{3*3*5*5*7*7\ldots}$$
+$$\frac{\pi}{4} = \frac{2\cdot 4\cdot 4 \cdot 6 \cdot 6
+         \cdot 9\cdots}{3\cdot 3 \cdot 5\cdot 5\cdot 7 \cdot 7\cdots}$$
 </p>
 
 <p>
@@ -765,8 +772,8 @@ straightforward way:
     (round-up-to-odd (inc k)))
   (define (term k)
     (/ (num k) (den k)))
-  ;; Use a real number here to switch Racket's exact rationals to inexact
-  ;; floating point
+  ;; Use a real number here to switch Racket's exact rationals
+  ;; to inexact floating point
   (* 4.0 (product-func term 1 inc n)))
 
 (printf "recursive: ~a~n" (approx-pi 1000 product-recur))
@@ -841,7 +848,8 @@ same substitutions:
   (if (&gt; a b)
       null-value
       (combiner (term a)
-                (accumulate-recur combiner null-value term (next a) next b))))
+                (accumulate-recur combiner null-value term
+                                  (next a) next b))))
 
 (define (accumulate-iter combiner null-value term a next b)
   (define (iter a result)
@@ -871,10 +879,14 @@ the versions from the previous exercises.
 (define (product-acc-iter term a next b)
   (accumulate-iter * 1 term a next b))
 
-(printf "sum-acc-recur: ~a~n" (sum-acc-iter identity 1 inc 10))
-(printf "sum-acc-iter:  ~a~n" (sum-acc-recur identity 1 inc 10))
-(printf "product-acc-recur: ~a~n" (product-acc-recur identity 1 inc 10))
-(printf "product-acc-iter:  ~a~n" (product-acc-iter identity 1 inc 10))
+(printf "sum-acc-recur: ~a~n"
+        (sum-acc-iter identity 1 inc 10))
+(printf "sum-acc-iter:  ~a~n"
+        (sum-acc-recur identity 1 inc 10))
+(printf "product-acc-recur: ~a~n"
+        (product-acc-recur identity 1 inc 10))
+(printf "product-acc-iter:  ~a~n"
+        (product-acc-iter identity 1 inc 10))
 </pre>
 </div>
 
@@ -888,7 +900,7 @@ product-acc-iter:  3628800
 </div>
 </div>
 <div id="outline-container-sec-1-5" class="outline-3">
-<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Exercise 1.33: Further generalization with <code>filtered-accumulate</code></h3>
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Exercise 1.33: Further generalization of accumulation</h3>
 <div class="outline-text-3" id="text-1-5">
 </div><div id="outline-container-sec-1-5-1" class="outline-4">
 <h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> Problem</h4>
@@ -922,13 +934,13 @@ b. the product of all the positive integers less than \(n\) that
 <h4 id="sec-1-5-2"><span class="section-number-4">1.5.2</span> Answer</h4>
 <div class="outline-text-4" id="text-1-5-2">
 <p>
-Now we're cooking with gas! These are the early steps in the "build
-your own lightsaber" aspect of the book. Variants of many of the
-functions used in these exercises can be found in every Lisp. The form
-of the <code>filtered-accumulate</code> function may not be exactly the usual
-form (there are a lot of arguments that need to be supplied, imposing
-a more specific shape on the functions used), but the underlying
-principle is one that will be encountered again and again.
+These are the early steps in the "build your own lightsaber" aspect of
+the book. Variants of many of the functions used in these exercises
+can be found in every Lisp. The form of the <code>filtered-accumulate</code>
+function may not be exactly the usual form (there are a lot of
+arguments that need to be supplied, imposing a more specific shape on
+the functions used), but the underlying principle is one that will be
+encountered again and again.
 </p>
 
 <p>
@@ -939,7 +951,8 @@ allows easier expression of a whole range of procedures.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (filtered-accumulate combiner null-value filter term a next b)
+<pre class="src src-scheme">(define (filtered-accumulate combiner null-value filter
+                             term a next b)
   (define (iter a result)
     (cond ((&gt; a b) result)
           ((filter a) (iter (next a) (combiner result (term a))))
@@ -1104,7 +1117,7 @@ compute \(\phi\) by means of the <code>fixed-point</code> procedure.
 <p>
 Modify <code>fixed-point</code> so that it prints the sequence of
 approximations it generates, using the <code>newline</code> and <code>display</code>
-primitives shown in *Note Exercise 1.22.  Then find a solution to
+primitives shown in Exercise 1.22.  Then find a solution to
 \(x^x = 1000\) by finding a fixed point of \(x \mapsto \log 1000
    /\log x\).  (Use Scheme's primitive <code>log</code> procedure, which computes
 natural logarithms.)  Compare the number of steps this takes with
@@ -1168,7 +1181,8 @@ use 1 as a starting point).
 
 <div class="org-src-container">
 
-<pre class="src src-scheme" id="1-36-normal">(fixed-point-verbose (lambda (x) (/ (log 1000) (log x))) 1.1)
+<pre class="src src-scheme" id="1-36-normal">(fixed-point-verbose
+ (lambda (x) (/ (log 1000) (log x))) 1.1)
 </pre>
 </div>
 
@@ -1560,7 +1574,7 @@ should.  Checking against \(\tan 1\approx 1.5574077\):
 </div>
 
 <pre class="example">
-1: 1.0 (0 ms)
+1: 1.0 (1 ms)
 2: 0.5 (0 ms)
 3: 1.3333333333333333 (0 ms)
 4: 1.5454545454545454 (0 ms)
@@ -1588,7 +1602,7 @@ And against \(\tan 3\approx -0.14254654\):
 </div>
 
 <pre class="example">
-1: 3.0 (1 ms)
+1: 3.0 (0 ms)
 2: 0.75 (0 ms)
 3: -6.0 (0 ms)
 4: -0.7894736842105263 (0 ms)
@@ -1974,12 +1988,12 @@ It's easy to apply this to other procedures:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">((repeated halve 4) 240)
+<pre class="src src-scheme">((repeated (lambda (n) (/ n 2)) 4) 240)
 </pre>
 </div>
 
 <pre class="example">
-An error occurred.
+15
 </pre>
 
 <p>
@@ -2143,7 +2157,7 @@ within 0.1 of the original <code>square</code> procedure.
 7.0: 49.0427324823916 (0 ms)
 8.0: 64.02185727993435 (0 ms)
 9.0: 80.96256542416378 (0 ms)
-10.0: 99.96672650555777 (0 ms)
+10.0: 99.96672650555777 (1 ms)
 </pre>
 </div>
 </div>
@@ -2297,7 +2311,8 @@ calculated as a result of that exercise was 4.555536364911781.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(fixed-point-ii (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
+<pre class="src src-scheme">(fixed-point-ii
+ (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
 </pre>
 </div>
 
@@ -2316,7 +2331,7 @@ produces the same result.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Paul L. Snyder</p>
-<p class="date">Created: 2014-03-30 Sun 19:29</p>
+<p class="date">Created: 2014-04-03 Thu 16:14</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

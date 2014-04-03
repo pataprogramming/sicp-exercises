@@ -10,10 +10,10 @@
     than the method illustrated above.  Using Simpson's Rule, the
     integral of a function $f$ between $a$ and $b$ is approximated as
 
-    $$\frac{h}{3}(y_0 + 4y_1 + 2y_2 + 4y+3 + 2y_4 + \ldots +
-    2y_{n-2} + 4y_{n-1} + y_n$$
+    $$\frac{h}{3}(y_0 + 4y_1 + 2y_2 + 4y+3 + 2y_4 + \cdots +
+    2y_{n-2} + 4y_{n-1} + y_n)$$
 
-    where $h = (b - a)/n$, for some even integer $n$, and$ y_k =
+    where $h = (b - a)/n$, for some even integer $n$, and $y_k =
     f(a + kh)$.  (Increasing $n$ increases the accuracy of the
     approximation.)  Define a procedure that takes as arguments $f$,
     $a$, $b$, and $n$ and returns the value of the integral, computed
@@ -63,9 +63,12 @@ captured in =term-mult=):
             ((even? k) 2)))
     (define (simpson-term k)
       (* (term-mult k) (y k)))
-    (if (and (> n 0) (> b a) (even? n))
-        (* (/ h 3) (sum simpson-term 0.0 inc n))
-        (printf "n must be even and greater than 0, and a must be greater than b~n")))
+    (cond ((or (odd? n) (<= n 0))
+           (printf "n must be even and greater than zero)~n"))
+          ((<= b a)
+           (printf "a must be greater than b~n"))
+          (else
+           (* (/ h 3) (sum simpson-term 0.0 inc n)))))
 #+END_SRC
 
 To compare the results, we'll stack up each function against the
@@ -88,7 +91,7 @@ other.
               i
               r1 (- t1 t0))
       (if (< i end)
-          (iter (+ i increment)))) ; Simpson's rule needs an even n
+          (iter (+ i increment)))) ; Simpson's rule needs even n
 
     (iter start))
 #+END_SRC
@@ -115,7 +118,8 @@ Our procedure for Simpson's Rule does quite well, with some numerical
 error depending on the intervals selected. It is extremely fast, though:
 
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
-  (define simpsons-n2 (lambda (n) (simpsons-integral square 1 4 n)))
+  (define simpsons-n2
+    (lambda (n) (simpsons-integral square 1 4 n)))
   (exercise simpsons-n2 2 8 40)
 #+END_SRC
 
@@ -148,8 +152,9 @@ we get an even closer result, with similar numeric fluctuation
 depending on the subdivisions:
 
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
-  (define simpsons-n3 (lambda (n) (simpsons-integral cube -2 3 n)))
-  (exercise simpsons-n3 2 4 20)
+    (define simpsons-n3
+      (lambda (n) (simpsons-integral cube -2 3 n)))
+    (exercise simpsons-n3 2 4 20)
 #+END_SRC
 
 #+RESULTS:
@@ -176,7 +181,8 @@ Simpson's Rule, again, comes up with its approximatation in a fraction
 of the time.
 
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
-  (define simpsons-cos (lambda (n) (simpsons-integral cos 0 10 n)))
+  (define simpsons-cos
+    (lambda (n) (simpsons-integral cos 0 10 n)))
   (exercise simpsons-cos 2 50 500)
 #+END_SRC
 
@@ -268,7 +274,8 @@ And the approximation to $\pi$:
          terms of =product=.  Also use =product= to compute
          approximations to $\pi$ using the formula
 
-         $$\frac{pi}{4} = \frac{2*4*4*6*6*9\ldots}{3*3*5*5*7*7\ldots}$$
+         $$\frac{\pi}{4} = \frac{2\cdot 4\cdot 4 \cdot 6 \cdot 6
+         \cdot 9\cdots}{3\cdot 3 \cdot 5\cdot 5\cdot 7 \cdot 7\cdots}$$
 
       b. If your =product= procedure generates a recursive process,
          write one that generates an iterative process.  If it
@@ -335,8 +342,8 @@ straightforward way:
       (round-up-to-odd (inc k)))
     (define (term k)
       (/ (num k) (den k)))
-    ;; Use a real number here to switch Racket's exact rationals to inexact
-    ;; floating point
+    ;; Use a real number here to switch Racket's exact rationals
+    ;; to inexact floating point
     (* 4.0 (product-func term 1 inc n)))
 
   (printf "recursive: ~a~n" (approx-pi 1000 product-recur))
@@ -389,7 +396,8 @@ same substitutions:
     (if (> a b)
         null-value
         (combiner (term a)
-                  (accumulate-recur combiner null-value term (next a) next b))))
+                  (accumulate-recur combiner null-value term
+                                    (next a) next b))))
 
   (define (accumulate-iter combiner null-value term a next b)
     (define (iter a result)
@@ -415,10 +423,14 @@ the versions from the previous exercises.
   (define (product-acc-iter term a next b)
     (accumulate-iter * 1 term a next b))
 
-  (printf "sum-acc-recur: ~a~n" (sum-acc-iter identity 1 inc 10))
-  (printf "sum-acc-iter:  ~a~n" (sum-acc-recur identity 1 inc 10))
-  (printf "product-acc-recur: ~a~n" (product-acc-recur identity 1 inc 10))
-  (printf "product-acc-iter:  ~a~n" (product-acc-iter identity 1 inc 10))
+  (printf "sum-acc-recur: ~a~n"
+          (sum-acc-iter identity 1 inc 10))
+  (printf "sum-acc-iter:  ~a~n"
+          (sum-acc-recur identity 1 inc 10))
+  (printf "product-acc-recur: ~a~n"
+          (product-acc-recur identity 1 inc 10))
+  (printf "product-acc-iter:  ~a~n"
+          (product-acc-iter identity 1 inc 10))
 #+END_SRC
 
 #+RESULTS:
@@ -427,7 +439,7 @@ the versions from the previous exercises.
 : product-acc-recur: 3628800
 : product-acc-iter:  3628800
 
-** Exercise 1.33: Further generalization with =filtered-accumulate=
+** Exercise 1.33: Further generalization of accumulation
 *** Problem
 
     You can obtain an even more general version of =accumulate=
@@ -450,25 +462,26 @@ the versions from the previous exercises.
 
 *** Answer
 
-Now we're cooking with gas! These are the early steps in the "build
-your own lightsaber" aspect of the book. Variants of many of the
-functions used in these exercises can be found in every Lisp. The form
-of the =filtered-accumulate= function may not be exactly the usual
-form (there are a lot of arguments that need to be supplied, imposing
-a more specific shape on the functions used), but the underlying
-principle is one that will be encountered again and again.
+These are the early steps in the "build your own lightsaber" aspect of
+the book. Variants of many of the functions used in these exercises
+can be found in every Lisp. The form of the =filtered-accumulate=
+function may not be exactly the usual form (there are a lot of
+arguments that need to be supplied, imposing a more specific shape on
+the functions used), but the underlying principle is one that will be
+encountered again and again.
 
 The key point to notice here is in how the higher-order functions are
 used as tools of generalization. Just adding in a =filter= predicate
 allows easier expression of a whole range of procedures.
 
 #+BEGIN_SRC scheme :session 1-3 :results silent
-  (define (filtered-accumulate combiner null-value filter term a next b)
-    (define (iter a result)
-      (cond ((> a b) result)
-            ((filter a) (iter (next a) (combiner result (term a))))
-            (else (iter (next a) result))))
-    (iter a null-value))
+    (define (filtered-accumulate combiner null-value filter
+                                 term a next b)
+      (define (iter a result)
+        (cond ((> a b) result)
+              ((filter a) (iter (next a) (combiner result (term a))))
+              (else (iter (next a) result))))
+      (iter a null-value))
 #+END_SRC
 
 Transplanting the prime-detection code from the last section, it's
@@ -581,7 +594,7 @@ And it will terminate with an error, since =2= is not a procedure.
 
    Modify =fixed-point= so that it prints the sequence of
    approximations it generates, using the =newline= and =display=
-   primitives shown in *Note Exercise 1.22.  Then find a solution to
+   primitives shown in Exercise 1.22.  Then find a solution to
    $x^x = 1000$ by finding a fixed point of $x \mapsto \log 1000
    /\log x$.  (Use Scheme's primitive =log= procedure, which computes
    natural logarithms.)  Compare the number of steps this takes with
@@ -632,7 +645,8 @@ use 1 as a starting point).
 
 #+name: 1-36-normal
 #+BEGIN_SRC scheme :session 1-3 :results output :exports both
-  (fixed-point-verbose (lambda (x) (/ (log 1000) (log x))) 1.1)
+    (fixed-point-verbose
+     (lambda (x) (/ (log 1000) (log x))) 1.1)
 #+END_SRC
 
 #+RESULTS: 1-36-normal
@@ -1263,7 +1277,7 @@ As it should, the example from the exercise results in $(5^2)^2 = 25^2
 It's easy to apply this to other procedures:
 
 #+BEGIN_SRC scheme :session 1-3 :results value :exports both
-  ((repeated halve 4) 240)
+  ((repeated (lambda (n) (/ n 2)) 4) 240)
 #+END_SRC
 
 #+RESULTS:
@@ -1515,7 +1529,8 @@ solution to $x^x = 1000$, as developed in exercise 1.36. The value
 calculated as a result of that exercise was 4.555536364911781.
 
 #+BEGIN_SRC scheme :session 1-3 :results value :exports both
-  (fixed-point-ii (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
+  (fixed-point-ii
+   (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
 #+END_SRC
 
 #+RESULTS:
