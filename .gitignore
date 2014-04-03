@@ -1,2 +1,5 @@
 exercises*tex
-texput.log
+*.log
+*out
+*pyg
+*toc

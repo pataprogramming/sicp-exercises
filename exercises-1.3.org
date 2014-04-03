@@ -2,6 +2,51 @@
 #+AUTHOR: Paul L. Snyder
 #+EMAIL: paul@pataprogramming.com
 #+TODO: TODO(t) WRITEUP(w) || (d)
+#+LaTeX_HEADER: \usepackage{minted}
+#+LaTeX_HEADER: \usepackage{color}
+#+LaTeX_HEADER: \usepackage{xcolor}
+#+LateX_HEADER: \usemintedstyle{friendly}
+#+LaTeX_HEADER: \newminted{clojure}{fontsize=\large}
+#+LaTeX_HEADER: \newminted{java}{fontsize=\large}
+#+LaTeX_HEADER: \newminted{common-lisp}{fontsize=\large}
+#+LaTeX_HEADER: \newminted{scheme}{fontsize=\large}
+
+#+name: setup-minted
+#+begin_src emacs-lisp :exports none :results silent
+  (setq org-latex-listings 'minted)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-custom-lang-environments
+        '(
+         (emacs-lisp "common-lispcode")
+         (scheme "schemecode")
+         (lisp "common-lispcode")
+         (java "javacode")
+         (clojure "clojurecode")
+          ))
+  (setq org-latex-minted-options
+        '(("frame" "lines")
+          ("fontsize" "\\normalsize")
+          ("linenos" "")))
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+end_src
+
+#+BEGIN_LaTeX
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\orange}[1]{{\color{orange}#1}}
+\newcommand{\purple}[1]{{\color{purple}#1}}
+\definecolor{darkgreen}{HTML}{006B3C}
+\newcommand{\green}[1]{{\color{darkgreen}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\definecolor{indigo}{HTML}{4B0082}
+\newcommand{\indigo}[1]{{\color{indigo}#1}}
+\newcommand{\java}{\red{Java}}
+\newcommand{\lisp}{\red{Lisp}}
+\newcommand{\clojure}{\blue{Clojure}}
+#+END_LaTeX
+
 
 * Section 1.3.1
 ** Exercise 1.29: Implementing Simpson's Rule

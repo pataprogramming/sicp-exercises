@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>SICP Exercise Solutions for Section 1.3</title>
-<!-- 2014-04-03 Thu 16:14 -->
+<!-- 2014-04-03 Thu 16:36 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Paul L. Snyder" />
@@ -312,6 +312,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
+
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Section 1.3.1</h2>
 <div class="outline-text-2" id="text-1">
@@ -354,23 +355,23 @@ code from the text:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(require (planet neil/sicp:1:17))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">require</span> (planet neil/sicp:1:17))
 
-(define dx 0.00001)
+(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">dx</span> 0.00001)
 
-(define (square x) (* x x))
-(define (cube x) (* x x x))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">square</span> x) (* x x))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">cube</span> x) (* x x x))
 
-(define (inc n) (+ n 1))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">inc</span> n) (+ n 1))
 
-(define (sum term a next b)
-  (if (&gt; a b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sum</span> term a next b)
+  (<span style="color: #859900; font-weight: bold;">if</span> (&gt; a b)
       0
       (+ (term a)
          (sum term (next a) next b))))
 
-(define (integral f a b dx)
-  (define (add-dx x) (+ x dx))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">integral</span> f a b dx)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">add-dx</span> x) (+ x dx))
   (* (sum f (+ a (/ dx 2.0)) add-dx b)
      dx))
 </pre>
@@ -384,20 +385,20 @@ captured in <code>term-mult</code>):
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (simpsons-integral f a b n)
-  (define h (/ (- b a) n))
-  (define (y k) (f (+ a (* k h))))
-  (define (term-mult k)
-    (cond ((or (= k 0) (= k n)) 1)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">simpsons-integral</span> f a b n)
+  (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">h</span> (/ (- b a) n))
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">y</span> k) (f (+ a (* k h))))
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">term-mult</span> k)
+    (<span style="color: #859900; font-weight: bold;">cond</span> ((<span style="color: #859900; font-weight: bold;">or</span> (= k 0) (= k n)) 1)
           ((odd? k) 4)
           ((even? k) 2)))
-  (define (simpson-term k)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">simpson-term</span> k)
     (* (term-mult k) (y k)))
-  (cond ((or (odd? n) (&lt;= n 0))
-         (printf "n must be even and greater than zero)~n"))
+  (<span style="color: #859900; font-weight: bold;">cond</span> ((<span style="color: #859900; font-weight: bold;">or</span> (odd? n) (&lt;= n 0))
+         (printf <span style="color: #2aa198;">"n must be even and greater than zero)~n"</span>))
         ((&lt;= b a)
-         (printf "a must be greater than b~n"))
-        (else
+         (printf <span style="color: #2aa198;">"a must be greater than b~n"</span>))
+        (<span style="color: #859900; font-weight: bold;">else</span>
          (* (/ h 3) (sum simpson-term 0.0 inc n)))))
 </pre>
 </div>
@@ -409,23 +410,23 @@ other.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (time-once f)
-  (define t0 (current-milliseconds))
-  (define r1 (f))
-  (define t1 (current-milliseconds))
-  (printf "~a (~a ms)~n" r1 (- t1 t0)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">time-once</span> f)
+  (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">t0</span> (current-milliseconds))
+  (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">r1</span> (f))
+  (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">t1</span> (current-milliseconds))
+  (printf <span style="color: #2aa198;">"~a (~a ms)~n"</span> r1 (- t1 t0)))
 
-(define (exercise f start increment end)
-  (define (iter i)
-    (define t0 (current-milliseconds))
-    (define r1 (f i))
-    (define t1 (current-milliseconds))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">exercise</span> f start increment end)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> i)
+    (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">t0</span> (current-milliseconds))
+    (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">r1</span> (f i))
+    (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">t1</span> (current-milliseconds))
 
-    (printf "~a: ~a (~a ms)~n"
+    (printf <span style="color: #2aa198;">"~a: ~a (~a ms)~n"</span>
             i
             r1 (- t1 t0))
-    (if (&lt; i end)
-        (iter (+ i increment)))) ; Simpson's rule needs even n
+    (<span style="color: #859900; font-weight: bold;">if</span> (&lt; i end)
+        (iter (+ i increment)))) <span style="color: #586e75;">; </span><span style="color: #586e75;">Simpson's rule needs even n</span>
 
   (iter start))
 </pre>
@@ -450,12 +451,12 @@ around 100 ms to execute on my machine. Slow!
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(time-once (lambda () (integral square 1 4 dx)))
+<pre class="src src-scheme">(time-once (<span style="color: #859900; font-weight: bold;">lambda</span> () (integral square 1 4 dx)))
 </pre>
 </div>
 
 <pre class="example">
-21.000000000151953 (109 ms)
+21.000000000151953 (98 ms)
 </pre>
 
 <p>
@@ -465,14 +466,14 @@ error depending on the intervals selected. It is extremely fast, though:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define simpsons-n2
-  (lambda (n) (simpsons-integral square 1 4 n)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">simpsons-n2</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (n) (simpsons-integral square 1 4 n)))
 (exercise simpsons-n2 2 8 40)
 </pre>
 </div>
 
 <pre class="example">
-2: 21.0 (0 ms)
+2: 21.0 (1 ms)
 10: 21.0 (0 ms)
 18: 20.999999999999996 (0 ms)
 26: 21.000000000000007 (0 ms)
@@ -497,12 +498,12 @@ very close, but it takes the better part of a second to execute:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(time-once (lambda () (integral cube -2 3 dx)))
+<pre class="src src-scheme">(time-once (<span style="color: #859900; font-weight: bold;">lambda</span> () (integral cube -2 3 dx)))
 </pre>
 </div>
 
 <pre class="example">
-16.250000000258588 (180 ms)
+16.250000000258588 (157 ms)
 </pre>
 
 <p>
@@ -513,8 +514,8 @@ depending on the subdivisions:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define simpsons-n3
-  (lambda (n) (simpsons-integral cube -2 3 n)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">simpsons-n3</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (n) (simpsons-integral cube -2 3 n)))
 (exercise simpsons-n3 2 4 20)
 </pre>
 </div>
@@ -537,12 +538,12 @@ approximation, but takes over a full <i>second</i> to do so on my machine!
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(time-once (lambda () (integral cos 0 10 dx)))
+<pre class="src src-scheme">(time-once (<span style="color: #859900; font-weight: bold;">lambda</span> () (integral cos 0 10 dx)))
 </pre>
 </div>
 
 <pre class="example">
--0.54402111069616 (770 ms)
+-0.54402111069616 (713 ms)
 </pre>
 
 <p>
@@ -552,8 +553,8 @@ of the time.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define simpsons-cos
-  (lambda (n) (simpsons-integral cos 0 10 n)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">simpsons-cos</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (n) (simpsons-integral cos 0 10 n)))
 (exercise simpsons-cos 2 50 500)
 </pre>
 </div>
@@ -561,12 +562,12 @@ of the time.
 <pre class="example">
 2: 2.1592953546274214 (0 ms)
 52: -0.5440252627727152 (0 ms)
-102: -0.5440213904266393 (1 ms)
-152: -0.5440211675384317 (0 ms)
+102: -0.5440213904266393 (0 ms)
+152: -0.5440211675384317 (1 ms)
 202: -0.5440211290472229 (0 ms)
 252: -0.5440211183852472 (0 ms)
 302: -0.5440211145232634 (0 ms)
-352: -0.5440211128582283 (1 ms)
+352: -0.5440211128582283 (0 ms)
 402: -0.5440211120467381 (0 ms)
 452: -0.5440211116134976 (0 ms)
 502: -0.5440211113653068 (1 ms)
@@ -609,9 +610,9 @@ section.  As a fill-in-the-blank problem, this is pretty straightforward.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (sum-iter term a next b)
-  (define (iter a result)
-    (if (&gt; a b)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sum-iter</span> term a next b)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> a result)
+    (<span style="color: #859900; font-weight: bold;">if</span> (&gt; a b)
         result
         (iter (next a) (+ result (term a)))))
   (iter a 0))
@@ -652,9 +653,9 @@ And the approximation to \(\pi\):
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(* 8 (sum-iter (lambda (x) (/ 1.0 (* x (+ x 2))) )
+<pre class="src src-scheme">(* 8 (sum-iter (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (/ 1.0 (* x (+ x 2))) )
                1
-               (lambda (x) (+ x 4))
+               (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (+ x 4))
                1000))
 </pre>
 </div>
@@ -709,8 +710,8 @@ straightforward.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (product-recur term a next b)
-  (if (&gt; a b)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">product-recur</span> term a next b)
+  (<span style="color: #859900; font-weight: bold;">if</span> (&gt; a b)
       1
       (* (term a)
          (product-recur term (next a) next b))))
@@ -723,9 +724,9 @@ The iterative case is just as easy to adapt from <code>sum-iter</code>.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (product-iter term a next b)
-  (define (iter a result)
-    (if (&gt; a b)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">product-iter</span> term a next b)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> a result)
+    (<span style="color: #859900; font-weight: bold;">if</span> (&gt; a b)
         result
         (iter (next a) (* result (term a)))))
   (iter a 1))
@@ -739,10 +740,10 @@ Using this for factorial is dirt simple: we just need to use the
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (factorial-recur n) (product-recur identity 1 inc n))
-(define (factorial-iter n) (product-iter identity 1 inc n))
-(printf "recursive: ~a~n" (factorial-recur 10))
-(printf "iterative: ~a~n" (factorial-iter 10))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">factorial-recur</span> n) (product-recur identity 1 inc n))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">factorial-iter</span> n) (product-iter identity 1 inc n))
+(printf <span style="color: #2aa198;">"recursive: ~a~n"</span> (factorial-recur 10))
+(printf <span style="color: #2aa198;">"iterative: ~a~n"</span> (factorial-iter 10))
 </pre>
 </div>
 
@@ -761,23 +762,23 @@ straightforward way:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (approx-pi n product-func)
-  (define (round-up-to-even i)
-    (if (even? i) i (inc i)))
-  (define (round-up-to-odd i)
-    (if (odd? i) i (inc i)))
-  (define (num k)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">approx-pi</span> n product-func)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">round-up-to-even</span> i)
+    (<span style="color: #859900; font-weight: bold;">if</span> (even? i) i (inc i)))
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">round-up-to-odd</span> i)
+    (<span style="color: #859900; font-weight: bold;">if</span> (odd? i) i (inc i)))
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">num</span> k)
     (round-up-to-even (inc k)))
-  (define (den k)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">den</span> k)
     (round-up-to-odd (inc k)))
-  (define (term k)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">term</span> k)
     (/ (num k) (den k)))
-  ;; Use a real number here to switch Racket's exact rationals
-  ;; to inexact floating point
+  <span style="color: #586e75;">;; </span><span style="color: #586e75;">Use a real number here to switch Racket's exact rationals</span>
+  <span style="color: #586e75;">;; </span><span style="color: #586e75;">to inexact floating point</span>
   (* 4.0 (product-func term 1 inc n)))
 
-(printf "recursive: ~a~n" (approx-pi 1000 product-recur))
-(printf "iterative: ~a~n" (approx-pi 1000 product-iter))
+(printf <span style="color: #2aa198;">"recursive: ~a~n"</span> (approx-pi 1000 product-recur))
+(printf <span style="color: #2aa198;">"iterative: ~a~n"</span> (approx-pi 1000 product-iter))
 </pre>
 </div>
 
@@ -844,16 +845,16 @@ same substitutions:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (accumulate-recur combiner null-value term a next b)
-  (if (&gt; a b)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">accumulate-recur</span> combiner null-value term a next b)
+  (<span style="color: #859900; font-weight: bold;">if</span> (&gt; a b)
       null-value
       (combiner (term a)
                 (accumulate-recur combiner null-value term
                                   (next a) next b))))
 
-(define (accumulate-iter combiner null-value term a next b)
-  (define (iter a result)
-    (if (&gt; a b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">accumulate-iter</span> combiner null-value term a next b)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> a result)
+    (<span style="color: #859900; font-weight: bold;">if</span> (&gt; a b)
         result
         (iter (next a) (combiner result (term a)))))
   (iter a null-value))
@@ -867,25 +868,25 @@ the versions from the previous exercises.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (sum-acc-recur term a next b)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sum-acc-recur</span> term a next b)
   (accumulate-recur + 0 term a next b))
 
-(define (sum-acc-iter term a next b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sum-acc-iter</span> term a next b)
   (accumulate-iter + 0 term a next b))
 
-(define (product-acc-recur term a next b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">product-acc-recur</span> term a next b)
   (accumulate-recur * 1 term a next b))
 
-(define (product-acc-iter term a next b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">product-acc-iter</span> term a next b)
   (accumulate-iter * 1 term a next b))
 
-(printf "sum-acc-recur: ~a~n"
+(printf <span style="color: #2aa198;">"sum-acc-recur: ~a~n"</span>
         (sum-acc-iter identity 1 inc 10))
-(printf "sum-acc-iter:  ~a~n"
+(printf <span style="color: #2aa198;">"sum-acc-iter:  ~a~n"</span>
         (sum-acc-recur identity 1 inc 10))
-(printf "product-acc-recur: ~a~n"
+(printf <span style="color: #2aa198;">"product-acc-recur: ~a~n"</span>
         (product-acc-recur identity 1 inc 10))
-(printf "product-acc-iter:  ~a~n"
+(printf <span style="color: #2aa198;">"product-acc-iter:  ~a~n"</span>
         (product-acc-iter identity 1 inc 10))
 </pre>
 </div>
@@ -951,12 +952,12 @@ allows easier expression of a whole range of procedures.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (filtered-accumulate combiner null-value filter
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">filtered-accumulate</span> combiner null-value filter
                              term a next b)
-  (define (iter a result)
-    (cond ((&gt; a b) result)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> a result)
+    (<span style="color: #859900; font-weight: bold;">cond</span> ((&gt; a b) result)
           ((filter a) (iter (next a) (combiner result (term a))))
-          (else (iter (next a) result))))
+          (<span style="color: #859900; font-weight: bold;">else</span> (iter (next a) result))))
   (iter a null-value))
 </pre>
 </div>
@@ -969,28 +970,28 @@ procedure:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (square n) (* n n))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">square</span> n) (* n n))
 
-(define (smallest-divisor n)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">smallest-divisor</span> n)
   (find-divisor n 2))
 
-(define (find-divisor n test-divisor)
-  (cond ((&gt; (square test-divisor) n) n)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">find-divisor</span> n test-divisor)
+  (<span style="color: #859900; font-weight: bold;">cond</span> ((&gt; (square test-divisor) n) n)
         ((divides? test-divisor n) test-divisor)
-        (else (find-divisor n (+ test-divisor 1)))))
+        (<span style="color: #859900; font-weight: bold;">else</span> (find-divisor n (+ test-divisor 1)))))
 
-(define (divides? a b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">divides?</span> a b)
   (= (remainder b a) 0))
 
-;; Fixed this procedure to no longer classify 1 as prime
-(define (prime? n)
-  (and (= n (smallest-divisor n))
+<span style="color: #586e75;">;; </span><span style="color: #586e75;">Fixed this procedure to no longer classify 1 as prime</span>
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">prime?</span> n)
+  (<span style="color: #859900; font-weight: bold;">and</span> (= n (smallest-divisor n))
        (&gt; n 1)))
 
-(define (sum-of-squares-of-primes a b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sum-of-squares-of-primes</span> a b)
   (filtered-accumulate + 0 prime? square a inc b))
 
-(printf "sum of squares of primes between 2 and 6: ~a~n"
+(printf <span style="color: #2aa198;">"sum of squares of primes between 2 and 6: ~a~n"</span>
   (sum-of-squares-of-primes 2 6))
 </pre>
 </div>
@@ -1006,19 +1007,19 @@ procedure is similarly succinct:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (gcd a b)
-  (if (= b 0)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">gcd</span> a b)
+  (<span style="color: #859900; font-weight: bold;">if</span> (= b 0)
       a
       (gcd b (remainder a b))))
 
-(define (product-of-relative-primes n)
-  (define (relatively-prime? i)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">product-of-relative-primes</span> n)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">relatively-prime?</span> i)
     (= (gcd i n) 1))
   (filtered-accumulate * 1 relatively-prime? identity 1 inc n))
 
-(printf "product of relative primes of 6: ~a~n"
+(printf <span style="color: #2aa198;">"product of relative primes of 6: ~a~n"</span>
   (product-of-relative-primes 6))
-(printf "product of relative primes of 7: ~a~n"
+(printf <span style="color: #2aa198;">"product of relative primes of 7: ~a~n"</span>
   (product-of-relative-primes 7))
 </pre>
 </div>
@@ -1136,17 +1137,17 @@ First, the definitions from the text:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (average x y)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">average</span> x y)
   (/ (+ x y) 2))
 
-(define tolerance 0.00001)
+(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">tolerance</span> 0.00001)
 
-(define (fixed-point-orig f first-guess)
-  (define (close-enough? v1 v2)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">fixed-point-orig</span> f first-guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">close-enough?</span> v1 v2)
     (&lt; (abs (- v1 v2)) tolerance))
-  (define (try guess)
-    (let ((next (f guess)))
-      (if (close-enough? guess next)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">try</span> guess)
+    (<span style="color: #859900; font-weight: bold;">let</span> ((next (f guess)))
+      (<span style="color: #859900; font-weight: bold;">if</span> (close-enough? guess next)
           next
           (try next))))
   (try first-guess))
@@ -1159,14 +1160,14 @@ Now, we instrument <code>fixed-point</code> so we can observe its progress:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (fixed-point-verbose f first-guess)
-  (define (close-enough? v1 v2)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">fixed-point-verbose</span> f first-guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">close-enough?</span> v1 v2)
     (&lt; (abs (- v1 v2)) tolerance))
-  (define (try guess)
-    (let ((next (f guess)))
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">try</span> guess)
+    (<span style="color: #859900; font-weight: bold;">let</span> ((next (f guess)))
       (display next)
       (newline)
-      (if (close-enough? guess next)
+      (<span style="color: #859900; font-weight: bold;">if</span> (close-enough? guess next)
           next
           (try next))))
   (try first-guess))
@@ -1182,7 +1183,7 @@ use 1 as a starting point).
 <div class="org-src-container">
 
 <pre class="src src-scheme" id="1-36-normal">(fixed-point-verbose
- (lambda (x) (/ (log 1000) (log x))) 1.1)
+ (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (/ (log 1000) (log x))) 1.1)
 </pre>
 </div>
 
@@ -1232,7 +1233,7 @@ When average damping is introduce, the convergence is greatly accelerated:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme" id="1-36-damped">(fixed-point-verbose (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
+<pre class="src src-scheme" id="1-36-damped">(fixed-point-verbose (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (average x (/ (log 1000) (log x)))) 1.1)
 </pre>
 </div>
 
@@ -1244,10 +1245,10 @@ two-thirds.
 
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(prin1 "Without damping.:")
-(print (- (length (split-string normal "\n")) 1))
-(prin1 "With average damping:")
-(print (- (length (split-string damped "\n")) 1))
+<pre class="src src-emacs-lisp">(prin1 <span style="color: #2aa198;">"Without damping.:"</span>)
+(print (- (length (split-string normal <span style="color: #2aa198;">"\n"</span>)) 1))
+(prin1 <span style="color: #2aa198;">"With average damping:"</span>)
+(print (- (length (split-string damped <span style="color: #2aa198;">"\n"</span>)) 1))
 </pre>
 </div>
 
@@ -1333,14 +1334,14 @@ counts <i>down</i> from \(k\) to 1, rather than <i>up</i> from 1 to \(k\).
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (cont-frac-recur n d k)
-  (define (recur i)
-    (if (&lt; i k)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">cont-frac-recur</span> n d k)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">recur</span> i)
+    (<span style="color: #859900; font-weight: bold;">if</span> (&lt; i k)
         (/ (n i) (+ (d i) (recur (inc i))))
         (/ (n 1) (d 1))))
   (recur 1))
 
-(define cont-frac cont-frac-recur)
+(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">cont-frac</span> cont-frac-recur)
 </pre>
 </div>
 
@@ -1355,8 +1356,8 @@ a constant value.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (approx-phi k)
-  (cont-frac-recur (lambda (i) 1.0) (lambda (i) 1.0) k))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">approx-phi</span> k)
+  (cont-frac-recur (<span style="color: #859900; font-weight: bold;">lambda</span> (i) 1.0) (<span style="color: #859900; font-weight: bold;">lambda</span> (i) 1.0) k))
 (exercise approx-phi 1 1 15)
 </pre>
 </div>
@@ -1393,15 +1394,15 @@ conversions in previous exercises.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (cont-frac-iter n d k)
-  (define (iter i result)
-    (if (= i 0)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">cont-frac-iter</span> n d k)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> i result)
+    (<span style="color: #859900; font-weight: bold;">if</span> (= i 0)
         result
         (iter (- i 1) (/ (n i) (+ (d i) result)))))
   (iter k 0))
 
-(define (approx-phi-iter k)
-  (cont-frac-iter (lambda (i) 1.0) (lambda (i) 1.0) k))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">approx-phi-iter</span> k)
+  (cont-frac-iter (<span style="color: #859900; font-weight: bold;">lambda</span> (i) 1.0) (<span style="color: #859900; font-weight: bold;">lambda</span> (i) 1.0) k))
 </pre>
 </div>
 
@@ -1467,10 +1468,10 @@ judicious use of <code>remainder</code>, <code>/</code>, and <code>*</code>.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (euler-e k)
-  (+ 2.0 (cont-frac (lambda (i) 1)
-                    (lambda (i)
-                      (if (= (remainder i 3) 2)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">euler-e</span> k)
+  (+ 2.0 (cont-frac (<span style="color: #859900; font-weight: bold;">lambda</span> (i) 1)
+                    (<span style="color: #859900; font-weight: bold;">lambda</span> (i)
+                      (<span style="color: #859900; font-weight: bold;">if</span> (= (remainder i 3) 2)
                           (* 2 (/ (+ i 1) 3))
                           1))
                     k)))
@@ -1551,12 +1552,12 @@ challenges.  The only tricky bits here are making sure that all of the
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (tan-cf x k)
-  (cont-frac (lambda (i)
-               (if (= i 1)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">tan-cf</span> x k)
+  (cont-frac (<span style="color: #859900; font-weight: bold;">lambda</span> (i)
+               (<span style="color: #859900; font-weight: bold;">if</span> (= i 1)
                    x
                    (- (* x x))))
-             (lambda (i)
+             (<span style="color: #859900; font-weight: bold;">lambda</span> (i)
                (+ 1.0 (* 2.0 (- i 1.0))))
              k))
 </pre>
@@ -1569,12 +1570,12 @@ should.  Checking against \(\tan 1\approx 1.5574077\):
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(exercise (lambda (k) (tan-cf 1 k)) 1 1 15)
+<pre class="src src-scheme">(exercise (<span style="color: #859900; font-weight: bold;">lambda</span> (k) (tan-cf 1 k)) 1 1 15)
 </pre>
 </div>
 
 <pre class="example">
-1: 1.0 (1 ms)
+1: 1.0 (0 ms)
 2: 0.5 (0 ms)
 3: 1.3333333333333333 (0 ms)
 4: 1.5454545454545454 (0 ms)
@@ -1597,7 +1598,7 @@ And against \(\tan 3\approx -0.14254654\):
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(exercise (lambda (k) (tan-cf 3 k)) 1 1 15)
+<pre class="src src-scheme">(exercise (<span style="color: #859900; font-weight: bold;">lambda</span> (k) (tan-cf 3 k)) 1 1 15)
 </pre>
 </div>
 
@@ -1658,27 +1659,27 @@ First, a look at the code from the text:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define fixed-point fixed-point-verbose)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">fixed-point</span> fixed-point-verbose)
 
-(define (average-damp f)
-  (lambda (x) (average x (f x))))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">average-damp</span> f)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (average x (f x))))
 
-(define (sqrt x)
-  (fixed-point (average-damp (lambda (y) (/ x y)))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sqrt</span> x)
+  (fixed-point (average-damp (<span style="color: #859900; font-weight: bold;">lambda</span> (y) (/ x y)))
                1.0))
 
-(define dx 0.00001)
+(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">dx</span> 0.00001)
 
-(define (deriv g)
-  (lambda (x)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">deriv</span> g)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
     (/ (- (g (+ x dx)) (g x))
        dx)))
 
-(define (newton-transform g)
-  (lambda (x)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">newton-transform</span> g)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
     (- x (/ (g x) ((deriv g) x)))))
 
-(define (newtons-method g guess)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">newtons-method</span> g guess)
   (fixed-point (newton-transform g) guess))
 </pre>
 </div>
@@ -1690,8 +1691,8 @@ return a new lambda with bindings to the appropriate coefficients:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (cubic a b c)
-  (lambda (x) (+ (cube x) (* a (square x)) (* b x) c)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">cubic</span> a b c)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (+ (cube x) (* a (square x)) (* b x) c)))
 </pre>
 </div>
 
@@ -1710,7 +1711,7 @@ under the lens:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define cubic-1-5-9 (cubic -15 59 -45))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">cubic-1-5-9</span> (cubic -15 59 -45))
 (newtons-method cubic-1-5-9 0)
 </pre>
 </div>
@@ -1730,7 +1731,7 @@ different starting point:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define cubic-1-5-9 (cubic -15 59 -45))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">cubic-1-5-9</span> (cubic -15 59 -45))
 (newtons-method cubic-1-5-9 20)
 </pre>
 </div>
@@ -1752,7 +1753,7 @@ find the root at \(x=5\):
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define cubic-1-5-9 (cubic -15 59 -45))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">cubic-1-5-9</span> (cubic -15 59 -45))
 (newtons-method cubic-1-5-9 6)
 </pre>
 </div>
@@ -1802,8 +1803,8 @@ effort to come up with the desire specification.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (double f)
-  (lambda (x) (f (f x))))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">double</span> f)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (f (f x))))
 </pre>
 </div>
 
@@ -1815,7 +1816,7 @@ happen if we were to call:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (divide-by-two x) (/ x 2.0))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">divide-by-two</span> x) (/ x 2.0))
 ((double divide-by-two) 16.0)
 </pre>
 </div>
@@ -1827,7 +1828,7 @@ semantics:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define twice double)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">twice</span> double)
 ((twice divide-by-two) 16.0)
 </pre>
 </div>
@@ -1886,8 +1887,8 @@ the procedure couldn't be simpler:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (compose f g)
-  (lambda (x) (f (g x))))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">compose</span> f g)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (f (g x))))
 </pre>
 </div>
 
@@ -1960,8 +1961,8 @@ ease the creation
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (repeated f n)
-  (if (&gt; n 1)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">repeated</span> f n)
+  (<span style="color: #859900; font-weight: bold;">if</span> (&gt; n 1)
       (compose f (repeated f (dec n)))
       f))
 </pre>
@@ -1988,7 +1989,7 @@ It's easy to apply this to other procedures:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">((repeated (lambda (n) (/ n 2)) 4) 240)
+<pre class="src src-scheme">((repeated (<span style="color: #859900; font-weight: bold;">lambda</span> (n) (/ n 2)) 4) 240)
 </pre>
 </div>
 
@@ -2047,11 +2048,11 @@ careful reading of the exercise.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (smooth f)
-  (lambda (x)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">smooth</span> f)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
     (average (f x) (f (- x dx)))))
 
-(define (repeated-smooth f n)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">repeated-smooth</span> f n)
   ((repeated smooth n) f))
 </pre>
 </div>
@@ -2065,8 +2066,8 @@ implement.)
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (wobble x) (* 10 (sin (* 4000000 x))))
-(define (noisy-square x) (+ (square x) (wobble x)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">wobble</span> x) (* 10 (sin (* 4000000 x))))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">noisy-square</span> x) (+ (square x) (wobble x)))
 </pre>
 </div>
 
@@ -2101,7 +2102,7 @@ Adding in the noise makes the function fluctuate wildly.
 
 <pre class="example">
 1.0: -8.901405464041472 (0 ms)
-2.0: 1.2260722922389635 (0 ms)
+2.0: 1.2260722922389635 (1 ms)
 3.0: 18.124275898362253 (0 ms)
 4.0: 21.330138724433453 (0 ms)
 5.0: 17.368988825278407 (0 ms)
@@ -2157,7 +2158,7 @@ within 0.1 of the original <code>square</code> procedure.
 7.0: 49.0427324823916 (0 ms)
 8.0: 64.02185727993435 (0 ms)
 9.0: 80.96256542416378 (0 ms)
-10.0: 99.96672650555777 (1 ms)
+10.0: 99.96672650555777 (0 ms)
 </pre>
 </div>
 </div>
@@ -2230,10 +2231,10 @@ definitely recommend fighting your way through, yourself!
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (iterative-improve good-enough? improve)
-  (lambda (initial-guess)
-    (define (iter guess last-guess)
-      (if (good-enough? guess last-guess)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iterative-improve</span> good-enough? improve)
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (initial-guess)
+    (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> guess last-guess)
+      (<span style="color: #859900; font-weight: bold;">if</span> (good-enough? guess last-guess)
           guess
           (iter (improve guess) guess)))
     (iter (improve initial-guess) initial-guess)))
@@ -2254,17 +2255,17 @@ it is later executed by <code>iterative-improve</code>.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (sqrt-ii x)
-  (define tolerance 0.001)
-  (define (percent-changed new old)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sqrt-ii</span> x)
+  (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">tolerance</span> 0.001)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">percent-changed</span> new old)
     (/ (- new old) old))
-  (define (small-change? new-guess old-guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">small-change?</span> new-guess old-guess)
     (&lt; (abs (percent-changed new-guess old-guess)) tolerance))
-  (define (good-enough? guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">good-enough?</span> guess)
     (&lt; (abs (- (square guess) x)) 0.001))
-  (define (average a b)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">average</span> a b)
     (/ (+ a b) 2))
-  (define (improve guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">improve</span> guess)
     (average guess (/ x guess)))
   ((iterative-improve small-change? improve) 1.0))
 </pre>
@@ -2277,10 +2278,10 @@ improvement abstraction works just as it should:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(printf "sqrt-ii(4) = ~a~n" (sqrt-ii 4))
-(printf "sqrt-ii(9) = ~a~n" (sqrt-ii 9))
-(printf "sqrt-ii(16) = ~a~n" (sqrt-ii 16))
-(printf "sqrt-ii(100) = ~a~n" (sqrt-ii 100))
+<pre class="src src-scheme">(printf <span style="color: #2aa198;">"sqrt-ii(4) = ~a~n"</span> (sqrt-ii 4))
+(printf <span style="color: #2aa198;">"sqrt-ii(9) = ~a~n"</span> (sqrt-ii 9))
+(printf <span style="color: #2aa198;">"sqrt-ii(16) = ~a~n"</span> (sqrt-ii 16))
+(printf <span style="color: #2aa198;">"sqrt-ii(100) = ~a~n"</span> (sqrt-ii 100))
 </pre>
 </div>
 
@@ -2293,11 +2294,11 @@ sqrt-ii(100) = 10.000000000139897
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (fixed-point-ii f first-guess)
-  (define tolerance 0.00001)
-  (define (close-enough? v1 v2)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">fixed-point-ii</span> f first-guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">tolerance</span> 0.00001)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">close-enough?</span> v1 v2)
     (&lt; (abs (- v1 v2)) tolerance))
-  (define (improve guess)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">improve</span> guess)
     (f guess))
   ((iterative-improve close-enough? improve) first-guess))
 </pre>
@@ -2312,7 +2313,7 @@ calculated as a result of that exercise was 4.555536364911781.
 <div class="org-src-container">
 
 <pre class="src src-scheme">(fixed-point-ii
- (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
+ (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (average x (/ (log 1000) (log x)))) 1.1)
 </pre>
 </div>
 
@@ -2331,7 +2332,7 @@ produces the same result.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Paul L. Snyder</p>
-<p class="date">Created: 2014-04-03 Thu 16:14</p>
+<p class="date">Created: 2014-04-03 Thu 16:36</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
