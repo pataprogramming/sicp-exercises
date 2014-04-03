@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>SICP Exercise Solutions for Section 2.1</title>
-<!-- 2014-03-30 Sun 19:32 -->
+<!-- 2014-04-02 Wed 23:51 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Paul L. Snyder" />
@@ -196,7 +196,7 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#sec-2">2. 2.1.2 Abstraction Barriers</a>
 <ul>
-<li><a href="#sec-2-1">2.1. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.2:</a>
+<li><a href="#sec-2-1">2.1. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.2: Representations for line segments</a>
 <ul>
 <li><a href="#sec-2-1-1">2.1.1. Problem</a></li>
 <li><a href="#sec-2-1-2">2.1.2. Solution</a></li>
@@ -218,13 +218,13 @@ for the JavaScript code in this tag.
 <li><a href="#sec-3-1-2">3.1.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-3-2">3.2. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.5:</a>
+<li><a href="#sec-3-2">3.2. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.5: Creative data representation</a>
 <ul>
 <li><a href="#sec-3-2-1">3.2.1. Problem</a></li>
 <li><a href="#sec-3-2-2">3.2.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-3-3">3.3. <span class="todo TODO">TODO</span> Exercise 2.6:</a>
+<li><a href="#sec-3-3">3.3. <span class="todo WRITEUP">WRITEUP</span> Exercise 2.6: Church numerals</a>
 <ul>
 <li><a href="#sec-3-3-1">3.3.1. Problem</a></li>
 <li><a href="#sec-3-3-2">3.3.2. Solution</a></li>
@@ -246,49 +246,49 @@ for the JavaScript code in this tag.
 <li><a href="#sec-4-2-2">4.2.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-3">4.3. <span class="todo TODO">TODO</span> Exercise 2.9:</a>
+<li><a href="#sec-4-3">4.3. <span class="todo TODO">TODO</span> Exercise 2.9: Interval widths</a>
 <ul>
 <li><a href="#sec-4-3-1">4.3.1. Problem</a></li>
 <li><a href="#sec-4-3-2">4.3.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-4">4.4. <span class="todo TODO">TODO</span> Exercise 2.10:</a>
+<li><a href="#sec-4-4">4.4. <span class="todo TODO">TODO</span> Exercise 2.10: Intervals spanning zero and error signalling</a>
 <ul>
 <li><a href="#sec-4-4-1">4.4.1. Problem</a></li>
 <li><a href="#sec-4-4-2">4.4.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-5">4.5. <span class="todo TODO">TODO</span> Exercise 2.11: Percentage tolerances for intervals</a>
+<li><a href="#sec-4-5">4.5. <span class="todo TODO">TODO</span> Exercise 2.11: Reducing multiplications for <code>mul-interval</code></a>
 <ul>
 <li><a href="#sec-4-5-1">4.5.1. Problem</a></li>
 <li><a href="#sec-4-5-2">4.5.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-6">4.6. <span class="todo TODO">TODO</span> Exercise 2.12:</a>
+<li><a href="#sec-4-6">4.6. <span class="todo TODO">TODO</span> Exercise 2.12: Center-percentage representations for intervals</a>
 <ul>
 <li><a href="#sec-4-6-1">4.6.1. Problem</a></li>
 <li><a href="#sec-4-6-2">4.6.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-7">4.7. <span class="todo TODO">TODO</span> Exercise 2.13:</a>
+<li><a href="#sec-4-7">4.7. <span class="todo TODO">TODO</span> Exercise 2.13: Approximating small tolerances</a>
 <ul>
 <li><a href="#sec-4-7-1">4.7.1. Problem</a></li>
 <li><a href="#sec-4-7-2">4.7.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-8">4.8. <span class="todo TODO">TODO</span> Exercise 2.14:</a>
+<li><a href="#sec-4-8">4.8. <span class="todo TODO">TODO</span> Exercise 2.14: Problems with the interval representation</a>
 <ul>
 <li><a href="#sec-4-8-1">4.8.1. Problem</a></li>
 <li><a href="#sec-4-8-2">4.8.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-9">4.9. <span class="todo TODO">TODO</span> Exercise 2.15:</a>
+<li><a href="#sec-4-9">4.9. <span class="todo TODO">TODO</span> Exercise 2.15: Examining the growth of uncertainty</a>
 <ul>
 <li><a href="#sec-4-9-1">4.9.1. Problem</a></li>
 <li><a href="#sec-4-9-2">4.9.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-10">4.10. <span class="todo TODO">TODO</span> Exercise 2.16:</a>
+<li><a href="#sec-4-10">4.10. <span class="todo TODO">TODO</span> Exercise 2.16: On the non-equivalence of algebraic expressions</a>
 <ul>
 <li><a href="#sec-4-10-1">4.10.1. Problem</a></li>
 <li><a href="#sec-4-10-2">4.10.2. Solution</a></li>
@@ -343,7 +343,7 @@ only the numerator is negative.
 <h2 id="sec-2"><span class="section-number-2">2</span> 2.1.2 Abstraction Barriers</h2>
 <div class="outline-text-2" id="text-2">
 </div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.2:</h3>
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.2: Representations for line segments</h3>
 <div class="outline-text-3" id="text-2-1">
 </div><div id="outline-container-sec-2-1-1" class="outline-4">
 <h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Problem</h4>
@@ -601,7 +601,7 @@ pattern.
 </div>
 </div>
 <div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.5:</h3>
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.5: Creative data representation</h3>
 <div class="outline-text-3" id="text-3-2">
 </div><div id="outline-container-sec-3-2-1" class="outline-4">
 <h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> Problem</h4>
@@ -651,7 +651,7 @@ capture this in another descriptive procedure: <code>factor-count</code>.
 </div>
 </div>
 <div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> <span class="todo TODO">TODO</span> Exercise 2.6:</h3>
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> <span class="todo WRITEUP">WRITEUP</span> Exercise 2.6: Church numerals</h3>
 <div class="outline-text-3" id="text-3-3">
 </div><div id="outline-container-sec-3-3-1" class="outline-4">
 <h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> Problem</h4>
@@ -685,9 +685,171 @@ terms of repeated application of `add-1').
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-3-3-2" class="outline-4">
 <h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> Solution</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+There's another sneaky thing going on here.  Note that <code>add-1</code> is
+defined as a <i>procedure</i>&#x2026;this means that there's really an implicit
+lambda here that the syntactic sugar obscures. I wish that the authors
+hadn't done this, as it obscures the clarity of the substitution
+process. To make things a bit clearly, I'll use a slightly different
+(but effectively identical) desugared definition of <code>add-1</code>:
+</p>
+
+<pre class="example">
+(define add-1 (lambda (n)
+ (lambda (f) (lambda (x) (f ((n f) x))))))
+</pre>
+
+<p>
+Now, we can use this to shuffling all of these symbols around to try
+to come up with a direct definition of <code>one</code>:
+</p>
+
+<pre class="example">
+1&gt; (add-1 zero)
+2&gt; (add-1 (lambda (f) (lambda (x) x)))
+3&gt; ((lambda (n)
+     (lambda (f)
+      (lambda (x)
+       (f ((n f) x))))
+     (lambda (f) (lambda (x) x)))) ;; this line holds 'zero'
+</pre>
+
+<p>
+In step 3, note how <code>add-1</code>'s lambda is substituted into the execution
+position. Thus, <code>zero</code> becomes the argument <code>n</code> and is substituted
+into the body of <code>add-1</code>:
+</p>
+
+<pre class="example">
+4&gt; (lambda (f)
+    (lambda (x)
+     (f (( (lambda (f) (lambda (x) x)) ) f) x)))
+</pre>
+
+<p>
+Whew! Keeping all of the parentheses straight is pretty painful. The
+really important thing to note here is that <code>zero</code> lands not only in
+execution position, but in a <i>nested</i> execution position: it's going
+to be called itself, and then its resulting lambda will be called as
+well.
+</p>
+
+<pre class="example">
+5&gt; (lambda (f)
+    (lambda (x)
+     (f ((lambda (x) x)) x)))
+</pre>
+
+<p>
+After the first of these substitutions, the inner <code>f</code> disappears.
+Look again at the definition of <code>zero</code> to see why this must be so.
+</p>
+
+<pre class="example">
+5&gt; (lambda (f)
+    (lambda (x)
+     (f x)))
+</pre>
+
+<p>
+And here's the tasty surprise: we end up with a lambda that performs a
+single function application of its argument <code>f</code> on the argument to its
+inner lambda! Note that neither of these lambdas land in an execution
+position, so they can't be substituted out. This gives us our new,
+direct definition for <code>one</code>:
+</p>
+
+<pre class="example">
+(define one (lambda (f) (lambda (x) (f x))))
+</pre>
+
+<p>
+With this in hand, we can take it to the next step: a definition for
+<code>two</code>. (You can probably guess what it is, if you've followed the
+logic of the substitutions to this point.)
+</p>
+
+<p>
+(define add-1 (lambda (n)
+ (lambda (f) (lambda (x) (f ((n f) x))))))
+</p>
+
+<pre class="example">
+1&gt; (add-1 one)
+2&gt; (add-1 (lambda (f) (lambda (x) (f x))))
+3&gt; ((lambda (n)
+     (lambda (f)
+      (lambda (x)
+       (f ((n f) x)))))
+    (lambda (f) (lambda (x) (f x))))
+</pre>
+
+<p>
+Having fought through <code>one</code>, teasing this out isn't too bad. The
+hardest part is keeping track of the scoping (that is, which nested
+<code>f</code> is associated with which lambda.
+</p>
+
+<pre class="example">
+4&gt; (lambda (f)
+    (lambda (x)
+     (f (( (lambda (f) (lambda (x) (f x))) f) x))))
+5&gt; (lambda (f)
+    (lambda (x)
+     (f ( (lambda (x) (f x)) x))))
+</pre>
+
+<p>
+Look carefully at the inner <code>lambda (f)</code> and the outer <code>lambda (f)</code>;
+the outer <code>f</code> is substituted into the inner for step 5. This is a
+likely source of confusion.
+</p>
+
+<pre class="example">
+6&gt; (lambda (f)
+    (lambda (x)
+     (f (f x))))
+</pre>
+
+<p>
+The same thing happens to inner and outer <code>x</code> in step 6. Yikes! But
+the result is reassuringly concise. (There are no prizes for guessing
+what the definition for <code>three</code> is going to be!)
+</p>
+
+<p>
+So: we can see that a Church numeral is represented by a number of
+repeated applications of the same function to some abstract <code>x</code> at the
+bottom of the chain.
+</p>
+
+<p>
+The jump from this to addition is actually extremely straightforward.
+Let's say we have two Church numerals is this representation, <code>p</code> and
+<code>q</code>: each is represented by a stack of nested calls to <code>f</code>.  The goal
+is to merge those two stacks together.
+</p>
+
+<p>
+Remember that each of those stacks is applied to some base
+case&#x2026;which could simply be the result of the other stack!  Thus,
+crafting a definition is actually quite straightforward (again, as
+long as we keep our nested function definitions straight).  <code>q</code> needs
+to be applied to <code>x</code>, and then <code>p</code> needs to be applied to be result of
+that operation.  Each of these stacks must also be passed the <code>f</code> that
+is being used, as well. This gives us our result:
+</p>
+
+<pre class="example">
+(define (add p q)
+ (lambda (f)
+  (lambda (x)
+   ((p f) ((q f) x)))))
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -801,7 +963,7 @@ the second interval is at its lowest.
 </div>
 </div>
 <div id="outline-container-sec-4-3" class="outline-3">
-<h3 id="sec-4-3"><span class="section-number-3">4.3</span> <span class="todo TODO">TODO</span> Exercise 2.9:</h3>
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> <span class="todo TODO">TODO</span> Exercise 2.9: Interval widths</h3>
 <div class="outline-text-3" id="text-4-3">
 </div><div id="outline-container-sec-4-3-1" class="outline-4">
 <h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> Problem</h4>
@@ -824,10 +986,19 @@ multiplication or division.
 
 <div id="outline-container-sec-4-3-2" class="outline-4">
 <h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> Solution</h4>
+<div class="outline-text-4" id="text-4-3-2">
+<p>
+It may seem a bit surprising that the "width" of an interval is half
+of the distance it spans, but it may make more sense to think of it
+using a standard notation. For example, for the interval \([8,12]\),
+the difference between 8 and 12 is 4, and half that (and hence the
+width) is two.  It would frequently be written as \(10\pm2\).
+</p>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-4-4" class="outline-3">
-<h3 id="sec-4-4"><span class="section-number-3">4.4</span> <span class="todo TODO">TODO</span> Exercise 2.10:</h3>
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> <span class="todo TODO">TODO</span> Exercise 2.10: Intervals spanning zero and error signalling</h3>
 <div class="outline-text-3" id="text-4-4">
 </div><div id="outline-container-sec-4-4-1" class="outline-4">
 <h4 id="sec-4-4-1"><span class="section-number-4">4.4.1</span> Problem</h4>
@@ -846,7 +1017,7 @@ check for this condition and to signal an error if it occurs.
 </div>
 </div>
 <div id="outline-container-sec-4-5" class="outline-3">
-<h3 id="sec-4-5"><span class="section-number-3">4.5</span> <span class="todo TODO">TODO</span> Exercise 2.11: Percentage tolerances for intervals</h3>
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> <span class="todo TODO">TODO</span> Exercise 2.11: Reducing multiplications for <code>mul-interval</code></h3>
 <div class="outline-text-3" id="text-4-5">
 </div><div id="outline-container-sec-4-5-1" class="outline-4">
 <h4 id="sec-4-5-1"><span class="section-number-4">4.5.1</span> Problem</h4>
@@ -865,7 +1036,7 @@ suggestion.
 </div>
 </div>
 <div id="outline-container-sec-4-6" class="outline-3">
-<h3 id="sec-4-6"><span class="section-number-3">4.6</span> <span class="todo TODO">TODO</span> Exercise 2.12:</h3>
+<h3 id="sec-4-6"><span class="section-number-3">4.6</span> <span class="todo TODO">TODO</span> Exercise 2.12: Center-percentage representations for intervals</h3>
 <div class="outline-text-3" id="text-4-6">
 </div><div id="outline-container-sec-4-6-1" class="outline-4">
 <h4 id="sec-4-6-1"><span class="section-number-4">4.6.1</span> Problem</h4>
@@ -908,7 +1079,7 @@ selector is the same as the one shown above.
 </div>
 
 <div id="outline-container-sec-4-7" class="outline-3">
-<h3 id="sec-4-7"><span class="section-number-3">4.7</span> <span class="todo TODO">TODO</span> Exercise 2.13:</h3>
+<h3 id="sec-4-7"><span class="section-number-3">4.7</span> <span class="todo TODO">TODO</span> Exercise 2.13: Approximating small tolerances</h3>
 <div class="outline-text-3" id="text-4-7">
 </div><div id="outline-container-sec-4-7-1" class="outline-4">
 <h4 id="sec-4-7-1"><span class="section-number-4">4.7.1</span> Problem</h4>
@@ -927,7 +1098,7 @@ assuming that all numbers are positive.
 </div>
 </div>
 <div id="outline-container-sec-4-8" class="outline-3">
-<h3 id="sec-4-8"><span class="section-number-3">4.8</span> <span class="todo TODO">TODO</span> Exercise 2.14:</h3>
+<h3 id="sec-4-8"><span class="section-number-3">4.8</span> <span class="todo TODO">TODO</span> Exercise 2.14: Problems with the interval representation</h3>
 <div class="outline-text-3" id="text-4-8">
 </div><div id="outline-container-sec-4-8-1" class="outline-4">
 <h4 id="sec-4-8-1"><span class="section-number-4">4.8.1</span> Problem</h4>
@@ -983,7 +1154,7 @@ Exercise 2.12).
 </div>
 </div>
 <div id="outline-container-sec-4-9" class="outline-3">
-<h3 id="sec-4-9"><span class="section-number-3">4.9</span> <span class="todo TODO">TODO</span> Exercise 2.15:</h3>
+<h3 id="sec-4-9"><span class="section-number-3">4.9</span> <span class="todo TODO">TODO</span> Exercise 2.15: Examining the growth of uncertainty</h3>
 <div class="outline-text-3" id="text-4-9">
 </div><div id="outline-container-sec-4-9-1" class="outline-4">
 <h4 id="sec-4-9-1"><span class="section-number-4">4.9.1</span> Problem</h4>
@@ -1006,7 +1177,7 @@ right?  Why?
 </div>
 </div>
 <div id="outline-container-sec-4-10" class="outline-3">
-<h3 id="sec-4-10"><span class="section-number-3">4.10</span> <span class="todo TODO">TODO</span> Exercise 2.16:</h3>
+<h3 id="sec-4-10"><span class="section-number-3">4.10</span> <span class="todo TODO">TODO</span> Exercise 2.16: On the non-equivalence of algebraic expressions</h3>
 <div class="outline-text-3" id="text-4-10">
 </div><div id="outline-container-sec-4-10-1" class="outline-4">
 <h4 id="sec-4-10-1"><span class="section-number-4">4.10.1</span> Problem</h4>
@@ -1028,7 +1199,7 @@ impossible?  (Warning: This problem is very difficult.)
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Paul L. Snyder</p>
-<p class="date">Created: 2014-03-30 Sun 19:32</p>
+<p class="date">Created: 2014-04-02 Wed 23:51</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

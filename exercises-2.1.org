@@ -504,6 +504,12 @@ the second interval is at its lowest.
      multiplication or division.
 *** Solution
 
+It may seem a bit surprising that the "width" of an interval is half
+of the distance it spans, but it may make more sense to think of it
+using a standard notation. For example, for the interval \([8,12]\),
+the difference between 8 and 12 is 4, and half that (and hence the
+width) is two.  It would frequently be written as \(10\pm2\).
+
 ** TODO Exercise 2.10: Intervals spanning zero and error signalling
 *** Problem
      Ben Bitdiddle, an expert systems programmer, looks over Alyssa's
