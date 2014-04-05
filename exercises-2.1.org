@@ -510,6 +510,11 @@ using a standard notation. For example, for the interval \([8,12]\),
 the difference between 8 and 12 is 4, and half that (and hence the
 width) is two.  It would frequently be written as \(10\pm2\).
 
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define width-interval x
+    (/ (- (upper-bound x) (lower-bound x)) 2))
+#+END_SRC
+
 ** TODO Exercise 2.10: Intervals spanning zero and error signalling
 *** Problem
      Ben Bitdiddle, an expert systems programmer, looks over Alyssa's
@@ -592,7 +597,6 @@ width) is two.  It would frequently be written as \(10\pm2\).
                             (add-interval (div-interval one r1)
                                           (div-interval one r2)))))
 #+END_SRC
-
 
      Lem complains that Alyssa's program gives different answers for
      the two ways of computing. This is a serious complaint.
