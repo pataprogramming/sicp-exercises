@@ -489,7 +489,7 @@ the second interval is at its lowest.
                    (- (upper-bound x) (lower-bound y))))
 #+END_SRC
 
-** TODO Exercise 2.9: Interval widths
+** Exercise 2.9: Interval widths
 *** Problem
      The "width" of an interval is half of the difference between its
      upper and lower bounds.  The width is a measure of the
@@ -514,6 +514,34 @@ width) is two.  It would frequently be written as \(10\pm2\).
   (define width-interval x
     (/ (- (upper-bound x) (lower-bound x)) 2))
 #+END_SRC
+
+Suppose we have two intervals, $x$ of width $w_x$ and $y$ of width
+$w_y$.  The endpoints of $x$ are, by definition $[x-w_x,
+x+w_x)]$, and $y$'s endpoints are $[y-w_y,y+w_y]$.
+
+Suppose we add these two intervals together. By the definitions given
+in the text, we get
+\[[(x-w_x)+ (y-w_y), (x+w_x)+(y+w_y)] =
+(x+y-w_x-w_y,x+y+w_x+w_y) =
+(x+y-(w_x+w_y),x+y+(w_x+w_y)]\]
+
+Translating this new interval into the "center plus/minus width"
+notation, we get $(x+y) \pm (w_x+w_y)$. Thus, the width of the sum of
+the two intervals is $w_x+w_y$.
+
+Similarly, suppose we subtract $y$ from $x$. Using the definition from
+exercise 2.7, we get
+\[[x-w_x,x+w_x] - [y-w_y,y+w_y] =
+[(x-w_x) - (y+w_y), (x+w_x) - (y-w_y)] =
+[x-w_x -y-w_y,x+w_x - y+w_y] =
+[(x-y) - (w_x+w_y),  (x-y) + (w_x+w_y)]\]
+
+Interestingly, we can see that the uncertainty (the width) grows when
+subtracting, just as it does during addition.
+
+The conclusion, then, is that, when two intervals are either added
+together or subtracted, the width is the resulting interval will be
+the sum of their widths.
 
 ** TODO Exercise 2.10: Intervals spanning zero and error signalling
 *** Problem
