@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>SICP Exercise Solutions for Section 2.1</title>
-<!-- 2014-04-02 Wed 23:51 -->
+<!-- 2014-04-06 Sun 23:53 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Paul L. Snyder" />
@@ -246,7 +246,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-4-2-2">4.2.2. Solution</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-3">4.3. <span class="todo TODO">TODO</span> Exercise 2.9: Interval widths</a>
+<li><a href="#sec-4-3">4.3. Exercise 2.9: Interval widths</a>
 <ul>
 <li><a href="#sec-4-3-1">4.3.1. Problem</a></li>
 <li><a href="#sec-4-3-2">4.3.2. Solution</a></li>
@@ -323,13 +323,13 @@ only the numerator is negative.
 <div class="outline-text-4" id="text-1-1-2">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (gcd a b)
-  (if (= b 0)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">gcd</span> a b)
+  (<span style="color: #859900; font-weight: bold;">if</span> (= b 0)
       a
       (gcd b (remainder a b))))
 
-(define (make-rat n d)
-  (let ((nf (if (&lt; d 0) (- n) n))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-rat</span> n d)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((nf (<span style="color: #859900; font-weight: bold;">if</span> (&lt; d 0) (- n) n))
         (df (abs d))
         (g (abs (gcd n d))))
     (cons (/ nf g) (/ df g))))
@@ -367,13 +367,13 @@ points:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (print-point p)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">print-point</span> p)
   (newline)
-  (display "(")
+  (display <span style="color: #2aa198;">"("</span>)
   (display (x-point p))
-  (display ",")
+  (display <span style="color: #2aa198;">","</span>)
   (display (y-point p))
-  (display ")"))
+  (display <span style="color: #2aa198;">")"</span>))
 </pre>
 </div>
 </div>
@@ -383,26 +383,26 @@ points:
 <div class="outline-text-4" id="text-2-1-2">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (make-point x y)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-point</span> x y)
   (cons x y))
 
-(define (x-point p)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">x-point</span> p)
   (car p))
 
-(define (y-point p)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">y-point</span> p)
   (cdr p))
 
-(define (make-segment a b)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-segment</span> a b)
   (cons a b))
 
-(define (start-segment s)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">start-segment</span> s)
   (car s))
 
-(define (end-segment s)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">end-segment</span> s)
   (cdr s))
 
-(define (midpoint-segment s)
-  (let ((x1 (x-point (start-segment s)))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">midpoint-segment</span> s)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((x1 (x-point (start-segment s)))
         (y1 (y-point (start-segment s)))
         (x2 (x-point (end-segment s)))
         (y2 (y-point (end-segment s))))
@@ -441,34 +441,34 @@ of these much as we did for exercise 2.1.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (make-rectangle point1 point2)
-  ;; normalize to top-left and bottom-right points
-  (let ((x1 (min (x-point point1) (x-point point2)))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-rectangle</span> point1 point2)
+  <span style="color: #586e75;">;; </span><span style="color: #586e75;">normalize to top-left and bottom-right points</span>
+  (<span style="color: #859900; font-weight: bold;">let</span> ((x1 (min (x-point point1) (x-point point2)))
         (x2 (max (x-point point1) (x-point point2)))
         (y1 (max (y-point point1) (y-point point2)))
         (y2 (min (y-point point1) (y-point point2))))
     (cons (make-point x1 y1) (make-point x2 y2))))
 
-(define (top-left-rectangle r)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">top-left-rectangle</span> r)
   (car r))
 
-(define (bottom-right-rectangle r)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">bottom-right-rectangle</span> r)
   (cdr r))
 
-(define (width-rectangle r)
-  (let ((x1 (x-point (top-left-rectangle r)))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">width-rectangle</span> r)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((x1 (x-point (top-left-rectangle r)))
         (x2 (x-point (bottom-right-rectangle r))))
     (abs (- x2 x1))))
 
-(define (height-rectangle r)
-  (let ((y1 (y-point (top-left-rectangle r)))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">height-rectangle</span> r)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((y1 (y-point (top-left-rectangle r)))
         (y2 (y-point (bottom-right-rectangle r))))
     (abs (- y1 y2))))
 
-(define (area-rectangle r)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">area-rectangle</span> r)
   (* (width-rectangle r) (height-rectangle r)))
 
-(define (perimeter-rectangle r)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">perimeter-rectangle</span> r)
   (* 2 (+ (width-rectangle r) (height-rectangle r))))
 </pre>
 </div>
@@ -494,11 +494,11 @@ result in undefined behavior.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (make-rectangle point width height)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-rectangle</span> point width height)
   (cons point (cons width height)))
 
-(define (bottom-right-rectangle r)
-  (let ((x1 (x-point (top-left-rectangle r)))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">bottom-right-rectangle</span> r)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((x1 (x-point (top-left-rectangle r)))
         (y1 (y-point (top-left-rectangle r))))
     (make-point (+ x1 (car (cdr r))) (+ y1 (cdr (cdr r))))))
 </pre>
@@ -630,20 +630,20 @@ capture this in another descriptive procedure: <code>factor-count</code>.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (icons a b)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">icons</span> a b)
   (* (expt 2 a) (expt 3 b)))
 
-(define (factor-count i f)
-  (define (iter i c)
-    (if (= (remainder i f) 0)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">factor-count</span> i f)
+  (<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">iter</span> i c)
+    (<span style="color: #859900; font-weight: bold;">if</span> (= (remainder i f) 0)
         (iter (/ i f) (+ c 1))
         c))
   (iter i 0))
 
-(define (icar p)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">icar</span> p)
   (factor-count p 2))
 
-(define (icdr p)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">icdr</span> p)
   (factor-count p 3))
 </pre>
 </div>
@@ -870,7 +870,7 @@ a definition of the interval constructor:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (make-interval a b) (cons a b))
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-interval</span> a b) (cons a b))
 </pre>
 </div>
 
@@ -889,19 +889,19 @@ First, we reproduce the definitions of Alyssa's procedures from the text:
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (add-interval x y)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">add-interval</span> x y)
   (make-interval (+ (lower-bound x) (lower-bound y))
                  (+ (upper-bound x) (upper-bound y))))
 
-(define (mul-interval x y)
-  (let ((p1 (* (lower-bound x) (lower-bound y)))
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">mul-interval</span> x y)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((p1 (* (lower-bound x) (lower-bound y)))
         (p2 (* (lower-bound x) (upper-bound y)))
         (p3 (* (upper-bound x) (lower-bound y)))
         (p4 (* (upper-bound x) (upper-bound y))))
     (make-interval (min p1 p2 p3 p4)
                    (max p1 p2 p3 p4))))
 
-(define (div-interval x y)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">div-interval</span> x y)
   (mul-interval x
                 (make-interval (/ 1.0 (upper-bound y))
                                (/ 1.0 (lower-bound y)))))
@@ -915,10 +915,10 @@ straightforward.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (upper-bound i)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">upper-bound</span> i)
   (cdr i))
 
-(define (lower-bound i)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">lower-bound</span> i)
   (car i))
 </pre>
 </div>
@@ -954,7 +954,7 @@ the second interval is at its lowest.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (sub-interval x y)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">sub-interval</span> x y)
   (make-interval (- (lower-bound x) (upper-bound y))
                  (- (upper-bound x) (lower-bound y))))
 </pre>
@@ -963,7 +963,7 @@ the second interval is at its lowest.
 </div>
 </div>
 <div id="outline-container-sec-4-3" class="outline-3">
-<h3 id="sec-4-3"><span class="section-number-3">4.3</span> <span class="todo TODO">TODO</span> Exercise 2.9: Interval widths</h3>
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Exercise 2.9: Interval widths</h3>
 <div class="outline-text-3" id="text-4-3">
 </div><div id="outline-container-sec-4-3-1" class="outline-4">
 <h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> Problem</h4>
@@ -993,6 +993,53 @@ of the distance it spans, but it may make more sense to think of it
 using a standard notation. For example, for the interval \([8,12]\),
 the difference between 8 and 12 is 4, and half that (and hence the
 width) is two.  It would frequently be written as \(10\pm2\).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">width-interval</span> x
+  (/ (- (upper-bound x) (lower-bound x)) 2))
+</pre>
+</div>
+
+<p>
+Suppose we have two intervals, \(x\) of width \(w_x\) and \(y\) of width
+\(w_y\).  The endpoints of \(x\) are, by definition \([x-w_x,
+x+w_x)]\), and \(y\)'s endpoints are \([y-w_y,y+w_y]\).
+</p>
+
+<p>
+Suppose we add these two intervals together. By the definitions given
+in the text, we get
+\[[(x-w_x)+ (y-w_y), (x+w_x)+(y+w_y)] =
+(x+y-w_x-w_y,x+y+w_x+w_y) =
+(x+y-(w_x+w_y),x+y+(w_x+w_y)]\]
+</p>
+
+<p>
+Translating this new interval into the "center plus/minus width"
+notation, we get \((x+y) \pm (w_x+w_y)\). Thus, the width of the sum of
+the two intervals is \(w_x+w_y\).
+</p>
+
+<p>
+Similarly, suppose we subtract \(y\) from \(x\). Using the definition from
+exercise 2.7, we get
+\[[x-w_x,x+w_x] - [y-w_y,y+w_y] =
+[(x-w_x) - (y+w_y), (x+w_x) - (y-w_y)] =
+[x-w_x -y-w_y,x+w_x - y+w_y] =
+[(x-y) - (w_x+w_y),  (x-y) + (w_x+w_y)]\]
+</p>
+
+<p>
+Interestingly, we can see that the uncertainty (the width) grows when
+subtracting, just as it does during addition.
+</p>
+
+<p>
+The conclusion, then, is that, when two intervals are either added
+together or subtracted, the width is the resulting interval will be
+the sum of their widths.
 </p>
 </div>
 </div>
@@ -1067,10 +1114,10 @@ selector is the same as the one shown above.
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (make-center-percent c p)
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">make-center-percent</span> c p)
   (make-center-width c (* c */ p 100.0)))
 
-(define (percent i)
+(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">percent</span> i)
   (* 100.0 (/ width i) (center i)))
 </pre>
 </div>
@@ -1130,7 +1177,6 @@ the parallel-resistors formula differently:
                   (add-interval (div-interval one r1)
                                 (div-interval one r2)))))
 </pre>
-
 
 <p>
 Lem complains that Alyssa's program gives different answers for
@@ -1199,7 +1245,7 @@ impossible?  (Warning: This problem is very difficult.)
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Paul L. Snyder</p>
-<p class="date">Created: 2014-04-02 Wed 23:51</p>
+<p class="date">Created: 2014-04-06 Sun 23:53</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
