@@ -14,17 +14,17 @@
 
 *** Solution
 
-#+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (gcd a b)
-    (if (= b 0)
-        a
-        (gcd b (remainder a b))))
+#+BEGIN_SRC scheme :results silent
+(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (remainder a b))))
 
-  (define (make-rat n d)
-    (let ((nf (if (< d 0) (- n) n))
-          (df (abs d))
-          (g (abs (gcd n d))))
-      (cons (/ nf g) (/ df g))))
+(define (make-rat n d)
+  (let ((nf (if (< d 0) (- n) n))
+        (df (abs d))
+        (g (abs (gcd n d))))
+    (cons (/ nf g) (/ df g))))
 #+END_SRC
 
 * 2.1.2 Abstraction Barriers
@@ -45,42 +45,44 @@
      endpoints).  To try your procedures, you'll need a way to print
      points:
 
-#+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (print-point p)
-    (newline)
-    (display "(")
-    (display (x-point p))
-    (display ",")
-    (display (y-point p))
-    (display ")"))
+#+BEGIN_SRC scheme
+(define (print-point p)
+  (newline)
+  (display "(")
+  (display (x-point p))
+  (display ",")
+  (display (y-point p))
+  (display ")"))
 #+END_SRC
 
+#+RESULTS:
+
 *** Solution
-#+BEGIN_SRC scheme :session 2-1 :results silent
-    (define (make-point x y)
-      (cons x y))
+#+BEGIN_SRC scheme :results silent
+(define (make-point x y)
+  (cons x y))
 
-    (define (x-point p)
-      (car p))
+(define (x-point p)
+  (car p))
 
-    (define (y-point p)
-      (cdr p))
+(define (y-point p)
+  (cdr p))
 
-    (define (make-segment a b)
-      (cons a b))
+(define (make-segment a b)
+  (cons a b))
 
-    (define (start-segment s)
-      (car s))
+(define (start-segment s)
+  (car s))
 
-    (define (end-segment s)
-      (cdr s))
+(define (end-segment s)
+  (cdr s))
 
-    (define (midpoint-segment s)
-      (let ((x1 (x-point (start-segment s)))
-            (y1 (y-point (start-segment s)))
-            (x2 (x-point (end-segment s)))
-            (y2 (y-point (end-segment s))))
-        (make-point (/ (+ x1 x2) 2) (/ (+ y1 y2) 2))))
+(define (midpoint-segment s)
+  (let ((x1 (x-point (start-segment s)))
+        (y1 (y-point (start-segment s)))
+        (x2 (x-point (end-segment s)))
+        (y2 (y-point (end-segment s))))
+    (make-point (/ (+ x1 x2) 2) (/ (+ y1 y2) 2))))
 #+END_SRC
 
 ** Exercise 2.3: Rectangular representations
@@ -101,37 +103,39 @@ One possibility is to represent a rectangle using any two points in the
 plane. For tidiness, we can normalize the internal representation
 of these much as we did for exercise 2.1.
 
-#+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (make-rectangle point1 point2)
-    ;; normalize to top-left and bottom-right points
-    (let ((x1 (min (x-point point1) (x-point point2)))
-          (x2 (max (x-point point1) (x-point point2)))
-          (y1 (max (y-point point1) (y-point point2)))
-          (y2 (min (y-point point1) (y-point point2))))
-      (cons (make-point x1 y1) (make-point x2 y2))))
+#+BEGIN_SRC scheme
+(define (make-rectangle point1 point2)
+  ;; normalize to top-left and bottom-right points
+  (let ((x1 (min (x-point point1) (x-point point2)))
+        (x2 (max (x-point point1) (x-point point2)))
+        (y1 (max (y-point point1) (y-point point2)))
+        (y2 (min (y-point point1) (y-point point2))))
+    (cons (make-point x1 y1) (make-point x2 y2))))
 
-  (define (top-left-rectangle r)
-    (car r))
+(define (top-left-rectangle r)
+  (car r))
 
-  (define (bottom-right-rectangle r)
-    (cdr r))
+(define (bottom-right-rectangle r)
+  (cdr r))
 
-  (define (width-rectangle r)
-    (let ((x1 (x-point (top-left-rectangle r)))
-          (x2 (x-point (bottom-right-rectangle r))))
-      (abs (- x2 x1))))
+(define (width-rectangle r)
+  (let ((x1 (x-point (top-left-rectangle r)))
+        (x2 (x-point (bottom-right-rectangle r))))
+    (abs (- x2 x1))))
 
-  (define (height-rectangle r)
-    (let ((y1 (y-point (top-left-rectangle r)))
-          (y2 (y-point (bottom-right-rectangle r))))
-      (abs (- y1 y2))))
+(define (height-rectangle r)
+  (let ((y1 (y-point (top-left-rectangle r)))
+        (y2 (y-point (bottom-right-rectangle r))))
+    (abs (- y1 y2))))
 
-  (define (area-rectangle r)
-    (* (width-rectangle r) (height-rectangle r)))
+(define (area-rectangle r)
+  (* (width-rectangle r) (height-rectangle r)))
 
-  (define (perimeter-rectangle r)
-    (* 2 (+ (width-rectangle r) (height-rectangle r))))
+(define (perimeter-rectangle r)
+  (* 2 (+ (width-rectangle r) (height-rectangle r))))
 #+END_SRC
+
+#+RESULTS:
 
 For another representation we could construct a representation from a
 point and offsets from this point in terms of width and height.
@@ -146,15 +150,17 @@ yet (such as contracts in Racket), we'll just assume that the width
 and height provided are positive, and providing negative values will
 result in undefined behavior.
 
-#+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (make-rectangle point width height)
-    (cons point (cons width height)))
+#+BEGIN_SRC scheme
+(define (make-rectangle point width height)
+  (cons point (cons width height)))
 
-  (define (bottom-right-rectangle r)
-    (let ((x1 (x-point (top-left-rectangle r)))
-          (y1 (y-point (top-left-rectangle r))))
-      (make-point (+ x1 (car (cdr r))) (+ y1 (cdr (cdr r))))))
+(define (bottom-right-rectangle r)
+  (let ((x1 (x-point (top-left-rectangle r)))
+        (y1 (y-point (top-left-rectangle r))))
+    (make-point (+ x1 (car (cdr r))) (+ y1 (cdr (cdr r))))))
 #+END_SRC
+
+#+RESULTS:
 
 This isn't the most satisfying reimplementation, not least because
 we're missing a most important language feature: polymorphism: there's
@@ -193,9 +199,9 @@ representations.
 
 First, a definition for =cdr= using this approach:
 
-#+BEGIN_SRC :results silent
-  (define (cdr z)
-    (z (lambda (p q) q)))
+#+BEGIN_SRC
+(define (cdr z)
+  (z (lambda (p q) q)))
 #+END_SRC
 
 Now, we verify these alternate versions of both =car= and =cdr=.
@@ -204,7 +210,7 @@ use the substitution method.
 
 #+BEGIN_EXAMPLE
 1> (car (cons x y))
-2> (car (lambda (m) (m x y))
+2> (car (lambda (m) (m x y)))
 3> ((lambda (m) (m x y)) (lambda (p q) p))
 4> ((lambda (p q) p) x y)
 5> ((lambda (x y) x))
@@ -216,7 +222,7 @@ pattern.
 
 #+BEGIN_EXAMPLE
 1> (cdr (cons x y))
-2> (cdr (lambda (m) (m x y))
+2> (cdr (lambda (m) (m x y)))
 3> ((lambda (m) (m x y)) (lambda (p q) q))
 4> ((lambda (p q) q) x y)
 5> ((lambda (x y) y))
@@ -239,22 +245,22 @@ time 3 occurs as a factor is the value of $b$.  Rather than implement
 it separately for our =icar= and =icdr= procedures, it's best to
 capture this in another descriptive procedure: =factor-count=.
 
-#+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (icons a b)
-    (* (expt 2 a) (expt 3 b)))
+#+BEGIN_SRC scheme :results silent
+(define (icons a b)
+  (* (expt 2 a) (expt 3 b)))
 
-  (define (factor-count i f)
-    (define (iter i c)
-      (if (= (remainder i f) 0)
-          (iter (/ i f) (+ c 1))
-          c))
-    (iter i 0))
+(define (factor-count i f)
+  (define (iter i c)
+    (if (= (remainder i f) 0)
+        (iter (/ i f) (+ c 1))
+        c))
+  (iter i 0))
 
-  (define (icar p)
-    (factor-count p 2))
+(define (icar p)
+  (factor-count p 2))
 
-  (define (icdr p)
-    (factor-count p 3))
+(define (icdr p)
+  (factor-count p 3))
 #+END_SRC
 
 ** WRITEUP Exercise 2.6: Church numerals
@@ -427,7 +433,8 @@ is being used, as well. This gives us our result:
      a definition of the interval constructor:
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (make-interval a b) (cons a b))
+  (define (make-interval a b)
+    (cons a b))
 #+END_SRC
 
      Define selectors =upper-bound= and =lower-bound= to complete the
@@ -438,34 +445,41 @@ is being used, as well. This gives us our result:
 First, we reproduce the definitions of Alyssa's procedures from the text:
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (add-interval x y)
-    (make-interval (+ (lower-bound x) (lower-bound y))
-                   (+ (upper-bound x) (upper-bound y))))
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
 
-  (define (mul-interval x y)
-    (let ((p1 (* (lower-bound x) (lower-bound y)))
-          (p2 (* (lower-bound x) (upper-bound y)))
-          (p3 (* (upper-bound x) (lower-bound y)))
-          (p4 (* (upper-bound x) (upper-bound y))))
-      (make-interval (min p1 p2 p3 p4)
-                     (max p1 p2 p3 p4))))
+(define (mul-interval x y)
+  (let ((p1 (* (lower-bound x) (lower-bound y)))
+        (p2 (* (lower-bound x) (upper-bound y)))
+        (p3 (* (upper-bound x) (lower-bound y)))
+        (p4 (* (upper-bound x) (upper-bound y))))
+    (make-interval (min p1 p2 p3 p4)
+                   (max p1 p2 p3 p4))))
 
-  (define (div-interval x y)
-    (mul-interval x
-                  (make-interval (/ 1.0 (upper-bound y))
-                                 (/ 1.0 (lower-bound y)))))
+(define (div-interval x y)
+  (mul-interval x
+                (make-interval (/ 1.0 (upper-bound y))
+                               (/ 1.0 (lower-bound y)))))
 
 #+END_SRC
 
-The definitions of =upper-bound= and =lower-bound= could not be more
-straightforward.
+The definitions of =upper-bound= and =lower-bound= are extremely
+straightforward, as long as we remember that the pair is not
+ordered. It might be desirable to have the =make-interval= constructor
+function check to make sure the =car= is always the lower bound, but
+here we're working with the definition as specified in the problem.
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
   (define (upper-bound i)
-    (cdr i))
+    (if (> (car i) (cdr i))
+        (car i)
+        (cdr i)))
 
   (define (lower-bound i)
-    (car i))
+    (if (< (car i) (cdr i))
+        (car i)
+        (cdr i)))
 #+END_SRC
 
 ** WRITEUP Exercise 2.8: Subtracting intervals
@@ -502,17 +516,18 @@ the second interval is at its lowest.
      function only of the widths of the intervals being added (or
      subtracted).  Give examples to show that this is not true for
      multiplication or division.
+
 *** Solution
 
 It may seem a bit surprising that the "width" of an interval is half
 of the distance it spans, but it may make more sense to think of it
 using a standard notation. For example, for the interval \([8,12]\),
 the difference between 8 and 12 is 4, and half that (and hence the
-width) is two.  It would frequently be written as \(10\pm2\).
+width) is 2.  It would frequently be written as \(10\pm2\).
 
 #+BEGIN_SRC scheme :session 2-1 :results silent
-  (define width-interval x
-    (/ (- (upper-bound x) (lower-bound x)) 2))
+(define width-interval x
+  (/ (- (upper-bound x) (lower-bound x)) 2))
 #+END_SRC
 
 Suppose we have two intervals, $x$ of width $w_x$ and $y$ of width
@@ -543,13 +558,24 @@ The conclusion, then, is that, when two intervals are either added
 together or subtracted, the width is the resulting interval will be
 the sum of their widths.
 
-** TODO Exercise 2.10: Intervals spanning zero and error signalling
+** WRITEUP Exercise 2.10: Intervals spanning zero and error signalling
 *** Problem
      Ben Bitdiddle, an expert systems programmer, looks over Alyssa's
      shoulder and comments that it is not clear what it means to
      divide by an interval that spans zero.  Modify Alyssa's code to
      check for this condition and to signal an error if it occurs.
 *** Solution
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (spans-zero? x)
+    (and (< (lower-bound x) 0) (> (upper-bound x) 0)))
+
+  (define (div-interval x y)
+    (if (spans-zero? y)
+        (error "can't divide by an interval spanning zero")
+        (mul-interval x
+                      (make-interval (/ 1.0 (upper-bound y))
+                                     (/ 1.0 (lower-bound y))))))
+#+END_SRC
 
 ** TODO Exercise 2.11: Reducing multiplications for =mul-interval=
 *** Problem
@@ -561,7 +587,7 @@ the sum of their widths.
 
 *** Solution
 
-** TODO Exercise 2.12: Center-percentage representations for intervals
+** WRITEUP Exercise 2.12: Center-percentage representations for intervals
 *** Problem
      Define a constructor =make-center-percent= that
      takes a center and a percentage tolerance and produces the desired
@@ -570,24 +596,24 @@ the sum of their widths.
      selector is the same as the one shown above.
 *** Solution
 
-#+BEGIN_SRC
-          (define (make-center-width c w)
-            (make-interval (- c w) (+ c w)))
-
-          (define (center i)
-            (/ (+ (lower-bound i) (upper-bound i)) 2))
-
-          (define (width i)
-            (/ (- (upper-bound i) (lower-bound i)) 2))
-#+END_SRC
-
 #+BEGIN_SRC scheme :session 2-1 :results silent
-  (define (make-center-percent c p)
-    (make-center-width c (* c */ p 100.0)))
+  (define (center i)
+    (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+  (define (width i)
+    (- (upper-bound i) (lower-bound i)))
 
   (define (percent i)
-    (* 100.0 (/ width i) (center i)))
+    (* 100.0 (/ (width i) 2 (center i))))
+
+  (define (make-center-percent c p)
+    (let ((half-width (* c (/ p 100.0))))
+      (make-interval (- c half-width) (+ c half-width))))
+
+
 #+END_SRC
+
+
 
 
 ** TODO Exercise 2.13: Approximating small tolerances
@@ -614,16 +640,16 @@ the sum of their widths.
      He has written the following two programs, each of which computes
      the parallel-resistors formula differently:
 
-#+BEGIN_SRC
-          (define (par1 r1 r2)
-            (div-interval (mul-interval r1 r2)
-                          (add-interval r1 r2)))
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (par1 r1 r2)
+    (div-interval (mul-interval r1 r2)
+                  (add-interval r1 r2)))
 
-          (define (par2 r1 r2)
-            (let ((one (make-interval 1 1)))
-              (div-interval one
-                            (add-interval (div-interval one r1)
-                                          (div-interval one r2)))))
+  (define (par2 r1 r2)
+    (let ((one (make-interval 1 1)))
+      (div-interval one
+                    (add-interval (div-interval one r1)
+                                  (div-interval one r2)))))
 #+END_SRC
 
      Lem complains that Alyssa's program gives different answers for
@@ -637,6 +663,50 @@ the sum of their widths.
      Examine the results of the computation in center-percent form (see
      Exercise 2.12).
 *** Solution
+
+Demonstrating that this is the case is straightforward:
+
+#+BEGIN_SRC scheme :session 2-1 :results both
+  (define aa (make-interval 9 11))
+  (define bb1 (make-interval 99 101))
+  (define bb2 (make-interval 90 110))
+  (define cc1 (make-interval 999 1001))
+  (define cc2 (make-interval 900 1100))
+
+  (define (examine i)
+    (display i)
+    (display ": ")
+    (display (par1 i i))
+    (display " ")
+    (display (par2 i i))
+    (newline))
+
+  (examine aa)
+  (examine bb1)
+  (examine bb2)
+  (examine cc1)
+  (examine cc2)
+
+
+#+END_SRC
+
+#+BEGIN_SRC scheme :session 2-1 :results silent
+  (define (exact-div-interval x y)
+    (mul-interval x
+                  (make-interval (/ 1 (upper-bound y))
+                                 (/ 1 (lower-bound y)))))
+
+  (define (exact-par1 r1 r2)
+    (exact-div-interval (mul-interval r1 r2)
+                  (add-interval r1 r2)))
+
+  (define (exact-par2 r1 r2)
+    (let ((one (make-interval 1 1)))
+      (div-interval one
+                      (add-interval (exact-div-interval one r1)
+                                    (exact-div-interval one r2)))))
+#+END_SRC
+
 
 ** TODO Exercise 2.15: Examining the growth of uncertainty
 *** Problem

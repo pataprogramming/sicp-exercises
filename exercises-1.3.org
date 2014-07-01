@@ -307,7 +307,6 @@ And the approximation to $\pi$:
 #+RESULTS:
 : 3.139592655589782
 
-
 ** Exercise 1.31: A =product= procedure
 *** Problem
 
