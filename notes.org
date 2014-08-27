@@ -1,0 +1,17 @@
+* Notes
+** Section 2.2, page 134
+
+The previous sentence of Perlis's comment in the footnote is often
+missed out, presumably due to its reference to Pascal. The sentiment,
+though, is more general. It's interesting to see how this has been
+embraced by Rich Hickey.
+
+"In Pascal the plethora of declarable data structures induces a
+specialization within functions that inhibits and penalizes casual
+cooperation. It is better to have 100 functions operate on one data
+structure than to have 10 functions operate on 10 data structures.
+
+This makes me think more closely about lenses, particularly in my
+BASIC implementation. Why should a function need to know how to find
+the sub-structure that it is going to operate on? Perhaps this should
+be supplied via a lens and an indirection.
