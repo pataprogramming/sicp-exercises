@@ -14,7 +14,7 @@
 
 *** Solution
 
-#+BEGIN_SRC scheme :results silent
+#+BEGIN_SRC scheme :results silent :session 2-1
 (define (gcd a b)
   (if (= b 0)
       a
@@ -182,7 +182,6 @@ representations.
      of pairs.  For this representation, verify that =(car (cons x y))=
      yields =x= for any objects =x= and =y=.
 
-
 #+BEGIN_SRC
           (define (cons x y)
             (lambda (m) (m x y)))
@@ -194,6 +193,9 @@ representations.
      What is the corresponding definition of =cdr=? (Hint: To verify
      that this works, make use of the substitution model of section
      1.1.5.)
+
+(1 . 2)
+
 
 *** Solution
 
@@ -249,6 +251,18 @@ capture this in another descriptive procedure: =factor-count=.
 (define (icons a b)
   (* (expt 2 a) (expt 3 b)))
 
+(expt 2 2) (expt 3 3)
+(* (* 2 2) (* 3 3 3))
+36 2*2*3*3*3
+
+(cons 2 3) -> (2 . 3)
+(car (cons 2 3)) -> 2
+(cdr (cons 2 3)) -> 3
+
+(icons 2 3) -> 36
+(icar (icons 2 3)) -> (factor-count 36 2) -> 2
+(icdr (icons 2 3)) -> (factor-count 36 3) -> 3
+
 (define (factor-count i f)
   (define (iter i c)
     (if (= (remainder i f) 0)
@@ -272,7 +286,7 @@ capture this in another descriptive procedure: =factor-count=.
      non-negative integers are concerned) by implementing 0 and the
      operation of adding 1 as
 
-#+BEGIN_SRC
+#+BEGIN_SRC scheme :results silent :session 2-1
           (define zero (lambda (f) (lambda (x) x)))
 
           (define (add-1 n)
@@ -342,7 +356,7 @@ After the first of these substitutions, the inner =f= disappears.
 Look again at the definition of =zero= to see why this must be so.
 
 #+BEGIN_EXAMPLE
-  5> (lambda (f)
+  6> (lambda (f)
       (lambda (x)
        (f x)))
 #+END_EXAMPLE
@@ -355,6 +369,7 @@ direct definition for =one=:
 
 #+BEGIN_SRC
   (define one (lambda (f) (lambda (x) (f x))))
+  (define (once f) (lambda (x) (f x)))
 #+END_SRC
 
 With this in hand, we can take it to the next step: a definition for
@@ -615,7 +630,6 @@ the sum of their widths.
 
 
 
-
 ** TODO Exercise 2.13: Approximating small tolerances
 *** Problem
      Show that under the assumption of small percentage tolerances
@@ -690,6 +704,8 @@ Demonstrating that this is the case is straightforward:
 
 #+END_SRC
 
+#+RESULTS:
+
 #+BEGIN_SRC scheme :session 2-1 :results silent
   (define (exact-div-interval x y)
     (mul-interval x
@@ -706,7 +722,6 @@ Demonstrating that this is the case is straightforward:
                       (add-interval (exact-div-interval one r1)
                                     (exact-div-interval one r2)))))
 #+END_SRC
-
 
 ** TODO Exercise 2.15: Examining the growth of uncertainty
 *** Problem
