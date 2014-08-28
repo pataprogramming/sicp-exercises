@@ -6,7 +6,7 @@
 * 2.2.1 Representing Sequences
 ** WRITEUP Exercise 2.17:
 *** Problem
-     Define a procedure `last-pair' that returns the
+     Define a procedure =last-pair= that returns the
      list that contains only the last element of a given (nonempty)
      list:
 
@@ -47,9 +47,12 @@
           ret
           (iter (cdr lst) (cons (car lst) ret))))
     (iter lst null))
+
+   (reverse (list 1 4 9 16 25))
 #+END_SRC
 
 #+RESULTS:
+| 25 | 16 | 9 | 4 | 1 |
 
 ** TODO Exercise 2.19:
 *** Problem
@@ -103,9 +106,9 @@
 *** Solution
 ** WRITEUP Exercise 2.20:
 *** Problem
-     The procedures `+', `*', and `list' take
+     The procedures =+=, =*=, and =list= take
      arbitrary numbers of arguments. One way to define such procedures
-     is to use `define' with notation "dotted-tail notation".  In a
+     is to use =define= with notation "dotted-tail notation".  In a
      procedure definition, a parameter list that has a dot before the
      last parameter name indicates that, when the procedure is called,
      the initial parameters (if any) will have as values the initial
@@ -116,30 +119,30 @@
           (define (f x y . z) <BODY>)
 #+END_EXAMPLE
 
-     the procedure `f' can be called with two or more arguments.  If we
+     the procedure =f= can be called with two or more arguments.  If we
      evaluate
 
 #+BEGIN_EXAMPLE
           (f 1 2 3 4 5 6)
 #+END_EXAMPLE
 
-     then in the body of `f', `x' will be 1, `y' will be 2, and `z'
-     will be the list `(3 4 5 6)'.  Given the definition
+     then in the body of =f=, =x= will be 1, =y= will be 2, and =z=
+     will be the list =(3 4 5 6)=.  Given the definition
 
 #+BEGIN_EXAMPLE
           (define (g . w) <BODY>)
 #+END_EXAMPLE
 
-     the procedure `g' can be called with zero or more arguments.  If we
+     the procedure =g= can be called with zero or more arguments.  If we
      evaluate
 
 #+BEGIN_EXAMPLE
           (g 1 2 3 4 5 6)
 #+END_EXAMPLE
 
-     then in the body of `g', `w' will be the list `(1 2 3 4 5 6)'.(4)
+     then in the body of =g=, =w= will be the list =(1 2 3 4 5 6)=.(4)
 
-     Use this notation to write a procedure `same-parity' that takes
+     Use this notation to write a procedure =same-parity= that takes
      one or more integers and returns a list of all the arguments that
      have the same even-odd parity as the first argument.  For example,
 
@@ -165,7 +168,7 @@
 
 ** WRITEUP Exercise 2.21:
 *** Problem
-     The procedure `square-list' takes a list of
+     The procedure =square-list= takes a list of
      numbers as argument and returns a list of the squares of those
      numbers.
 
@@ -174,7 +177,7 @@
           (1 4 9 16)
 #+END_EXAMPLE
 
-     Here are two different definitions of `square-list'.  Complete
+     Here are two different definitions of =square-list=.  Complete
      both of them by filling in the missing expressions:
 
 #+BEGIN_EXAMPLE
@@ -205,7 +208,7 @@
 ** WRITEUP Exercise 2.22:
 *** Problem
      Louis Reasoner tries to rewrite the first
-     `square-list' procedure of *Note Exercise 2-21:: so that it
+     =square-list= procedure of *Note Exercise 2-21:: so that it
      evolves an iterative process:
 
 #+BEGIN_EXAMPLE
@@ -219,11 +222,11 @@
             (iter items nil))
 #+END_EXAMPLE
 
-     Unfortunately, defining `square-list' this way produces the answer
+     Unfortunately, defining =square-list= this way produces the answer
      list in the reverse order of the one desired.  Why?
 
      Louis then tries to fix his bug by interchanging the arguments to
-     `cons':
+     =cons=:
 
 #+BEGIN_EXAMPLE
           (define (square-list items)
@@ -269,9 +272,9 @@ or =nil=.
           88
 #+END_EXAMPLE
 
-     The value returned by the call to `for-each' (not illustrated
+     The value returned by the call to =for-each= (not illustrated
      above) can be something arbitrary, such as true.  Give an
-     implementation of `for-each'.
+     implementation of =for-each=.
 
 *** Solution
 
@@ -298,8 +301,8 @@ or =nil=.
 * 2.2.2 Hierarchical Structures
 ** TODO Exercise 2.24:
 *** Problem
-     Suppose we evaluate the expression `(list 1 (list
-     2 (list 3 4)))'.  Give the result printed by the interpreter, the
+     Suppose we evaluate the expression =(list 1 (list
+     2 (list 3 4)))=.  Give the result printed by the interpreter, the
      corresponding box-and-pointer structure, and the interpretation of
      this as a tree (as in *Note Figure 2-6::).
 
@@ -357,11 +360,13 @@ or =nil=.
      Give combinations of `car's and `cdr's that will
      pick 7 from each of the following lists:
 
+#+BEGIN_EXAMPLE
           (1 3 (5 7) 9)
 
           ((7))
 
           (1 (2 (3 (4 (5 (6 7))))))
+#+END_EXAMPLE
 
 *** Solution
 
@@ -386,7 +391,7 @@ or =nil=.
 
 ** WRITEUP Exercise 2.26:
 *** Problem
-     Suppose we define `x' and `y' to be two lists:
+     Suppose we define =x= and =y= to be two lists:
 
 #+BEGIN_EXAMPLE
           (define x (list 1 2))
@@ -419,7 +424,7 @@ or =nil=.
 : '((1 2) 4 5 6)
 : '((1 2) (4 5 6))
 
-** TODO Exercise 2.27:
+** WRITEUP Exercise 2.27:
 *** Problem
      Modify your =reverse= procedure of *Note Exercise
      2-18:: to produce a =deep-reverse= procedure that takes a list as
@@ -442,11 +447,12 @@ or =nil=.
 *** Solution
 
 #+BEGIN_SRC scheme :session 2-2
-  (define (deep-reverse n)
+  (define (deep-reverse lst)
     (define (recurse lst ret)
-      (if (null? lst)
-          ret
-          (recurse (cdr (deep-reverse lst)) (cons (car (deep-reverse lst)) ret))))
+      (if (null? lst) ret
+          (if (pair? lst)
+              (recurse (cdr lst) (cons (deep-reverse (car lst)) ret))
+              lst)))
     (recurse lst null))
 
   (define z (list (list 1 2) (list 3 4)))
@@ -454,15 +460,20 @@ or =nil=.
   (reverse z)
 
   (deep-reverse z)
-
 #+END_SRC
+
+#+RESULTS:
+| 4 | 3 |
+| 2 | 1 |
+
 ** TODO Exercise 2.28:
 *** Problem
-     Write a procedure `fringe' that takes as argument
+     Write a procedure =fringe= that takes as argument
      a tree (represented as a list) and returns a list whose elements
      are all the leaves of the tree arranged in left-to-right order.
      For example,
 
+#+BEGIN_EXAMPLE
           (define x (list (list 1 2) (list 3 4)))
 
           (fringe x)
@@ -470,32 +481,45 @@ or =nil=.
 
           (fringe (list x x))
           (1 2 3 4 1 2 3 4)
+#+END_EXAMPLE
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2
+  (define (fringe tre))
+
+  (define w (list (list 1 2) (list 3 4)))
+#+END_SRC
+
+#+RESULTS:
+
 ** TODO Exercise 2.29:
 *** Problem
      A binary mobile consists of two branches, a left
      branch and a right branch.  Each branch is a rod of a certain
      length, from which hangs either a weight or another binary mobile.
      We can represent a binary mobile using compound data by
-     constructing it from two branches (for example, using `list'):
+     constructing it from two branches (for example, using =list=):
 
+#+BEGIN_EXAMPLE
           (define (make-mobile left right)
             (list left right))
-
-     A branch is constructed from a `length' (which must be a number)
-     together with a `structure', which may be either a number
+#+END_EXAMPLE
+     A branch is constructed from a =length= (which must be a number)
+     together with a =structure=, which may be either a number
      (representing a simple weight) or another mobile:
 
+#+BEGIN_EXAMPLE
           (define (make-branch length structure)
             (list length structure))
+#+END_EXAMPLE
 
-       a. Write the corresponding selectors `left-branch' and
-          `right-branch', which return the branches of a mobile, and
-          `branch-length' and `branch-structure', which return the
+       a. Write the corresponding selectors =left-branch= and
+          =right-branch=, which return the branches of a mobile, and
+          =branch-length= and =branch-structure=, which return the
           components of a branch.
 
-       b. Using your selectors, define a procedure `total-weight' that
+       b. Using your selectors, define a procedure =total-weight= that
           returns the total weight of a mobile.
 
        c. A mobile is said to be "balanced" if the torque applied by
@@ -509,11 +533,13 @@ or =nil=.
        d. Suppose we change the representation of mobiles so that the
           constructors are
 
+#+BEGIN_EXAMPLE
                (define (make-mobile left right)
                  (cons left right))
 
                (define (make-branch length structure)
                  (cons length structure))
+#+END_EXAMPLE
 
           How much do you need to change your programs to convert to
           the new representation?
@@ -521,43 +547,49 @@ or =nil=.
 *** Solution
 ** TODO Exercise 2.30:
 *** Problem
-     Define a procedure `square-tree' analogous to the
-     `square-list' procedure of *Note Exercise 2-21::.  That is,
-     `square-list' should behave as follows:
+     Define a procedure =square-tree= analogous to the
+     =square-list= procedure of *Note Exercise 2-21::.  That is,
+     =square-list= should behave as follows:
 
+#+BEGIN_EXAMPLE
           (square-tree
            (list 1
                  (list 2 (list 3 4) 5)
                  (list 6 7)))
           (1 (4 (9 16) 25) (36 49))
+#+END_EXAMPLE
 
-     Define `square-tree' both directly (i.e., without using any
-     higher-order procedures) and also by using `map' and recursion.
+     Define =square-tree= both directly (i.e., without using any
+     higher-order procedures) and also by using =map= and recursion.
 
 *** Solution
 ** TODO Exercise 2.31:
 *** Problem
      Abstract your answer to *Note Exercise 2-30:: to
-     produce a procedure `tree-map' with the property that
-     `square-tree' could be defined as
+     produce a procedure =tree-map= with the property that
+     =square-tree= could be defined as
 
+#+BEGIN_EXAMPLE
           (define (square-tree tree) (tree-map square tree))
+#+END_EXAMPLE
 
 *** Solution
 ** TODO Exercise 2.32:
 *** Problem
      We can represent a set as a list of distinct
      elements, and we can represent the set of all subsets of the set as
-     a list of lists.  For example, if the set is `(1 2 3)', then the
-     set of all subsets is `(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2
-     3))'.  Complete the following definition of a procedure that
+     a list of lists.  For example, if the set is =(1 2 3), then the
+     set of all subsets is =(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2
+     3))=.  Complete the following definition of a procedure that
      generates the set of subsets of a set and give a clear explanation
      of why it works:
 
+#+BEGIN_EXAMPLE
           (define (subsets s)
             (if (null? s)
                 (list nil)
                 (let ((rest (subsets (cdr s))))
                   (append rest (map <??> rest)))))
+#+END_EXAMPLE
 
 *** Solution
