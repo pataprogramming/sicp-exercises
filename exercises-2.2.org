@@ -466,7 +466,7 @@ or =nil=.
 | 4 | 3 |
 | 2 | 1 |
 
-** TODO Exercise 2.28:
+** WRITE UP Exercise 2.28:
 *** Problem
      Write a procedure =fringe= that takes as argument
      a tree (represented as a list) and returns a list whose elements
@@ -486,12 +486,24 @@ or =nil=.
 *** Solution
 
 #+BEGIN_SRC scheme :session 2-2
-  (define (fringe tre))
+  (define (fringe tr)
+    (if (not (pair? tr))
+        tr
+        (let ((head (car tr))
+              (tail (cdr tr)))
+          (if (pair? head)
+              (append (fringe head) (fringe tail))
+              (cons head (fringe tail))))))
 
   (define w (list (list 1 2) (list 3 4)))
+
+  (fringe w)
+  (fringe (list w w))
+  (fringe '(1 2))
 #+END_SRC
 
 #+RESULTS:
+| 1 | 2 |
 
 ** TODO Exercise 2.29:
 *** Problem
