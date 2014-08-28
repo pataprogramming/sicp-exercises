@@ -200,7 +200,6 @@
 
   (define (square-list-2 items)
     (map (lambda (x) (* x x)) items))
-
 #+END_SRC
 
 #+RESULTS:
@@ -466,7 +465,7 @@ or =nil=.
 | 4 | 3 |
 | 2 | 1 |
 
-** WRITE UP Exercise 2.28:
+** WRITEUP Exercise 2.28:
 *** Problem
      Write a procedure =fringe= that takes as argument
      a tree (represented as a list) and returns a list whose elements
@@ -575,7 +574,35 @@ or =nil=.
      higher-order procedures) and also by using =map= and recursion.
 
 *** Solution
-** TODO Exercise 2.31:
+
+#+BEGIN_SRC scheme :session 2-2 :results output
+  (define (square-tree-1 tr)
+    (cond ((null? tr) null)
+          ((not (pair? tr)) (* tr tr))
+          (true (cons (square-tree-1 (car tr)) (square-tree-1 (cdr tr))))))
+
+  (define (square-tree-2 tr)
+    (define (square x) (* x x))
+    (cond ((null? tr) null)
+          ((not   (pair? tr)) (square tr))
+          (true   (map square-tree-2 tr))))
+
+  (define num-tree
+    (list 1
+          (list 2 (list 3 4) 5)
+          (list 6 7)))
+
+  (print (square-tree-1 num-tree))
+  (newline)
+  (print (square-tree-2 num-tree))
+  (newline)
+#+END_SRC
+
+#+RESULTS:
+: '(1 (4 (9 16) 25) (36 49))
+: '(1 (4 (9 16) 25) (36 49))
+
+** WRITEUP Exercise 2.31:
 *** Problem
      Abstract your answer to *Note Exercise 2-30:: to
      produce a procedure =tree-map= with the property that
@@ -586,6 +613,31 @@ or =nil=.
 #+END_EXAMPLE
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2 :results output
+  (define (square x) (* x x))
+
+  (define (tree-map f tr)
+    (define (tree-map-h t) (tree-map f t))
+    (cond ((null? tr) null)
+          ((not   (pair? tr)) (f tr))
+          (true   (map tree-map-h tr))))
+
+  (define (square-tree-3 tr)
+    (tree-map square tr))
+
+  (define num-tree
+    (list 1
+          (list 2 (list 3 4) 5)
+          (list 6 7)))
+
+  (print (square-tree-3 num-tree))
+#+END_SRC
+
+#+RESULTS:
+: '(1 (4 (9 16) 25) (36 49))
+
+
 ** TODO Exercise 2.32:
 *** Problem
      We can represent a set as a list of distinct
