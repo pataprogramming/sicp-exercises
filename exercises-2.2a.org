@@ -17,13 +17,19 @@
 
 *** Solution
 
-#+BEGIN_SRC scheme :session 2-2 :results value
+This problem is straightforward: just keep recursing on the =cdr= of
+the current cell, but always peek ahead to see if it's empty; if it
+is, then the last cons cell has been found.
+
+It's is worth noting that
+
+#+BEGIN_SRC scheme :session 2-2 :results output
   (define (last-pair lst)
     (if (null? (cdr lst))
         lst
         (last-pair (cdr lst))))
 
-  (last-pair (list 23 72 149 34))
+  (print (last-pair (list 23 72 149 34)))
 #+END_SRC
 
 #+RESULTS:
