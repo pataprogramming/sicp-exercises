@@ -1,4 +1,4 @@
-#+TITLE: SICP Exercise Solutions for Section 2.2
+#+TITLE: SICP Exercise Solutions for Section 2.2.1 and 2.2.2
 #+AUTHOR: Paul L. Snyder
 #+EMAIL: paul@pataprogramming.com
 #+TODO: TODO(t) WRITEUP(w) || (d)
@@ -556,7 +556,7 @@ or =nil=.
           the new representation?
 
 *** Solution
-** TODO Exercise 2.30:
+** WRITEUP Exercise 2.30:
 *** Problem
      Define a procedure =square-tree= analogous to the
      =square-list= procedure of *Note Exercise 2-21::.  That is,
@@ -637,12 +637,11 @@ or =nil=.
 #+RESULTS:
 : '(1 (4 (9 16) 25) (36 49))
 
-
-** TODO Exercise 2.32:
+** WRITEUP Exercise 2.32:
 *** Problem
      We can represent a set as a list of distinct
      elements, and we can represent the set of all subsets of the set as
-     a list of lists.  For example, if the set is =(1 2 3), then the
+     a list of lists.  For example, if the set is =(1 2 3)=, then the
      set of all subsets is =(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2
      3))=.  Complete the following definition of a procedure that
      generates the set of subsets of a set and give a clear explanation
@@ -657,3 +656,22 @@ or =nil=.
 #+END_EXAMPLE
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2 :results output
+  (define (subsets s)
+    (if (null? s)
+        (list null)
+        (let ((rest (subsets (cdr s))))
+          (append rest (map (lambda (t) (cons (car s) t)) rest)))))
+
+  (print (subsets (list 1 2 3)))
+#+END_SRC
+
+#+RESULTS:
+: '(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))
+
+For a given set $S$, the set of all its subsets are frequently called
+its /power set/.  A natural way to generate a set's power set is
+recursively: pick an element $x$ of the set $S$; the power set is then
+the set of all the subsets of $S$ that do not contain $e$, combined
+with all subsets that do contain $e$.
