@@ -130,7 +130,7 @@ space.
      `coin-values' affect the answer produced by `cc'?  Why or why not?
 
 *** Solution
-** WRITEUP Exercise 2.20:
+** Exercise 2.20:
 *** Problem
      The procedures =+=, =*=, and =list= take
      arbitrary numbers of arguments. One way to define such procedures
@@ -209,6 +209,8 @@ puts the list into the correct order, but does take a cost in
 time. Fortunately, both =reverse= and =same-parity= are $O(n)$, so the
 computational complexity is not increased, it is scaled by a
 constant factor.
+
+The procedure's results are those prescribed by the exercise:
 
 #+BEGIN_SRC scheme :session 2-2 :results output
   (print (same-parity 1 2 3 4 5 6 7))
@@ -435,6 +437,13 @@ or =nil=.
   (print
    (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr l3)))))))))))))
   (newline)
+
+  (define (iterate f n x)
+    (if (<= n 0)
+        x
+        (iterate f (- n 1) (f x))))
+
+  (println (iterate (compose car cdr) 6 l3))
 #+END_SRC
 
 #+RESULTS:
