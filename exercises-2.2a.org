@@ -40,7 +40,7 @@ never recurse with =lst= as a non-pair parameter.
 #+RESULTS:
 : '(34)
 
-** WRITEUP Exercise 2.18:
+** Exercise 2.18:
 *** Problem
      Define a procedure =reverse= that takes a list as
      argument and returns a list of the same elements in reverse order:
@@ -182,15 +182,43 @@ space.
 
 *** Solution
 
+As in the previous exercise, this solution uses a helper function to
+achieve an iterative style. It alse defines a second helper, =match=,
+that closes over the first value in the list supplied to
+=same-parity=, and can then be used to compare the parity of any later
+element in the list. This makes the condition of the =cond= in =iter=
+that relies on it more succinct, as well as making the intention more
+explicit.
+
 #+BEGIN_SRC scheme :session 2-2 :results silent
-  (define (same-parity key . vals)
-    (define (match val) (= (remainder key 2) (remainder val 2)))
-    (define (iter ret vals)
-      (cond ((null? vals)       (reverse ret))
-            ((match (car vals)) (iter (cons (car vals) ret) (cdr vals)))
-            (true               (iter ret (cdr vals)))))
-    (iter (list key) vals))
+    (define (same-parity key . vals)
+      (define (matches? val) (= (remainder key 2) (remainder val 2)))
+      (define (iter ret vals)
+        (cond ((null? vals)          (reverse ret))
+              ((matches? (car vals)) (iter (cons (car vals) ret)
+                                           (cdr vals)))
+              (true                  (iter ret (cdr vals)))))
+      (iter (list key) vals))
 #+END_SRC
+
+This produces the desired behavior, but note the use of the previously
+define =reverse= procedure in the =null?= condition clause.  The
+property that made $cons$ convenient for reversing a list makes it
+similarly inconvenient to build a list from start to end. =reverse=
+puts the list into the correct order, but does take a cost in
+time. Fortunately, both =reverse= and =same-parity= are $O(n)$, so the
+computational complexity is not increased, it is scaled by a
+constant factor.
+
+#+BEGIN_SRC scheme :session 2-2 :results output
+  (print (same-parity 1 2 3 4 5 6 7))
+  (newline)
+  (print (same-parity 2 3 4 5 6 7))
+#+END_SRC
+
+#+RESULTS:
+: '(1 3 5 7)
+: '(2 4 6)
 
 ** WRITEUP Exercise 2.21:
 *** Problem
