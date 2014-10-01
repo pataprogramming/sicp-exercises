@@ -157,7 +157,7 @@ around 100 ms to execute on my machine. Slow!
 #+END_SRC
 
 #+RESULTS:
-: 21.000000000151953 (96 ms)
+: 21.000000000151953 (85 ms)
 
 Our procedure for Simpson's Rule does quite well, with some numerical
 error depending on the intervals selected. It is extremely fast, though:
@@ -190,7 +190,7 @@ very close, but it takes the better part of a second to execute:
 #+END_SRC
 
 #+RESULTS:
-: 16.250000000258588 (177 ms)
+: 16.250000000258588 (120 ms)
 
 Comparing this to our =simpsons-integral= method over the same range,
 we get an even closer result, with similar numeric fluctuation
@@ -220,7 +220,7 @@ approximation, but takes over a full /second/ to do so on my machine!
 #+END_SRC
 
 #+RESULTS:
-: -0.54402111069616 (1008 ms)
+: -0.54402111069616 (687 ms)
 
 Simpson's Rule, again, comes up with its approximatation in a fraction
 of the time.
@@ -236,14 +236,14 @@ of the time.
 2: 2.1592953546274214 (0 ms)
 52: -0.5440252627727152 (0 ms)
 102: -0.5440213904266393 (0 ms)
-152: -0.5440211675384317 (1 ms)
+152: -0.5440211675384317 (0 ms)
 202: -0.5440211290472229 (0 ms)
 252: -0.5440211183852472 (0 ms)
 302: -0.5440211145232634 (0 ms)
 352: -0.5440211128582283 (0 ms)
-402: -0.5440211120467381 (1 ms)
+402: -0.5440211120467381 (0 ms)
 452: -0.5440211116134976 (0 ms)
-502: -0.5440211113653068 (1 ms)
+502: -0.5440211113653068 (0 ms)
 #+end_example
 
 ** Exercise 1.30: Iterative =sum=
@@ -1325,7 +1325,7 @@ It's easy to apply this to other procedures:
 #+END_SRC
 
 #+RESULTS:
-: 15.0
+: 15
 
 This works with higher-order procedures, as well (though using nested
 invocations where the result is called immediately can result in code
@@ -1454,7 +1454,7 @@ within 0.1 of the original =square= procedure.
 5.0: 24.953676520451445 (0 ms)
 6.0: 35.989392103222414 (0 ms)
 7.0: 49.0427324823916 (0 ms)
-8.0: 64.02185727993435 (1 ms)
+8.0: 64.02185727993435 (0 ms)
 9.0: 80.96256542416378 (0 ms)
 10.0: 99.96672650555777 (0 ms)
 #+end_example
