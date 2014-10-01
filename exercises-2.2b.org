@@ -3,6 +3,61 @@
 #+EMAIL: paul@pataprogramming.com
 #+TODO: TODO(t) WRITEUP(w) || (d)
 
+#+OPTIONS: num:0
+
+#+LaTeX_HEADER: \usepackage{minted}
+#+LaTeX_HEADER: \usepackage{color}
+#+LaTeX_HEADER: \usepackage{xcolor}
+#+LateX_HEADER: \usemintedstyle{friendly}
+#+LaTeX_HEADER: \newminted{clojure}{fontsize=\large}
+#+LaTeX_HEADER: \newminted{java}{fontsize=\large}
+#+LaTeX_HEADER: \newminted{common-lisp}{fontsize=\large}
+#+LaTeX_HEADER: \newminted{scheme}{fontsize=\large}
+
+#+name: setup-minted
+#+begin_src emacs-lisp :exports none :results silent
+  (setq org-latex-listings 'minted)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-custom-lang-environments
+        '(
+         (emacs-lisp "common-lispcode")
+         (scheme "schemecode")
+         (lisp "common-lispcode")
+         (java "javacode")
+         (clojure "clojurecode")
+          ))
+  (setq org-latex-minted-options
+        '(("frame" "lines")
+          ("fontsize" "\\normalsize")
+          ("linenos" "")))
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+end_src
+
+#+BEGIN_LaTeX
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\orange}[1]{{\color{orange}#1}}
+\newcommand{\purple}[1]{{\color{purple}#1}}
+\definecolor{darkgreen}{HTML}{006B3C}
+\newcommand{\green}[1]{{\color{darkgreen}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\definecolor{indigo}{HTML}{4B0082}
+\newcommand{\indigo}[1]{{\color{indigo}#1}}
+\newcommand{\java}{\red{Java}}
+\newcommand{\lisp}{\red{Lisp}}
+\newcommand{\clojure}{\blue{Clojure}}
+#+END_LaTeX
+
+#+BEGIN_SRC scheme :session 2-2b :results silent
+  (require (planet neil/sicp:1:17))
+#+END_SRC
+
+#+BEGIN_SRC scheme :eval never :tangle 2-2b.rkt
+  #lang planet neil/sicp
+#+END_SRC
+
 * 2.2.3 Sequences as Conventional Interfaces
 ** TODO Exercise 2.33: List manipulations as acculumations
 *** Problem
@@ -10,82 +65,89 @@
      following definitions of some basic list-manipulation operations
      as accumulations:
 
+#+BEGIN_SRC scheme :eval never
+  (define (map p sequence)
+    (accumulate (lambda (x y) <??>) nil sequence))
 
-          (define (map p sequence)
-            (accumulate (lambda (x y) <??>) nil sequence))
+  (define (append seq1 seq2)
+    (accumulate cons <??> <??>))
 
-          (define (append seq1 seq2)
-            (accumulate cons <??> <??>))
-
-          (define (length sequence)
-            (accumulate <??> 0 sequence))
+  (define (length sequence)
+    (accumulate <??> 0 sequence))
+#+END_SRC
 
 *** Solution
 ** TODO Exercise 2.34: Horner's Rule
 *** Problem
-     Evaluating a polynomial in x at a given value of
-     x can be formulated as an accumulation.  We evaluate the polynomial
+     Evaluating a polynomial in $x$ at a given value of $x$ can be
+     formulated as an accumulation.  We evaluate the polynomial
 
-          a_n r^n | a_(n-1) r^(n-1) + ... + a_1 r + a_0
+     $$a_n r^n | a_(n-1) r^(n-1) + \cdots + a_1 r + a_0$$
 
      using a well-known algorithm called "Horner's rule", which
      structures the computation as
 
-          (... (a_n r + a_(n-1)) r + ... + a_1) r + a_0
+     $$(\cdots (a_n r + a_(n-1)) r + \cdots + a_1) r + a_0$$
 
-     In other words, we start with a_n, multiply by x, add a_(n-1),
-     multiply by x, and so on, until we reach a_0.(3)
+     In other words, we start with $a_n$, multiply by $x$, add
+     $a_(n-1)$, multiply by $x$, and so on, until we reach $a_0$.(3)
 
      Fill in the following template to produce a procedure that
      evaluates a polynomial using Horner's rule.  Assume that the
      coefficients of the polynomial are arranged in a sequence, from
-     a_0 through a_n.
+     $a_0$ through $a_n$.
 
           (define (horner-eval x coefficient-sequence)
             (accumulate (lambda (this-coeff higher-terms) <??>)
                         0
                         coefficient-sequence))
 
-     For example, to compute 1 + 3x + 5x^3 + x^(5) at x = 2 you would
+     For example, to compute $1 + 3x + 5x^3 + x^(5)$ at $x = 2$ you would
      evaluate
 
-          (horner-eval 2 (list 1 3 0 5 0 1))
+#+BEGIN_SRC scheme :eval never
+  (horner-eval 2 (list 1 3 0 5 0 1))
+#+END_SRC
 
 *** Solution
 ** TODO Exercise 2.35: =count-leaves= as an accumulation
 *** Problem
-     Redefine `count-leaves' from section *Note
-     2-2-2:: as an accumulation:
+     Redefine =count-leaves= from section 2.2.2 as an accumulation:
 
+#+BEGIN_SRC scheme :eval never
           (define (count-leaves t)
             (accumulate <??> <??> (map <??> <??>)))
+#+END_SRC
 
 *** Solution
 ** TODO Exercise 2.36: Accumulating over multiple sequenences
 *** Problem
-     The procedure `accumulate-n' is similar to
-     `accumulate' except that it takes as its third argument a sequence
+     The procedure =accumulate-n= is similar to
+     =accumulate= except that it takes as its third argument a sequence
      of sequences, which are all assumed to have the same number of
      elements.  It applies the designated accumulation procedure to
      combine all the first elements of the sequences, all the second
      elements of the sequences, and so on, and returns a sequence of
-     the results.  For instance, if `s' is a sequence containing four
-     sequences, `((1 2 3) (4 5 6) (7 8 9) (10 11 12)),' then the value
-     of `(accumulate-n + 0 s)' should be the sequence `(22 26 30)'.
+     the results.  For instance, if =s= is a sequence containing four
+     sequences, =((1 2 3) (4 5 6) (7 8 9) (10 11 12))=, then the value
+     of =(accumulate-n + 0 s)= should be the sequence =(22 26 30)=.
      Fill in the missing expressions in the following definition of
-     `accumulate-n':
+     =accumulate-n=:
 
-          (define (accumulate-n op init seqs)
-            (if (null? (car seqs))
-                nil
-                (cons (accumulate op init <??>)
-                      (accumulate-n op init <??>))))
+#+BEGIN_SRC scheme :eval never
+  (define (accumulate-n op init seqs)
+    (if (null? (car seqs))
+        nil
+        (cons (accumulate op init <??>)
+              (accumulate-n op init <??>))))
+#+END_SRC
 
+*** Solution
 ** TODO Exercise 2.37: Implementing vectors and matrices with sequences
 
-Suppose we represent vectors v = (v_i) as sequences of numbers, and
-matrices m = (m_(ij)) as sequences of vectors (the rows of the matrix).
-For example, the matrix
+Suppose we represent vectors $\mathbf{v} = (v_i)$ as sequences of
+numbers, and matrices $\mathbf{m} = (m_(ij))$ as sequences of vectors
+(the rows of the matrix).  For example, the matrix
 
      +-         -+
      |  1 2 3 4  |
@@ -93,64 +155,72 @@ For example, the matrix
      |  6 7 8 9  |
      +-         -+
 
-is represented as the sequence `((1 2 3 4) (4 5 6 6) (6 7 8 9))'.  With
+is represented as the sequence =((1 2 3 4) (4 5 6 6) (6 7 8 9))=.  With
 this representation, we can use sequence operations to concisely
 express the basic matrix and vector operations.  These operations
 (which are described in any book on matrix algebra) are the following:
 
-                                            __
-     (dot-product v w)      returns the sum >_i v_i w_i
+#+BEGIN_EXAMPLE
+  (dot-product v w)      returns the sum >_i v_i w_i
 
-     (matrix-*-vector m v)  returns the vector t,
+  (matrix-*-vector m v)  returns the vector t,
+                                     __
+                         where t_i = >_j m_(ij) v_j
+
+  (matrix-*-matrix m n)  returns the matrix p,
                                         __
-                            where t_i = >_j m_(ij) v_j
+                         where p_(ij) = >_k m_(ik) n_(kj)
 
-     (matrix-*-matrix m n)  returns the matrix p,
-                                           __
-                            where p_(ij) = >_k m_(ik) n_(kj)
-
-     (transpose m)          returns the matrix n,
-                            where n_(ij) = m_(ji)
+  (transpose m)          returns the matrix n,
+                         where n_(ij) = m_(ji)
+#+END_EXAMPLE
 
    We can define the dot product as(4)
 
-     (define (dot-product v w)
-       (accumulate + 0 (map * v w)))
+#+BEGIN_SRC scheme :eval never
+  (define (dot-product v w)
+    (accumulate + 0 (map * v w)))
+#+END_SRC
 
    Fill in the missing expressions in the following procedures for
-computing the other matrix operations.  (The procedure `accumulate-n'
+computing the other matrix operations.  (The procedure =accumulate-n=
 is defined in *Note Exercise 2-36::.)
 
-     (define (matrix-*-vector m v)
-       (map <??> m))
+#+BEGIN_SRC scheme :eval never
+  (define (matrix-*-vector m v)
+    (map <??> m))
 
-     (define (transpose mat)
-       (accumulate-n <??> <??> mat))
+  (define (transpose mat)
+    (accumulate-n <??> <??> mat))
 
-     (define (matrix-*-matrix m n)
-       (let ((cols (transpose n)))
-         (map <??> m)))
+  (define (matrix-*-matrix m n)
+    (let ((cols (transpose n)))
+      (map <??> m)))
+#+END_SRC
 
 *** Solution
 ** TODO Exercise 2.38: Writing =fold-left=
 *** Problem
-     The `accumulate' procedure is also known as
-     `fold-right', because it combines the first element of the
+     The =accumulate= procedure is also known as
+     =fold-right=, because it combines the first element of the
      sequence with the result of combining all the elements to the
-     right.  There is also a `fold-left', which is similar to
-     `fold-right', except that it combines elements working in the
+     right.  There is also a =fold-left=, which is similar to
+     =fold-right=, except that it combines elements working in the
      opposite direction:
 
-          (define (fold-left op initial sequence)
-            (define (iter result rest)
-              (if (null? rest)
-                  result
-                  (iter (op result (car rest))
-                        (cdr rest))))
-            (iter initial sequence))
+#+BEGIN_SRC scheme :eval never
+  (define (fold-left op initial sequence)
+    (define (iter result rest)
+      (if (null? rest)
+          result
+          (iter (op result (car rest))
+                (cdr rest))))
+    (iter initial sequence))
+#+END_SRC
 
      What are the values of
 
+#+BEGIN_SRC scheme :eval never
           (fold-right / 1 (list 1 2 3))
 
           (fold-left / 1 (list 1 2 3))
@@ -158,38 +228,41 @@ is defined in *Note Exercise 2-36::.)
           (fold-right list nil (list 1 2 3))
 
           (fold-left list nil (list 1 2 3))
+#+END_SRC
 
-     Give a property that `op' should satisfy to guarantee that
-     `fold-right' and `fold-left' will produce the same values for any
+     Give a property that =op= should satisfy to guarantee that
+     =fold-right= and =fold-left= will produce the same values for any
      sequence.
 
 *** Solution
 ** TODO Exercise 2.39: Defining =reverse= via =fold=
 *** Problem
-     Complete the following definitions of `reverse'
-     (*Note Exercise 2-18::) in terms of `fold-right' and `fold-left'
+     Complete the following definitions of =reverse=
+     (*Note Exercise 2-18::) in terms of =fold-right= and =fold-left=
      from *Note Exercise 2-38:::
 
-          (define (reverse sequence)
-            (fold-right (lambda (x y) <??>) nil sequence))
+#+BEGIN_SRC scheme :eval never
+  (define (reverse sequence)
+    (fold-right (lambda (x y) <??>) nil sequence))
 
-          (define (reverse sequence)
-            (fold-left (lambda (x y) <??>) nil sequence))
+  (define (reverse sequence)
+    (fold-left (lambda (x y) <??>) nil sequence))
+#+END_SRC
 
 *** Solution
 ** TODO Exercise 2.40: Generating unique pairs
 *** Problem
-     Define a procedure `unique-pairs' that, given an
-     integer n, generates the sequence of pairs (i,j) with 1 <= j< i <=
-     n.  Use `unique-pairs' to simplify the definition of
-     `prime-sum-pairs' given above.
+     Define a procedure =unique-pairs= that, given an integer $n$,
+     generates the sequence of pairs $(i,j)$ with $1 <= j < i <= n$.
+     Use =unique-pairs= to simplify the definition of
+     =prime-sum-pairs= given above.
 
 *** Solution
 ** TODO Exercise 2.41: Finding ordered triples
 *** Problem
-     Write a procedure to find all ordered triples of
-     distinct positive integers i, j, and k less than or equal to a
-     given integer n that sum to a given integer s.
+     Write a procedure to find all ordered triples of distinct
+     positive integers $i$, $j$, and $k$ less than or equal to a given
+     integer $n$ that sum to a given integer $s$.
 
 *** Solution
 ** TODO Exercise 2.42: The Eight-Queens Puzzle
@@ -199,16 +272,16 @@ is defined in *Note Exercise 2-36::.)
      (i.e., no two queens are in the same row, column, or diagonal).
      One possible solution is shown in *Note Figure 2-8::.  One way to
      solve the puzzle is to work across the board, placing a queen in
-     each column.  Once we have placed k - 1 queens, we must place the
+     each column.  Once we have placed $k - 1$ queens, we must place the
      kth queen in a position where it does not check any of the queens
      already on the board.  We can formulate this approach recursively:
      Assume that we have already generated the sequence of all possible
-     ways to place k - 1 queens in the first k - 1 columns of the
+     ways to place $k - 1$ queens in the first $k - 1$ columns of the
      board.  For each of these ways, generate an extended set of
-     positions by placing a queen in each row of the kth column.  Now
+     positions by placing a queen in each row of the $k$th column.  Now
      filter these, keeping only the positions for which the queen in
-     the kth column is safe with respect to the other queens.  This
-     produces the sequence of all ways to place k queens in the first k
+     the $k$th column is safe with respect to the other queens.  This
+     produces the sequence of all ways to place $k$ queens in the first $k$
      columns.  By continuing this process, we will produce not only one
      solution, but all solutions to the puzzle.
 
@@ -233,35 +306,37 @@ is defined in *Note Exercise 2-36::.)
           +---+---+---+---+---+---+---+---+
 
 
-     We implement this solution as a procedure `queens', which returns a
-     sequence of all solutions to the problem of placing n queens on an
-     n*n chessboard.  `Queens' has an internal procedure `queen-cols'
+     We implement this solution as a procedure =queens=, which returns a
+     sequence of all solutions to the problem of placing $n$ queens on an
+     $n*n$ chessboard.  =queens= has an internal procedure =queen-cols=
      that returns the sequence of all ways to place queens in the first
-     k columns of the board.
+     $k$ columns of the board.
 
-          (define (queens board-size)
-            (define (queen-cols k)
-              (if (= k 0)
-                  (list empty-board)
-                  (filter
-                   (lambda (positions) (safe? k positions))
-                   (flatmap
-                    (lambda (rest-of-queens)
-                      (map (lambda (new-row)
-                             (adjoin-position new-row k rest-of-queens))
-                           (enumerate-interval 1 board-size)))
-                    (queen-cols (- k 1))))))
-            (queen-cols board-size))
+#+BEGIN_SRC scheme :session 2-2b :results silent
+  (define (queens board-size)
+    (define (queen-cols k)
+      (if (= k 0)
+          (list empty-board)
+          (filter
+           (lambda (positions) (safe? k positions))
+           (flatmap
+            (lambda (rest-of-queens)
+              (map (lambda (new-row)
+                     (adjoin-position new-row k rest-of-queens))
+                   (enumerate-interval 1 board-size)))
+            (queen-cols (- k 1))))))
+    (queen-cols board-size))
+#+END_SRC
 
-     In this procedure `rest-of-queens' is a way to place k - 1 queens
-     in the first k - 1 columns, and `new-row' is a proposed row in
-     which to place the queen for the kth column.  Complete the program
+     In this procedure =rest-of-queens= is a way to place $k - 1$ queens
+     in the first $k - 1$ columns, and =new-row= is a proposed row in
+     which to place the queen for the $k$th column.  Complete the program
      by implementing the representation for sets of board positions,
-     including the procedure `adjoin-position', which adjoins a new
-     row-column position to a set of positions, and `empty-board',
+     including the procedure =adjoin-position=, which adjoins a new
+     row-column position to a set of positions, and =empty-board=,
      which represents an empty set of positions.  You must also write
-     the procedure `safe?', which determines for a set of positions,
-     whether the queen in the kth column is safe with respect to the
+     the procedure =safe?=, which determines for a set of positions,
+     whether the queen in the $k$th column is safe with respect to the
      others.  (Note that we need only check whether the new queen is
      safe--the other queens are already guaranteed safe with respect to
      each other.)
@@ -270,18 +345,20 @@ is defined in *Note Exercise 2-36::.)
 ** TODO Exercise 2.43: Performance of nested mappings
 *** Problem
      Louis Reasoner is having a terrible time doing
-     *Note Exercise 2-42::.  His `queens' procedure seems to work, but
+     *Note Exercise 2-42::.  His =queens= procedure seems to work, but
      it runs extremely slowly.  (Louis never does manage to wait long
-     enough for it to solve even the 6*6 case.)  When Louis asks Eva Lu
+     enough for it to solve even the $6*6$ case.)  When Louis asks Eva Lu
      Ator for help, she points out that he has interchanged the order
-     of the nested mappings in the `flatmap', writing it as
+     of the nested mappings in the =flatmap=, writing it as
 
-          (flatmap
-           (lambda (new-row)
-             (map (lambda (rest-of-queens)
-                    (adjoin-position new-row k rest-of-queens))
-                  (queen-cols (- k 1))))
-           (enumerate-interval 1 board-size))
+#+BEGIN_SRC scheme :eval never
+  (flatmap
+   (lambda (new-row)
+     (map (lambda (rest-of-queens)
+            (adjoin-position new-row k rest-of-queens))
+          (queen-cols (- k 1))))
+   (enumerate-interval 1 board-size))
+#+END_SRC
 
      Explain why this interchange makes the program run slowly.
      Estimate how long it will take Louis's program to solve the
@@ -291,56 +368,216 @@ is defined in *Note Exercise 2-36::.)
 *** Solution
 
 * 2.2.4 Example: A Picture Language
-** TODO Exercise 2.44: A simple picture procedure
+** WRITEUP Exercise 2.44: A simple picture procedure
 *** Problem
-     Define the procedure `up-split' used by
-     `corner-split'.  It is similar to `right-split', except that it
-     switches the roles of `below' and `beside'.
+     Define the procedure =up-split= used by
+     =corner-split=.  It is similar to =right-split=, except that it
+     switches the roles of =below= and =beside=.
 
 *** Solution
-** TODO Exercise 2.45: Generalizing splitting
+
+First, we refer to the procedures defined in the text:
+
+#+BEGIN_SRC scheme :session 2-2b :results silent :tangle 2-2b.rkt
+
+  (define (flipped-pairs painter)
+    (let ((painter2 (beside painter (flip-vert painter))))
+      (below painter2 painter2)))
+
+  (define (right-split painter n)
+    (if (= n 0)
+        painter
+        (let ((smaller (right-split painter (- n 1))))
+          (beside painter (below smaller smaller)))))
+
+#+END_SRC
+
+With this as a base, defining the =up-split= procedure is
+straightforward:
+
+#+BEGIN_SRC scheme :session 2-2b :results silent :tangle 2-2b.rkt
+  (define (up-split painter n)
+    (if (= n 0)
+        painter
+        (let ((smaller (up-split painter (- n 1))))
+          (below painter (beside smaller smaller)))))
+#+END_SRC
+
+
+With its dependencies defined, the =corner-split= procedure from the
+text can be evaluated:
+
+#+BEGIN_SRC scheme :session 2-2b :results silent :tangle 2-2b.rkt
+  (define (corner-split painter n)
+    (if (= n 0)
+        painter
+        (let ((up (up-split painter (- n 1)))
+              (right (right-split painter (- n 1))))
+          (let ((top-left (beside up up))
+                (bottom-right (below right right))
+                (corner (corner-split painter (- n 1))))
+            (beside (below painter top-left)
+                    (below bottom-right corner))))))
+
+  (define (square-limit painter n)
+    (let ((quarter (corner-split painter n)))
+      (let ((half (beside (flip-horiz quarter) quarter)))
+        (below (flip-vert half) half))))
+
+#+END_SRC
+
+** WRITEUP Exercise 2.45: Generalizing splitting
 *** Problem
-     `Right-split' and `up-split' can be expressed as
+     =right-split= and =up-split= can be expressed as
      instances of a general splitting operation.  Define a procedure
-     `split' with the property that evaluating
+     =split= with the property that evaluating
 
-          (define right-split (split beside below))
-          (define up-split (split below beside))
+#+BEGIN_SRC scheme :eval never
+  (define right-split (split beside below))
+  (define up-split (split below beside))
+#+END_SRC
 
-     produces procedures `right-split' and `up-split' with the same
+     produces procedures =right-split= and =up-split= with the same
      behaviors as the ones already defined.
 
 *** Solution
-** TODO Exercise 2.46: A vector abstraction
+This exercise is another good example of Abelson and Sussman's gentle
+approach to increasing abstractions. This is a short jump from the
+previous exercise, but it lands in much deeper functional waters.
+
+Unfortunately, this exercise glosses over the significant challenges
+of creating a self-contained, recursive lambda. The natural way to
+do this in Scheme is via the =letrec= special form, but this doesn't
+get introduced until the last Chapter.
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+  (define (split op1 op2)
+    (letrec ((splitter (lambda (painter n)
+                        (if (= n 0)
+                            painter
+                            (let ((smaller (splitter painter (- n 1))))
+                              (op1 painter (op2 smaller smaller)))))))
+      splitter))
+
+
+  (define (split-letrec op1 op2)
+    (letrec ((splitter (lambda (painter n)
+                         (if (= n 0)
+                             painter
+                             (let ((smaller (splitter painter (- n 1))))
+                               (op1 painter (op2 smaller smaller)))))))
+      splitter))
+
+  (define (split-ugly op1 op2)
+    (lambda (painter n)
+      (if (= n 0)
+          painter
+          (let ((smaller ((split-ugly op1 op2) painter (- n 1))))
+            (op1 painter (op2 smaller smaller))))))
+
+  (define (split-pure op1 op2)
+    ((lambda (f) (f f))
+     (lambda (split-wrap)
+       (lambda (painter n)
+         (if (= n 0)
+             painter
+             (let ((smaller ((split-wrap split-wrap) painter (- n 1))))
+               (op1 painter (op2 smaller smaller))))))))
+#+END_SRC
+
+We can now define the splitting operations in terms of this more
+general procedure:
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+  (define rsplit (split beside below))
+  (define usplit (split below beside))
+#+END_SRC
+
+** TODO Exercise 2.46: A vector data structure
 *** Problem
      A two-dimensional vector $v$ running from the
      origin to a point can be represented as a pair consisting of an
      $x$-coordinate and a $y$-coordinate.  Implement a data abstraction for
-     vectors by giving a constructor `make-vect' and corresponding
-     selectors `xcor-vect' and `ycor-vect'.  In terms of your selectors
-     and constructor, implement procedures `add-vect', `sub-vect', and
-     `scale-vect' that perform the operations vector addition, vector
+     vectors by giving a constructor =make-vect= and corresponding
+     selectors =xcor-vect= and =ycor-vect=.  In terms of your selectors
+     and constructor, implement procedures =add-vect=, =sub-vect=, and
+     =scale-vect= that perform the operations vector addition, vector
      subtraction, and multiplying a vector by a scalar:
 
-          (x_1, y_1) + (x_2, y_2) = (x_1 + x_2, y_1 + y_2)
-          (x_1, y_1) - (x_2, y_2) = (x_1 - x_2, y_1 - y_2)
-                       s * (x, y) = (sx, sy)
+\begin{align*}
+          (x_1, y_1) + (x_2, y_2) &= (x_1 + x_2, y_1 + y_2)\\
+          (x_1, y_1) - (x_2, y_2) &= (x_1 - x_2, y_1 - y_2)\\
+                       s * (x, y) &= (sx, sy)
+\end{align*}
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+  (define (make-vect x y)
+    (cons x y))
+
+  (define (xcor-vect v)
+    (car v))
+
+  (define (ycor-vect v)
+    (cdr v))
+
+  (define (add-vect v w)
+    (make-vect (+ (xcor-vect v) (xcor-vect w))
+               (+ (ycor-vect v) (ycor-vect w))))
+
+  (define (sub-vect v w)
+    (make-vect (- (xcor-vect v) (xcor-vect w))
+               (- (ycor-vect v) (ycor-vect w))))
+
+  (define (scale-vect s v)
+    (make-vect (* s (xcor-vect v)) (* s (ycor-vect v))))
+#+END_SRC
 ** TODO Exercise 2.47: Selectors for frame constructors
 *** Problem
      Here are two possible constructors for frames:
 
-          (define (make-frame origin edge1 edge2)
-            (list origin edge1 edge2))
+#+BEGIN_SRC scheme :eval never
+  (define (make-frame origin edge1 edge2)
+    (list origin edge1 edge2))
 
-          (define (make-frame origin edge1 edge2)
-            (cons origin (cons edge1 edge2)))
+  (define (make-frame origin edge1 edge2)
+    (cons origin (cons edge1 edge2)))
+#+END_SRC
 
      For each constructor supply the appropriate selectors to produce an
      implementation for frames.
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+  (define (make-frame origin edge1 edge2)
+    (list origin edge1 edge2))
+
+  (define (make-frame-dotted origin edge1 edge2)
+    (cons origin (cons edge1 edge2)))
+#+END_SRC
+
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+
+  ;; These selectors work with both internal representations
+  (define (frame-origin frame)
+    (car frame))
+
+  (define (frame-edge1 frame)
+    (cadr frame))
+
+  ;; This works for the proper list representation
+  (define (frame-edge2 frame)
+    (caddr frame))
+
+  ;; Second version with dotted list representation
+  (define (frame-edge2-other frame)
+    (cddr frame))
+
+#+END_SRC
+
 ** TODO Exercise 2.48: Representing segments
 *** Problem
      A directed line segment in the plane can be
@@ -348,13 +585,22 @@ is defined in *Note Exercise 2-36::.)
      origin to the start-point of the segment, and the vector running
      from the origin to the end-point of the segment.  Use your vector
      representation from *Note Exercise 2-46:: to define a
-     representation for segments with a constructor `make-segment' and
-     selectors `start-segment' and `end-segment'.
+     representation for segments with a constructor =make-segment= and
+     selectors =start-segment= and =end-segment=.
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+  (define make-segment cons)
+
+  (define start-segment car)
+
+  (define end-segment cdr)
+#+END_SRC
+
 ** TODO Exercise 2.49: Defining some primitive painters
 *** Problem
-     Use `segments->painter' to define the following
+     Use =segments->painter= to define the following
      primitive painters:
 
        a. The painter that draws the outline of the designated frame.
@@ -365,43 +611,79 @@ is defined in *Note Exercise 2-36::.)
        c. The painter that draws a diamond shape by connecting the
           midpoints of the sides of the frame.
 
-       d. The `wave' painter.
+       d. The =wave= painter.
 
 *** Solution
+
+The SICP support package includes =segments->painter= (which is
+implemented in terms of a primitive =draw-lines-on-screen= rather than
+=draw-lines=), so we just rely on that rather than recreating the
+version from the text.  It expects the segments to have selectors
+named =segment-start= and =segment-end=, rather than =start-segment=
+and =end-segment=.
+
+#+BEGIN_SRC scheme :session 2-2b :results none :tangle 2-2b.rkt
+  (define segment-start start-segment)
+
+  (define segment-end end-segment)
+
+  (define (successive-pairs l)
+    (define (recur lst ret)
+      (if (or (null? lst) (null? (cdr lst)))
+          (reverse ret)
+          (recur (cdr lst)
+                 (cons (list (car lst) (cadr lst)) ret))))
+    (recur l nil))
+
+  (define (make-path vects)
+    (map (lambda (vector-pair)
+           (make-segment (car vector-pair) (cadr vector-pair)))
+         (successive-pairs vects)))
+
+  (define outline-path
+    (make-path
+     (make-vect 0.0 0.0)
+     (make-vect 0.0 1.0)
+     (make-vect 1.0 1.0)
+     (make-vect 1.0 0.0)))
+
+  (define outline (segments->painter outline-path))
+#+END_SRC
+
 ** TODO Exercise 2.50: A horizontal flip transformer
 *** Problem
-     Define the transformation `flip-horiz', which
+     Define the transformation =flip-horiz=, which
      flips painters horizontally, and transformations that rotate
      painters counterclockwise by 180 degrees and 270 degrees.
 
 *** Solution
 ** TODO Exercise 2.51: Defining =below=
 *** Problem
-     Define the `below' operation for painters.
-     `Below' takes two painters as arguments.  The resulting painter,
+     Define the =below= operation for painters.
+     =below= takes two painters as arguments.  The resulting painter,
      given a frame, draws with the first painter in the bottom of the
-     frame and with the second painter in the top.  Define `below' in
+     frame and with the second painter in the top.  Define =below= in
      two different ways--first by writing a procedure that is analogous
-     to the `beside' procedure given above, and again in terms of
+     to the =beside= procedure given above, and again in terms of
      `beside' and suitable rotation operations (from *Note Exercise
      2-50::).
 
 *** Solution
 ** TODO Exercise 2.52: Changing patterns
 *** Problem
-     Make changes to the square limit of `wave' shown
+     Make changes to the square limit of =wave= shown
      in *Note Figure 2-9:: by working at each of the levels described
      above.  In particular:
 
-       a. Add some segments to the primitive `wave' painter of *Note
+       a. Add some segments to the primitive =wave= painter of *Note
           Exercise 2-49:: (to add a smile, for example).
 
-       b. Change the pattern constructed by `corner-split' (for
-          example, by using only one copy of the `up-split' and
-          `right-split' images instead of two).
+       b. Change the pattern constructed by =corner-split= (for
+          example, by using only one copy of the =up-split= and
+          =right-split= images instead of two).
 
-       c. Modify the version of `square-limit' that uses
-          `square-of-four' so as to assemble the corners in a different
+       c. Modify the version of =square-limit= that uses
+          =square-of-four= so as to assemble the corners in a different
           pattern.  (For example, you might make the big Mr. Rogers
           look outward from each corner of the square.)
 
