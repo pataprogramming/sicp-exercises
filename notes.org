@@ -1,4 +1,5 @@
 * Notes
+
 ** Section 2.2, page 134
 
 The previous sentence of Perlis's comment in the footnote is often
@@ -15,3 +16,48 @@ This makes me think more closely about lenses, particularly in my
 BASIC implementation. Why should a function need to know how to find
 the sub-structure that it is going to operate on? Perhaps this should
 be supplied via a lens and an indirection.
+** Section 2.2.1
+
+- Using cons cells to create "sequences".
+- cf. "lists"
+- Closure property of 'cons'
+- car, cdr
+- What is nil? (p.137)
+  + Racket uses 'null'...later Scheme standard
+- recursive operations on lists (p.138)
+- Dotted-pair notation and improper lists (some of the traditional
+  representations are muddied by DrRacket
+- Exercise 2.20...dotted-tail notation
+- Mapping - critical point
+  + Blacksmith makes own tools
+  + Call-back to Section 1.3 (abstract a higher-order procedure)
+  + Cf. transducers
+
+Look at exercises 2.20, 2.21, 2.22
+
+2.23 - side effects
+
+2.25 - translate to caddr, etc.
+
+2.27 - deep reversal
+** Section 2.2.2
+- Building other data structures with cons cells: trees
+  + Clojure abandons some of Lisp's traditional purity in this regard
+  + Recursion and trees
+  + Tail-recursion (log(n) stack frames for recursive walk)
+- Examine =count-leaves=
+
+2.30 and 2.31 - generalizing tree-map
+
+2.32 powerset
+
+** Section 2.3
+
+p.193: Semantic vs syntactic entities. "Say Goodnight, Gracie" and
+humor as violation of expection.
+
+p.198: "addend" and "augend"
+
++ If you've been doing all the exercises so far, you've been feeling
+  the pain of the lack of polymorphism when challenged to make
+  multiple implementations
