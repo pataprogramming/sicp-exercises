@@ -389,12 +389,12 @@ or =nil=.
 *** Solution
 
 #+BEGIN_SRC scheme :session 2-2 :results silent
-  (define (for-each f items)
+  (define (for-each proc items)
     (if (null? items)
         null
         (begin
-          (f (car items))
-          (for-each f (cdr items)))))
+          (proc (car items))
+          (for-each proc (cdr items)))))
 #+END_SRC
 
 #+BEGIN_SRC scheme :session 2-2 :results output
@@ -407,6 +407,7 @@ or =nil=.
 : "woo:"5
 : "woo:"6
 : "woo:"7
+
 
 * 2.2.2 Hierarchical Structures
 ** TODO Exercise 2.24: Box-and-pointer representation
@@ -567,6 +568,14 @@ or =nil=.
       (if (null? lst) ret
           (if (pair? lst)
               (recurse (cdr lst) (cons (deep-reverse (car lst)) ret))
+              lst)))
+    (recurse lst null))
+
+  (define (deep-reverse-2 lst)
+    (define (recurse lst ret)
+      (if (null? lst) ret
+          (if (pair? lst)
+              (recurse (cdr lst) (cons (recurse (car lst) null) ret))
               lst)))
     (recurse lst null))
 
