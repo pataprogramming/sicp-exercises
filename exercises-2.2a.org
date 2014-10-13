@@ -127,7 +127,7 @@ space.
       (if (null? lst)
           ret
           (iter (cdr lst) (cons (car lst) ret))))
-    (iter lst null))
+    (iter lst nil))
 
    (reverse (list 1 4 9 16 25))
 #+END_SRC
@@ -306,7 +306,7 @@ The procedure's results are those prescribed by the exercise:
 #+BEGIN_SRC scheme :session 2-2
   (define (square-list-1 items)
     (if (null? items)
-        null
+        nil
         (cons (* (car items) (car items)) (square-list-1 (cdr items)))))
 
   (define (square-list-2 items)
@@ -391,7 +391,7 @@ or =nil=.
 #+BEGIN_SRC scheme :session 2-2 :results silent
   (define (for-each f items)
     (if (null? items)
-        null
+        nil
         (begin
           (f (car items))
           (for-each f (cdr items)))))
@@ -568,7 +568,7 @@ or =nil=.
           (if (pair? lst)
               (recurse (cdr lst) (cons (deep-reverse (car lst)) ret))
               lst)))
-    (recurse lst null))
+    (recurse lst nil))
 
   (define z (list (list 1 2 3) (list 3 4)))
 
@@ -693,13 +693,13 @@ or =nil=.
 
 #+BEGIN_SRC scheme :session 2-2 :results output
   (define (square-tree-1 tr)
-    (cond ((null? tr) null)
+    (cond ((null? tr) nil)
           ((not (pair? tr)) (* tr tr))
           (true (cons (square-tree-1 (car tr)) (square-tree-1 (cdr tr))))))
 
   (define (square-tree-2 tr)
     (define (square x) (* x x))
-    (cond ((null? tr) null)
+    (cond ((null? tr) nil)
           ((not   (pair? tr)) (square tr))
           (true   (map square-tree-2 tr))))
 
@@ -724,9 +724,9 @@ or =nil=.
      produce a procedure =tree-map= with the property that
      =square-tree= could be defined as
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC scheme :eval never
           (define (square-tree tree) (tree-map square tree))
-#+END_EXAMPLE
+#+END_SRC
 
 *** Solution
 
@@ -735,7 +735,7 @@ or =nil=.
 
   (define (tree-map f tr)
     (define (tree-map-h t) (tree-map f t))
-    (cond ((null? tr) null)
+    (cond ((null? tr) nil)
           ((not   (pair? tr)) (f tr))
           (true   (map tree-map-h tr))))
 
@@ -776,7 +776,7 @@ or =nil=.
 #+BEGIN_SRC scheme :session 2-2 :results output
   (define (subsets s)
     (if (null? s)
-        (list null)
+        (list nil)
         (let ((rest (subsets (cdr s))))
           (append rest (map (lambda (t) (cons (car s) t)) rest)))))
 
