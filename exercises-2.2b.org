@@ -59,7 +59,7 @@
 #+END_SRC
 
 * 2.2.3 Sequences as Conventional Interfaces
-** TODO Exercise 2.33: List manipulations as acculumations
+** WRITEUP Exercise 2.33: List manipulations as accumulations
 *** Problem
      Fill in the missing expressions to complete the
      following definitions of some basic list-manipulation operations
@@ -77,7 +77,31 @@
 #+END_SRC
 
 *** Solution
-** TODO Exercise 2.34: Horner's Rule
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (map-a p sequence)
+    (accumulate (lambda (x y) (cons (p x) y)) nil sequence))
+
+  (define (append-a seq1 seq2)
+    (accumulate cons seq2 seq1))
+
+  (define (length-a sequence)
+    (accumulate (lambda (x y) (+ y 1)) 0 sequence))
+#+END_SRC
+
+Note that the accumulator is the /second/ argument to the supplied
+procedure, not the first (as it is in Clojure).
+
+#+RESULTS:
+: An error occurred.
+
+** WRITEUP Exercise 2.34: Horner's Rule
 *** Problem
      Evaluating a polynomial in $x$ at a given value of $x$ can be
      formulated as an accumulation.  We evaluate the polynomial
@@ -97,10 +121,13 @@
      coefficients of the polynomial are arranged in a sequence, from
      $a_0$ through $a_n$.
 
-          (define (horner-eval x coefficient-sequence)
-            (accumulate (lambda (this-coeff higher-terms) <??>)
-                        0
-                        coefficient-sequence))
+
+#+BEGIN_SRC scheme :eval never
+  (define (horner-eval x coefficient-sequence)
+    (accumulate (lambda (this-coeff higher-terms) <??>)
+                0
+                coefficient-sequence))
+#+END_SRC
 
      For example, to compute $1 + 3x + 5x^3 + x^(5)$ at $x = 2$ you would
      evaluate
@@ -110,17 +137,142 @@
 #+END_SRC
 
 *** Solution
-** TODO Exercise 2.35: =count-leaves= as an accumulation
+
+It seems odd that the coefficient sequence is ordered in an order that
+is reversed from what one might expect.  But, as can be seen from a
+close examination, =accumulate= builds up its results recursively.
+
+First, we'll calculate the long way, to make sure the procedure we
+write produces the right result.
+
+$$1 + 3\cdot2 + 5\cdot2^3 + 2^5 = 1 + 6 + 5\times8 + 32 = 79$$
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (horner-eval x coefficient-sequence)
+    (accumulate (lambda (this-coeff higher-terms)
+                  (+ this-coeff (* x higher-terms)))
+                0
+                coefficient-sequence))
+#+END_SRC
+
+This problem almost helps you too far along the path. It's quite clear
+how the arguments to the lambda should be manipulated in the body,
+given its naming. The reversal remains profoundly counter-intuitive,
+though (at least to me).
+
+We can easily verify that this procedure produces the correct result:
+
+#+BEGIN_SRC scheme :session 2-2b
+  (horner-eval 2 (list 1 3 0 5 0 1))
+#+END_SRC
+
+#+RESULTS:
+: 79
+
+** Exercise 2.35: =count-leaves= as an accumulation
 *** Problem
      Redefine =count-leaves= from section 2.2.2 as an accumulation:
 
 #+BEGIN_SRC scheme :eval never
-          (define (count-leaves t)
-            (accumulate <??> <??> (map <??> <??>)))
+  (define (count-leaves t)
+    (accumulate <??> <??> (map <??> <??>)))
 #+END_SRC
 
 *** Solution
-** TODO Exercise 2.36: Accumulating over multiple sequenences
+
+We begin by recalling the definition of =count-leaves= from the text:
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (count-leaves x)
+    (cond ((null? x) 0)
+          ((not (pair? x)) 1)
+          (else (+ (count-leaves (car x))
+                   (count-leaves (cdr x))))))
+#+END_SRC
+
+We can see that the exercises are beginning to give us less help...but
+there's still an important piece of information: the sequence is
+processed using =map= before the =accumulate= call is processed. The
+formulation of the original =count-leaves= further lets us that that,
+almost certain, recursion will be required to solve this problem.
+
+The first thing we realize is that the initial value should be 0,
+since we're counting things:
+
+#+BEGIN_SRC scheme :eval never
+  (define (count-leaves t)
+    (accumulate <??> 0 (map <??> <??>)))
+#+END_SRC
+
+We also know that the first argument is going to be a procedure, so we
+can plug in a lambda as a placeholder.
+
+#+BEGIN_SRC scheme :eval never
+  (define (count-leaves t)
+    (accumulate (lambda (subtotal running-total) <??>) 0 (map <??> <??>)))
+#+END_SRC
+
+We can also begin to fill in the =map='s arguments, since the first
+also has to be a lambda, while the second one is a list: and since the
+overall tree =t= has to be supplied at some point, the second position
+is the most sensible location
+
+#+BEGIN_SRC scheme :eval never
+  (define (count-leaves t)
+    (accumulate (lambda (subtotal running-total) <??>)
+                0
+                (map (lambda (x) <??>) t)))
+#+END_SRC
+
+What could that second lambda be? Well, what we /wish/ we could supply
+to the accumulate is a list with subtotal of the leaves in that
+particular branch of the tree.  And, in fact, we have a procedure that
+can do that for us: =count-leaves= itself! Here's the recursive call.
+
+#+BEGIN_SRC scheme :eval never
+  (define (count-leaves t)
+    (accumulate (lambda (subtotal running-total) <??>)
+                0
+                (map count-leaves t)))
+#+END_SRC
+
+This lets us realize what the first procedure should be as well:
+addition! All we need to do is sum the list of subtotals.
+
+#+BEGIN_SRC scheme :eval never
+  (define (count-leaves t)
+    (accumulate + 0 (map count-leaves t)))
+#+END_SRC
+
+Sadly, our wishful thinking has taken us a bit too far: the =map= will
+fail if supplied a second argument that is not a list. So, we have to
+go back to a lambda, to wrap the call to =count-leaves= to handle the
+termination cases.
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (count-leaves t)
+    (accumulate + 0 (map
+                     (lambda (x)
+                       (cond ((null? x)       0)
+                             ((not (pair? x)) 1)
+                             (true            (count-leaves x))))
+                     t)))
+#+END_SRC
+
+
+And, this does indeed work the way that we would hope and expect:
+
+#+BEGIN_SRC scheme :session 2-2b :output value
+(count-leaves (list (list 1 2) 3 4))
+#+END_SRC
+
+#+RESULTS:
+: 4
+
+Whether this formulation is an actual improvement is left as an
+exercise for the reader.
+
+** WRITEUP Exercise 2.36: Accumulating over multiple sequences
 *** Problem
      The procedure =accumulate-n= is similar to
      =accumulate= except that it takes as its third argument a sequence
@@ -143,10 +295,34 @@
 #+END_SRC
 
 *** Solution
+
+The approach to this problem builds quite naturally on everything that
+comes before, and a bit of thought should reveal that you can make a
+sequence of the first elements of each list by simple =map=ping over
+the =car=s. Similarly, =map=ping over the =cdr=s results will strip
+off the already-processed first elements.
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (accumulate-n op init seqs)
+    (if (null? (car seqs))
+        nil
+        (cons (accumulate op init (map car seqs))
+              (accumulate-n op init (map cdr seqs)))))
+#+END_SRC
+
+#+BEGIN_SRC scheme :session 2-2b :results output
+  (define s (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
+
+  (display (accumulate-n + 0 s))
+#+END_SRC
+
+#+RESULTS:
+: (22 26 30)
+
 ** TODO Exercise 2.37: Implementing vectors and matrices with sequences
 
 Suppose we represent vectors $\mathbf{v} = (v_i)$ as sequences of
-numbers, and matrices $\mathbf{m} = (m_(ij))$ as sequences of vectors
+numbers, and matrices $\mathbf{M} = (m_(ij))$ as sequences of vectors
 (the rows of the matrix).  For example, the matrix
 
      +-         -+
@@ -160,31 +336,24 @@ this representation, we can use sequence operations to concisely
 express the basic matrix and vector operations.  These operations
 (which are described in any book on matrix algebra) are the following:
 
-#+BEGIN_EXAMPLE
-  (dot-product v w)      returns the sum >_i v_i w_i
-
-  (matrix-*-vector m v)  returns the vector t,
-                                     __
-                         where t_i = >_j m_(ij) v_j
-
-  (matrix-*-matrix m n)  returns the matrix p,
-                                        __
-                         where p_(ij) = >_k m_(ik) n_(kj)
-
-  (transpose m)          returns the matrix n,
-                         where n_(ij) = m_(ji)
-#+END_EXAMPLE
+| =(dot-product v w)=     | returns the sum \sum_i v_i w_i      |
+| =(matrix-*-vector m v)= | returns the vector \mathbf{t},      |
+|                         | where t_i = \sum_j m_{ij} v_j       |
+| =(matrix-*-matrix m n)= | returns the matrix \mathbf{P},      |
+|                         | where p_(ij) = \sum_k m_{ik} n_{kj} |
+| =(transpose m)=         | returns the matrix \mathbf{N},      |
+|                         | where n_(ij) = m_(ji)               |
 
    We can define the dot product as(4)
 
-#+BEGIN_SRC scheme :eval never
+#+BEGIN_SRC scheme :session 2-2b :results none
   (define (dot-product v w)
     (accumulate + 0 (map * v w)))
 #+END_SRC
 
    Fill in the missing expressions in the following procedures for
 computing the other matrix operations.  (The procedure =accumulate-n=
-is defined in *Note Exercise 2-36::.)
+is defined in Exercise 2.36.)
 
 #+BEGIN_SRC scheme :eval never
   (define (matrix-*-vector m v)
@@ -199,6 +368,68 @@ is defined in *Note Exercise 2-36::.)
 #+END_SRC
 
 *** Solution
+
+The first definition, the matrix-vector product is fairly easy: from
+the definition in the table, we can see that the form of the operation
+is quite similar to dot product. In fact, the $i$th element of the
+resulting vector will be the dot production of the $i$th row of the
+matrix with the vector $\mathbf{v}$.
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (matrix-*-vector m v)
+    (map (lambda (m_i) (dot-product m_i v)) m))
+#+END_SRC
+
+For a ready-figured example,
+http://mathinsight.org/matrix_vector_multiplication
+
+#+BEGIN_SRC scheme :session 2-2b :results output
+(display (matrix-*-vector (list (list 1 -1 2) (list 0 -3 1)) (list 2 1 0)))
+#+END_SRC
+
+The definition of =transpose= is brilliantly simple. From our
+construction of =accumulate-n=, we saw how easy it was to
+slice-and-dice the initial elements of multiple lists; we can use this
+exact same procedure to build a new list of each using =cons=.
+
+#+BEGIN_SRC scheme :session 2-2b :results output
+  (define (transpose mat)
+    (accumulate-n cons nil mat))
+
+  (define m (list (list 1 -1 2) (list 0 -3 1)))
+
+  (display (transpose m))
+#+END_SRC
+
+#+RESULTS:
+: ((1 0) (-1 -3) (2 1))
+
+The definition in the text is a bit unhelpful in the context of this
+exercise, though it is exactly the procedure you would perform to
+calculate each resulting cell. It's easier to describe
+the matrix-matrix product in terms of other operations: each column of
+the resulting product matrix $\mathbf{P}$ is the matrix-vector product
+of $\mathbf{A}$ with the corresponding column of $\mathbf{B}$.
+
+The authors kindly transpose $\mathbf{N}$ for us in the provided
+template, as by turning columns into rows we can easily map over them.
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+
+  (define A (list (list 0 4 -2) (list -4 -3 0)))
+  (define B (list (list 0 1) (list 1 -1) (list 2 3)))
+  ;; AB = ((0 -10) (-3 -1))
+
+  (define (matrix-*-matrix m n)
+    (let ((cols (transpose n))))
+
+  ;; (define (matrix-*-matrix m n)
+  ;;   (let ((cols (transpose n)))
+  ;;     (map <??> m)))
+#+END_SRC
+
+
+
 ** TODO Exercise 2.38: Writing =fold-left=
 *** Problem
      The =accumulate= procedure is also known as
