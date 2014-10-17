@@ -65,10 +65,10 @@
      list that contains only the last element of a given (nonempty)
      list:
 
-#+BEGIN_EXAMPLE
-          (last-pair (list 23 72 149 34))
-          (34)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (last-pair (list 23 72 149 34))
+  (34)
+#+END_SRC
 
 *** Solution
 
@@ -93,17 +93,17 @@ never recurse with =lst= as a non-pair parameter.
 #+END_SRC
 
 #+RESULTS:
-: '(34)
+: (mcons 34)
 
 ** Exercise 2.18: A =reverse= procedure
 *** Problem
      Define a procedure =reverse= that takes a list as
      argument and returns a list of the same elements in reverse order:
 
-#+BEGIN_EXAMPLE
-          (reverse (list 1 4 9 16 25))
-          (25 16 9 4 1)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (reverse (list 1 4 9 16 25))
+  (25 16 9 4 1)
+#+END_SRC
 
 *** Solution
 
@@ -121,7 +121,7 @@ topic in Chapter 1. Here is an implementation of =reverse= that builds
 a recursive iterative process, requiring $O(n)$ time but only $O(1)$
 space.
 
-#+BEGIN_SRC scheme :session 2-2 :results value
+#+BEGIN_SRC scheme :session 2-2 :results output
   (define (reverse lst)
     (define (iter lst ret)
       (if (null? lst)
@@ -129,11 +129,11 @@ space.
           (iter (cdr lst) (cons (car lst) ret))))
     (iter lst nil))
 
-   (reverse (list 1 4 9 16 25))
+   (display (reverse (list 1 4 9 16 25)))
 #+END_SRC
 
 #+RESULTS:
-| 25 | 16 | 9 | 4 | 1 |
+: (25 16 9 4 1)
 
 ** TODO Exercise 2.19: Change-counting revisited
 *** Problem
@@ -142,43 +142,44 @@ space.
      currency used by the program, so that we could compute the number
      of ways to change a British pound, for example.  As the program is
      written, the knowledge of the currency is distributed partly into
-     the procedure `first-denomination' and partly into the procedure
-     `count-change' (which knows that there are five kinds of U.S.
+     the procedure =first-denomination= and partly into the procedure
+     =count-change= (which knows that there are five kinds of U.S.
      coins).  It would be nicer to be able to supply a list of coins to
      be used for making change.
 
-     We want to rewrite the procedure `cc' so that its second argument
+     We want to rewrite the procedure =cc= so that its second argument
      is a list of the values of the coins to use rather than an integer
      specifying which coins to use.  We could then have lists that
      defined each kind of currency:
 
-#+BEGIN_EXAMPLE
-          (define us-coins (list 50 25 10 5 1))
+#+BEGIN_SRC scheme :eval never
+  (define us-coins (list 50 25 10 5 1))
 
-          (define uk-coins (list 100 50 20 10 5 2 1 0.5))
-#+END_EXAMPLE
+  (define uk-coins (list 100 50 20 10 5 2 1 0.5))
+#+END_SRC
 
-     We could then call `cc' as follows:
+     We could then call =cc= as follows:
 
-#+BEGIN_EXAMPLE
-          (cc 100 us-coins)
-          292
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (cc 100 us-coins)
+  292
+#+END_SRC
 
      To do this will require changing the program `cc' somewhat.  It
      will still have the same form, but it will access its second
      argument differently, as follows:
 
-          (define (cc amount coin-values)
-            (cond ((= amount 0) 1)
-                  ((or (< amount 0) (no-more? coin-values)) 0)
-                  (else
-                   (+ (cc amount
-                          (except-first-denomination coin-values))
-                      (cc (- amount
-                             (first-denomination coin-values))
-                          coin-values)))))
-
+#+BEGIN_SRC scheme :eval never
+  (define (cc amount coin-values)
+    (cond ((= amount 0) 1)
+          ((or (< amount 0) (no-more? coin-values)) 0)
+          (else
+           (+ (cc amount
+                  (except-first-denomination coin-values))
+              (cc (- amount
+                     (first-denomination coin-values))
+                  coin-values)))))
+#+END_SRC
      Define the procedures `first-denomination',
      `except-first-denomination', and `no-more?' in terms of primitive
      operations on list structures.  Does the order of the list
@@ -196,30 +197,30 @@ space.
      arguments, as usual, but the final parameter's value will be a "list"
      of any remaining arguments.  For instance, given the definition
 
-#+BEGIN_EXAMPLE
-          (define (f x y . z) <BODY>)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (f x y . z) <BODY>)
+#+END_SRC
 
      the procedure =f= can be called with two or more arguments.  If we
      evaluate
 
-#+BEGIN_EXAMPLE
-          (f 1 2 3 4 5 6)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (f 1 2 3 4 5 6)
+#+END_SRC
 
      then in the body of =f=, =x= will be 1, =y= will be 2, and =z=
      will be the list =(3 4 5 6)=.  Given the definition
 
-#+BEGIN_EXAMPLE
-          (define (g . w) <BODY>)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (g . w) <BODY>)
+#+END_SRC
 
      the procedure =g= can be called with zero or more arguments.  If we
      evaluate
 
-#+BEGIN_EXAMPLE
-          (g 1 2 3 4 5 6)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (g 1 2 3 4 5 6)
+#+END_SRC
 
      then in the body of =g=, =w= will be the list =(1 2 3 4 5 6)=.(4)
 
@@ -227,13 +228,13 @@ space.
      one or more integers and returns a list of all the arguments that
      have the same even-odd parity as the first argument.  For example,
 
-#+BEGIN_EXAMPLE
-          (same-parity 1 2 3 4 5 6 7)
-          (1 3 5 7)
+#+BEGIN_SRC scheme :eval never
+  (same-parity 1 2 3 4 5 6 7)
+  (1 3 5 7)
 
-          (same-parity 2 3 4 5 6 7)
-          (2 4 6)
-#+END_EXAMPLE
+  (same-parity 2 3 4 5 6 7)
+  (2 4 6)
+#+END_SRC
 
 *** Solution
 
@@ -268,14 +269,14 @@ constant factor.
 The procedure's results are those prescribed by the exercise:
 
 #+BEGIN_SRC scheme :session 2-2 :results output
-  (print (same-parity 1 2 3 4 5 6 7))
+  (display (same-parity 1 2 3 4 5 6 7))
   (newline)
-  (print (same-parity 2 3 4 5 6 7))
+  (display (same-parity 2 3 4 5 6 7))
 #+END_SRC
 
 #+RESULTS:
-: '(1 3 5 7)
-: '(2 4 6)
+: (1 3 5 7)
+: (2 4 6)
 
 ** WRITEUP Exercise 2.21: Squaring a list
 *** Problem
@@ -283,15 +284,15 @@ The procedure's results are those prescribed by the exercise:
      numbers as argument and returns a list of the squares of those
      numbers.
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC scheme :eval never
           (square-list (list 1 2 3 4))
           (1 4 9 16)
-#+END_EXAMPLE
+#+END_SRC
 
      Here are two different definitions of =square-list=.  Complete
      both of them by filling in the missing expressions:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC scheme :eval never
           (define (square-list items)
             (if (null? items)
                 nil
@@ -299,7 +300,7 @@ The procedure's results are those prescribed by the exercise:
 
           (define (square-list items)
             (map <??> <??>))
-#+END_EXAMPLE
+#+END_SRC
 
 *** Solution
 
@@ -321,16 +322,16 @@ The procedure's results are those prescribed by the exercise:
      =square-list= procedure of *Note Exercise 2-21:: so that it
      evolves an iterative process:
 
-#+BEGIN_EXAMPLE
-          (define (square-list items)
-            (define (iter things answer)
-              (if (null? things)
-                  answer
-                  (iter (cdr things)
-                        (cons (square (car things))
-                              answer))))
-            (iter items nil))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (square-list items)
+    (define (iter things answer)
+      (if (null? things)
+          answer
+          (iter (cdr things)
+                (cons (square (car things))
+                      answer))))
+    (iter items nil))
+#+END_SRC
 
      Unfortunately, defining =square-list= this way produces the answer
      list in the reverse order of the one desired.  Why?
@@ -338,16 +339,16 @@ The procedure's results are those prescribed by the exercise:
      Louis then tries to fix his bug by interchanging the arguments to
      =cons=:
 
-#+BEGIN_EXAMPLE
-          (define (square-list items)
-            (define (iter things answer)
-              (if (null? things)
-                  answer
-                  (iter (cdr things)
-                        (cons answer
-                              (square (car things))))))
-            (iter items nil))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (square-list items)
+    (define (iter things answer)
+      (if (null? things)
+          answer
+          (iter (cdr things)
+                (cons answer
+                      (square (car things))))))
+    (iter items nil))
+#+END_SRC
 
      This doesn't work either.  Explain.
 
@@ -374,13 +375,13 @@ or =nil=.
      not used at all--=for-each= is used with procedures that perform
      an action, such as printing.  For example,
 
-#+BEGIN_EXAMPLE
-          (for-each (lambda (x) (newline) (display x))
-                    (list 57 321 88))
-          57
-          321
-          88
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (for-each (lambda (x) (newline) (display x))
+            (list 57 321 88))
+  57
+  321
+  88
+#+END_SRC
 
      The value returned by the call to =for-each= (not illustrated
      above) can be something arbitrary, such as true.  Give an
@@ -424,7 +425,7 @@ or =nil=.
 #+END_SRC
 
 #+RESULTS:
-: '(1 (2 (3 4)))
+: (mcons 1 (mcons (mcons 2 (mcons (mcons 3 (mcons 4))))))
 
 #+BEGIN_SRC dot :file boxes-2-2.png :export results
   digraph {
@@ -471,13 +472,13 @@ or =nil=.
      Give combinations of =car=s and =cdr=s that will
      pick 7 from each of the following lists:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC scheme :eval never
           (1 3 (5 7) 9)
 
           ((7))
 
           (1 (2 (3 (4 (5 (6 7))))))
-#+END_EXAMPLE
+#+END_SRC
 
 *** Solution
 
@@ -499,29 +500,32 @@ or =nil=.
         x
         (iterate f (- n 1) (f x))))
 
-  (println (iterate (compose car cdr) 6 l3))
+  (print (iterate (compose car cdr) 6 l3))
 #+END_SRC
 
 #+RESULTS:
-: An error occurred.
+: 7
+: 7
+: 7
+: 7
 
 ** WRITEUP Exercise 2.26: Basic list operations
 *** Problem
      Suppose we define =x= and =y= to be two lists:
 
-#+BEGIN_EXAMPLE
-          (define x (list 1 2))
-          (define y (list 4 5 6))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define x (list 1 2))
+  (define y (list 4 5 6))
+#+END_SRC
 
      What result is printed by the interpreter in response to
      evaluating each of the following expressions:
 
-#+BEGIN_EXAMPLE
-          (append x y)
-          (cons x y)
-          (list x y)
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (append x y)
+  (cons x y)
+  (list x y)
+#+END_SRC
 
 *** Solution
 #+BEGIN_SRC scheme :session 2-2 :results output
@@ -536,9 +540,9 @@ or =nil=.
 #+END_SRC
 
 #+RESULTS:
-: '(1 2 4 5 6)
-: '((1 2) 4 5 6)
-: '((1 2) (4 5 6))
+: (mcons 1 (mcons 2 (mcons 4 (mcons 5 (mcons 6)))))
+: (mcons (mcons 1 (mcons 2)) (mcons 4 (mcons 5 (mcons 6))))
+: (mcons (mcons 1 (mcons 2)) (mcons (mcons 4 (mcons 5 (mcons 6)))))
 
 ** WRITEUP Exercise 2.27: Sublist reversal with =deep-reverse=
 *** Problem
@@ -547,22 +551,22 @@ or =nil=.
      argument and returns as its value the list with its elements
      reversed and with all sublists deep-reversed as well.  For example,
 
-#+BEGIN_EXAMPLE
-          (define x (list (list 1 2) (list 3 4)))
+#+BEGIN_SRC scheme :eval never
+  (define x (list (list 1 2) (list 3 4)))
 
-          x
-          ((1 2) (3 4))
+  x
+  ((1 2) (3 4))
 
-          (reverse x)
-          ((3 4) (1 2))
+  (reverse x)
+  ((3 4) (1 2))
 
-          (deep-reverse x)
-          ((4 3) (2 1))
-#+END_EXAMPLE
+  (deep-reverse x)
+  ((4 3) (2 1))
+#+END_SRC
 
 *** Solution
 
-#+BEGIN_SRC scheme :session 2-2
+#+BEGIN_SRC scheme :session 2-2 :results output
   (define (deep-reverse lst)
     (define (recurse lst ret)
       (if (null? lst) ret
@@ -581,14 +585,14 @@ or =nil=.
 
   (define z (list (list 1 2 3) (list 3 4)))
 
-  (reverse z)
-
-  (deep-reverse z)
+  (display (reverse z))
+  (newline)
+  (display (deep-reverse z))
 #+END_SRC
 
 #+RESULTS:
-| 4 | 3 |   |
-| 3 | 2 | 1 |
+: ((3 4) (1 2 3))
+: ((4 3) (3 2 1))
 
 ** WRITEUP Exercise 2.28: Plucking the leaves with =fringe=
 *** Problem
@@ -597,15 +601,15 @@ or =nil=.
      are all the leaves of the tree arranged in left-to-right order.
      For example,
 
-#+BEGIN_EXAMPLE
-          (define x (list (list 1 2) (list 3 4)))
+#+BEGIN_SRC scheme :eval never
+  (define x (list (list 1 2) (list 3 4)))
 
-          (fringe x)
-          (1 2 3 4)
+  (fringe x)
+  (1 2 3 4)
 
-          (fringe (list x x))
-          (1 2 3 4 1 2 3 4)
-#+END_EXAMPLE
+  (fringe (list x x))
+  (1 2 3 4 1 2 3 4)
+#+END_SRC
 
 *** Solution
 
@@ -627,7 +631,7 @@ or =nil=.
 #+END_SRC
 
 #+RESULTS:
-| 1 | 2 |
+: {1
 
 ** TODO Exercise 2.29: Balancing a mobile
 *** Problem
@@ -637,18 +641,19 @@ or =nil=.
      We can represent a binary mobile using compound data by
      constructing it from two branches (for example, using =list=):
 
-#+BEGIN_EXAMPLE
-          (define (make-mobile left right)
-            (list left right))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (make-mobile left right)
+    (list left right))
+#+END_SRC
+
      A branch is constructed from a =length= (which must be a number)
      together with a =structure=, which may be either a number
      (representing a simple weight) or another mobile:
 
-#+BEGIN_EXAMPLE
-          (define (make-branch length structure)
-            (list length structure))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (make-branch length structure)
+    (list length structure))
+#+END_SRC
 
        a. Write the corresponding selectors =left-branch= and
           =right-branch=, which return the branches of a mobile, and
@@ -669,13 +674,13 @@ or =nil=.
        d. Suppose we change the representation of mobiles so that the
           constructors are
 
-#+BEGIN_EXAMPLE
-               (define (make-mobile left right)
-                 (cons left right))
+#+BEGIN_SRC scheme :eval never
+  (define (make-mobile left right)
+    (cons left right))
 
-               (define (make-branch length structure)
-                 (cons length structure))
-#+END_EXAMPLE
+  (define (make-branch length structure)
+    (cons length structure))
+#+END_SRC
 
           How much do you need to change your programs to convert to
           the new representation?
@@ -687,13 +692,13 @@ or =nil=.
      =square-list= procedure of *Note Exercise 2-21::.  That is,
      =square-list= should behave as follows:
 
-#+BEGIN_EXAMPLE
-          (square-tree
-           (list 1
-                 (list 2 (list 3 4) 5)
-                 (list 6 7)))
-          (1 (4 (9 16) 25) (36 49))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (square-tree
+   (list 1
+         (list 2 (list 3 4) 5)
+         (list 6 7)))
+  (1 (4 (9 16) 25) (36 49))
+#+END_SRC
 
      Define =square-tree= both directly (i.e., without using any
      higher-order procedures) and also by using =map= and recursion.
@@ -717,15 +722,15 @@ or =nil=.
           (list 2 (list 3 4) 5)
           (list 6 7)))
 
-  (print (square-tree-1 num-tree))
+  (display (square-tree-1 num-tree))
   (newline)
-  (print (square-tree-2 num-tree))
+  (display (square-tree-2 num-tree))
   (newline)
 #+END_SRC
 
 #+RESULTS:
-: '(1 (4 (9 16) 25) (36 49))
-: '(1 (4 (9 16) 25) (36 49))
+: (1 (4 (9 16) 25) (36 49))
+: (1 (4 (9 16) 25) (36 49))
 
 ** WRITEUP Exercise 2.31: Defining a =tree-map=
 *** Problem
@@ -760,7 +765,7 @@ or =nil=.
 #+END_SRC
 
 #+RESULTS:
-: '(1 (4 (9 16) 25) (36 49))
+: (mcons 1 (mcons (mcons 4 (mcons (mcons 9 (mcons 16)) (mcons 25))) (mcons (mcons 36 (mcons 49)))))
 
 ** WRITEUP Exercise 2.32: Generating powersets
 *** Problem
@@ -772,13 +777,13 @@ or =nil=.
      generates the set of subsets of a set and give a clear explanation
      of why it works:
 
-#+BEGIN_EXAMPLE
-          (define (subsets s)
-            (if (null? s)
-                (list nil)
-                (let ((rest (subsets (cdr s))))
-                  (append rest (map <??> rest)))))
-#+END_EXAMPLE
+#+BEGIN_SRC scheme :eval never
+  (define (subsets s)
+    (if (null? s)
+        (list nil)
+        (let ((rest (subsets (cdr s))))
+          (append rest (map <??> rest)))))
+#+END_SRC
 
 *** Solution
 
@@ -789,11 +794,11 @@ or =nil=.
         (let ((rest (subsets (cdr s))))
           (append rest (map (lambda (t) (cons (car s) t)) rest)))))
 
-  (print (subsets (list 1 2 3)))
+  (display (subsets (list 1 2 3)))
 #+END_SRC
 
 #+RESULTS:
-: '(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))
+: (() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))
 
 For a given set $S$, the set of all its subsets are frequently called
 its /power set/.  A natural way to generate a set's power set is
