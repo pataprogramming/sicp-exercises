@@ -1,4 +1,4 @@
-#+TITLE: SICP Exercise Solutions for Section 2.2.3 and 2.2.4
+i#+TITLE: SICP Exercise Solutions for Section 2.2.3 and 2.2.4
 #+AUTHOR: Paul L. Snyder
 #+EMAIL: paul@pataprogramming.com
 #+TODO: TODO(t) WRITEUP(w) || (d)
@@ -318,30 +318,28 @@ off the already-processed first elements.
 
 ** TODO Exercise 2.37: Implementing vectors and matrices with sequences
 
+*** Problem
+
 Suppose we represent vectors $\mathbf{v} = (v_i)$ as sequences of
-numbers, and matrices $\mathbf{M} = (m_(ij))$ as sequences of vectors
+numbers, and matrices $\mathbf{M} = (m_{ij})$ as sequences of vectors
 (the rows of the matrix).  For example, the matrix
-
-     +-         -+
-     |  1 2 3 4  |
-     |  4 5 6 6  |
-     |  6 7 8 9  |
-     +-         -+
-
+     | 1 2 3 4 |
+     | 4 5 6 6 |
+     | 6 7 8 9 |
 is represented as the sequence =((1 2 3 4) (4 5 6 6) (6 7 8 9))=.  With
 this representation, we can use sequence operations to concisely
 express the basic matrix and vector operations.  These operations
 (which are described in any book on matrix algebra) are the following:
 
-| =(dot-product v w)=     | returns the sum \sum_i v_i w_i      |
-| =(matrix-*-vector m v)= | returns the vector \mathbf{t},      |
-|                         | where t_i = \sum_j m_{ij} v_j       |
-| =(matrix-*-matrix m n)= | returns the matrix \mathbf{P},      |
-|                         | where p_(ij) = \sum_k m_{ik} n_{kj} |
-| =(transpose m)=         | returns the matrix \mathbf{N},      |
-|                         | where n_(ij) = m_(ji)               |
+| =(dot-product v w)=     | returns the sum $\sum_i v_i w_i$      |
+| =(matrix-*-vector m v)= | returns the vector $\mathbf{t}$,      |
+|                         | where $t_i = \sum_j m_{ij} v_j$       |
+| =(matrix-*-matrix m n)= | returns the matrix $\mathbf{P}$,      |
+|                         | where $p_{ij} = \sum_k m_{ik} n_{kj}$ |
+| =(transpose m)=         | returns the matrix $\mathbf{N}$,      |
+|                         | where $n_{ij} = m_{ji}$               |
 
-   We can define the dot product as(4)
+   We can define the dot product as
 
 #+BEGIN_SRC scheme :session 2-2b :results none
   (define (dot-product v w)
@@ -381,7 +379,9 @@ For a ready-figured example,
 http://mathinsight.org/matrix_vector_multiplication
 
 #+BEGIN_SRC scheme :session 2-2b :results output
-(display (matrix-*-vector (list (list 1 -1 2) (list 0 -3 1)) (list 2 1 0)))
+  (display (matrix-*-vector (list (list 1 -1 2)
+                                  (list 0 -3 1))
+                            (list 2 1 0)))
 #+END_SRC
 
 #+RESULTS:
@@ -437,7 +437,7 @@ the entirety of $\mathbf{M}$ has to be used for every row of $\mathbf{N}$.
 
 Figure out a way around the extra transpose!
 
-** TODO Exercise 2.38: Considering =fold-left=
+** WRITEUP Exercise 2.38: Considering =fold-left=
 *** Problem
      The =accumulate= procedure is also known as
      =fold-right=, because it combines the first element of the
@@ -509,9 +509,12 @@ First, an alias for fold-right,
 : (((() 1) 2) 3)
 
 =op= should satisfy the property of /commutativity/ in order to have
-the same result
+the same result regardless of the direction in which the operations
+are performed.  That is, for an operation $\odot$, it should be the
+case that, for any valid choices of $a$, $b$, and $c$, $(a\odot b) \odot c)
+= a \odot (b\odot c)$.
 
-** TODO Exercise 2.39: Defining =reverse= via =fold=
+** WRITEUP Exercise 2.39: Defining =reverse= via =fold=
 *** Problem
      Complete the following definitions of =reverse=
      (*Note Exercise 2-18::) in terms of =fold-right= and =fold-left=
@@ -526,6 +529,21 @@ the same result
 #+END_SRC
 
 *** Solution
+
+#+BEGIN_SRC scheme :session 2-2b :results output
+  (define (r-reverse sequence)
+    (fold-right (lambda (x y) (append y (list x))) nil sequence))
+
+  (display (r-reverse (list 1 2 3 4 5)))
+#+END_SRC
+
+#+BEGIN_SRC scheme :session 2-2b :results output
+  (define (l-reverse sequence)
+    (fold-left (lambda (x y) (cons y x)) nil sequence))
+
+  (display (l-reverse (list 1 2 3 4 5)))
+#+END_SRC
+
 ** TODO Exercise 2.40: Generating unique pairs
 *** Problem
      Define a procedure =unique-pairs= that, given an integer $n$,
@@ -534,6 +552,23 @@ the same result
      =prime-sum-pairs= given above.
 
 *** Solution
+
+First, the definition of =prime-sum-pairs= as given in the text.
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+  (define (prime-sum-pairs n)
+    (map make-pair-sum
+         (filter prime-sum?
+                 (flatmap
+                  (lambda (i)
+                    (map (lambda (j) (list i j))
+                         (enumerate-interval 1 (- i 1))))
+                  (enumerate-interval 1 n)))))
+#+END_SRC
+
+#+BEGIN_SRC scheme :session 2-2b :results none
+
+#+END_SRC
 ** TODO Exercise 2.41: Finding ordered triples
 *** Problem
      Write a procedure to find all ordered triples of distinct
