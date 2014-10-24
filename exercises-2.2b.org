@@ -418,7 +418,6 @@ This looks like a good candidate for =accumulate-n=, at first...but
 the entirety of $\mathbf{M}$ has to be used for every row of $\mathbf{N}$.
 
 #+BEGIN_SRC scheme :session 2-2b :results output
-
   (define A (list (list 0 4 -2) (list -4 -3 0)))
   (define B (list (list 0 1) (list 1 -1) (list 2 3)))
   ;; AB = ((0 -10) (-3 -1))
@@ -433,7 +432,7 @@ the entirety of $\mathbf{M}$ has to be used for every row of $\mathbf{N}$.
 #+END_SRC
 
 #+RESULTS:
-: ((0 -10) (-3 -1))
+: An error occurred.
 
 Figure out a way around the extra transpose!
 
@@ -537,12 +536,18 @@ case that, for any valid choices of $a$, $b$, and $c$, $(a\odot b) \odot c)
   (display (r-reverse (list 1 2 3 4 5)))
 #+END_SRC
 
+#+RESULTS:
+: (5 4 3 2 1)
+
 #+BEGIN_SRC scheme :session 2-2b :results output
   (define (l-reverse sequence)
     (fold-left (lambda (x y) (cons y x)) nil sequence))
 
   (display (l-reverse (list 1 2 3 4 5)))
 #+END_SRC
+
+#+RESULTS:
+: (5 4 3 2 1)
 
 ** TODO Exercise 2.40: Generating unique pairs
 *** Problem
@@ -553,9 +558,62 @@ case that, for any valid choices of $a$, $b$, and $c$, $(a\odot b) \odot c)
 
 *** Solution
 
-First, the definition of =prime-sum-pairs= as given in the text.
+First, the definition of =prime-sum-pairs= as given in the text, along
+with the =enumerate-interval=, =flat-map=, and =make-pair-sum=
+procedures upon which it depends (and on which we'll rely for the
+implementation of =unique-pairs=.
 
 #+BEGIN_SRC scheme :session 2-2b :results none
+  (define (enumerate-interval low high)
+    (if (> low high)
+        nil
+        (cons low (enumerate-interval (+ low 1) high))))
+
+  (define (flatmap proc seq)
+    (accumulate append nil (map proc seq)))
+
+  (define (square n) (* n n))
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n) n)
+          ((divides? test-divisor n) test-divisor)
+          (else (find-divisor n (+ test-divisor 1)))))
+
+  (define (divides? a b)
+    (= (remainder b a) 0))
+
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n) n)
+          ((divides? test-divisor n) test-divisor)
+          (else (find-divisor n (+ test-divisor 1)))))
+
+  (define (prime? n)
+    (= n (smallest-divisor n)))
+
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+
+  (define (divides? a b)
+    (= (remainder b a) 0))
+
+  (define (prime? n)
+    (= n (smallest-divisor n)))
+
+  (define (prime-sum? pair)
+    (prime? (+ (car pair) (cadr pair))))
+
+  (define (make-pair-sum pair)
+    (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+
+  (define (filter predicate sequence)
+    (cond ((null? sequence) nil)
+          ((predicate (car sequence))
+           (cons (car sequence)
+                 (filter predicate (cdr sequence))))
+          (else (filter predicate (cdr sequence)))))
+
   (define (prime-sum-pairs n)
     (map make-pair-sum
          (filter prime-sum?
@@ -566,16 +624,52 @@ First, the definition of =prime-sum-pairs= as given in the text.
                   (enumerate-interval 1 n)))))
 #+END_SRC
 
-#+BEGIN_SRC scheme :session 2-2b :results none
+#+BEGIN_SRC scheme :session 2-2b :results output
+  (define (flatmap proc seq)
+    (accumulate append nil (map proc seq)))
 
+  (define (unique-pairs n)
+    (flatmap (lambda (i)
+           (map (lambda (j) (list i j)) (enumerate-interval i n)))
+         (enumerate-interval 1 n)))
+
+  (define (up n)
+    (display (unique-pairs n))
+    (newline))
+
+  (up 4)
 #+END_SRC
-** TODO Exercise 2.41: Finding ordered triples
+
+#+RESULTS:
+: ((1 1) (1 2) (1 3) (1 4) (2 2) (2 3) (2 4) (3 3) (3 4) (4 4))
+
+
+Once we have this, our new version of =prime-sum-pairs= becomes almost
+trivial to write.  This exercise gives a great demonstration of the
+value of the compositional style of program construction. Once we have
+procedures built up to the level of our problem, it becomes much more
+straightforward to assemble them is useful ways.  But the relatively
+lack of structure imposed by lists and lambdas means that the same
+low-level tools (such as map and filter) can be used to assemble them.
+
+#+BEGIN_SRC scheme :session 2-2b :results output
+  (define (prime-sum-pairs-prime n)
+    (map make-pair-sum
+         (filter prime-sum? (unique-pairs n))))
+
+  (display (prime-sum-pairs-prime 5))
+#+END_SRC
+
+
+
+** TODO Exercise 2.41: Sums of ordered triples
 *** Problem
      Write a procedure to find all ordered triples of distinct
      positive integers $i$, $j$, and $k$ less than or equal to a given
      integer $n$ that sum to a given integer $s$.
 
 *** Solution
+
 ** TODO Exercise 2.42: The Eight-Queens Puzzle
 *** Problem
      The "eight-queens puzzle" asks how to place eight
